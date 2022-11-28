@@ -24,9 +24,9 @@ void initSdlbgi()
   setbkcolor (YELLOW);
 }
 
-void splashScreen()
+void titleScreen()
 {
-  readimagefile((char*)"src/splash.bmp", 0, 0, WIDTH, HEIGHT);
+  readimagefile((char*)"src/title.bmp", 0, 0, WIDTH, HEIGHT);
   Button button;
   createButton(button, WIDTH/2, HEIGHT/2, "Start", 9, &bStart);
   createButton(button, WIDTH/2, HEIGHT-300, "Credits", 7, &bStart);
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
   // WINDOW ////////////////////////////////////////////////////////////////////
   initSdlbgi();
-  splashScreen();
+  titleScreen();
   
   // logic()
   // draw()
