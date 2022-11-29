@@ -11,9 +11,9 @@ void bVoid()
 }
 
 // Test function for button
-void bStart()
+void bCredits()
 {
-  cleardevice();
+  showinfobox("== Electron == \n Project realised by Ciobanu Andra and Petcu Andreea; \n 2022.11.22 - \n UAIC Year 1 Semester 1; \n Coordinating teacher: Bogdan Patrut.");
   refresh();
 }
 

@@ -20,7 +20,7 @@ void createButton(Button &button, int x, int y, const char* label, int size, voi
 void drawButton(Button button);
 void activateButton(Button button);
 bool IsMouseOnButton(Button button);
-void bStart();
+void bCredits();
 void bVoid();
 
 #endif
