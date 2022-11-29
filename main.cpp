@@ -10,7 +10,7 @@
 // SCREEN DIMENSIONS
 const int HEIGHT = getmaxheight();
 const int WIDTH = getmaxwidth();
-//bool exit = NOPE;
+bool isRunning = YEAH;
 
 /// Initialises SDL_bgi graphics and window
 void initSdlbgi()
@@ -24,33 +24,46 @@ void initSdlbgi()
   setbkcolor (YELLOW);
 }
 
+
 void titleScreen()
 {
   readimagefile((char*)"src/title.bmp", 0, 0, WIDTH, HEIGHT);
-  Button button;
-  createButton(button, WIDTH/2, HEIGHT/2, "Start", 9, &bStart);
-  createButton(button, WIDTH/2, HEIGHT-300, "Credits", 7, &bStart);
+  Button buttonStart;
+  Button buttonCredits;
+  createButton(buttonStart, WIDTH/2, HEIGHT/2, "Start", 9, &bVoid);
+  createButton(buttonCredits, WIDTH/2, HEIGHT-300, "Credits", 7, &bStart);
+  refresh();
+
+  bool titleIsRunning = YEAH;
+  while(titleIsRunning)
+  {
+    // apparently ismouseclick() is much faster than mouseclick()
+    activateButton(buttonStart);
+    activateButton(buttonCredits);
+    if (ismouseclick(WM_RBUTTONDOWN))
+      return;
+  }
+
 }
 
 int main(int argc, char *argv[])
 {
   //////////////////////////////////////////////////////////////////////////////
-  /// I N I T I A L I Z A T I O N //////////////////////////////////////////////
+  /// T I T L E   S C R E E N //////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // WINDOW ////////////////////////////////////////////////////////////////////
   initSdlbgi();
   titleScreen();
   
-  // logic()
-  // draw()
-  // while(!exit)
+  //////////////////////////////////////////////////////////////////////////////
+  /// M A I N   S C R E E N ////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // while(isRunning == YEAH)
   // {
-  //   // logic()
+  //    logic();
+  //    draw()
   // }
-
-  //readimagefile ((char*)"title.bmp", 0, 0, 1000, 118);
-
   getch ();
   return 0;
 }
