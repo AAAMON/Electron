@@ -1,8 +1,9 @@
-#include <stdio.h>
+#include <iostream>
 #include <string.h>
-#include <winbgim.h>
 #include <math.h>
-using namespace std;
+#include <graphics.h>
+#include "project.h"
+#include "button.h"
 
 void fir(int x1, int y1, int x2, int y2)
 {
@@ -10,6 +11,7 @@ void fir(int x1, int y1, int x2, int y2)
     line((x1 + x2) / 2, y1, (x1 + x2) / 2, y2);
     line((x1 + x2) / 2, y2, x2, y2);
 }
+
 
 void baterie(int x, int y, int l)
 {
@@ -92,9 +94,28 @@ void zenner(int x, int y, int l)
 
 void tranzistor()
 {
-
+;
 }
-int main()
+
+
+int main(int argc, char *argv[])
 {
-    return 0;
+  //////////////////////////////////////////////////////////////////////////////
+  /// T I T L E   S C R E E N //////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  initSdlbgi();
+  titleScreen();
+  
+  //////////////////////////////////////////////////////////////////////////////
+  /// M A I N   S C R E E N ////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  // while(isRunning == YEAH)
+  // {
+  //    logic();
+  //    draw()
+  // }
+
+  return EXIT_SUCCESS;
 }
