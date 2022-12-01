@@ -16,6 +16,7 @@ struct Button
   // pointer to a function
   void (*onClick)(); 
 };
+
 void createButton(Button &button, int x, int y, const char* label, int size, void (*onClick)());
 void drawButton(Button button);
 void activateButton(Button button);
