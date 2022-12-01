@@ -1,6 +1,20 @@
 #include <graphics.h>
 #include "components.h"
 #include <cmath>
+#include <fstream>
+
+
+
+void initComponent(Component component, string type)
+{
+    string loc = { "src/" };
+    loc.append(type);
+    loc.append(".comp");
+    ifstream compFile(loc);
+
+    compFile >> component.description;
+}
+void drawComponent(Component component);
 
 void fir(int x1, int y1, int x2, int y2)
 {

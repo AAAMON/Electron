@@ -1,5 +1,25 @@
+#include <string>
 #ifndef COMPONENTS_ELECTRON_H
 #define COMPONENTS_ELECTRON_H
+struct Component 
+{
+	string name;
+	string description;
+
+	int x;
+	int y;
+	int size;
+	int nrOfBonds;
+	int bonds[2][5];
+	int orientation;
+
+	// for drawing
+	int nrOfInstr;
+	int drawInstr[2][10];
+};
+
+void initComponent(Component component, string type);
+void drawComponent(Component component);
 
 void fir(int x1, int y1, int x2, int y2);
 void baterie(int x, int y, int l);
