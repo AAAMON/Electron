@@ -2,12 +2,11 @@
 #include <string.h>
 #include <cmath>
 #include <graphics.h>
-#include <winbgim.h>
 #include "project.h"
 #include "button.h"
 #include "components.h"
 
-
+// g++ -o electron *.cpp -std=c++20 -pedantic-errors -Wall -Weffc++ -Wextra -Wsign-conversion -lSDL_bgi -lSDL2 -lstdc++ -lm
 
 
 int main(int argc, char *argv[])
@@ -16,12 +15,12 @@ int main(int argc, char *argv[])
   /// T I T L E   S C R E E N //////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  //initSdlbgi();
+  initSdlbgi();
   //titleScreen();
   
-  Component c1;
-  initComponent(c1, "dioda");
-  std::cout << c1.description;
+  setcolor(BLACK);
+  ellipse(500, 500, 10, 370, 150, 100);
+  getch();
 
   //////////////////////////////////////////////////////////////////////////////
   /// M A I N   S C R E E N ////////////////////////////////////////////////////
