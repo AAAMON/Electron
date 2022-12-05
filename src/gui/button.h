@@ -3,14 +3,13 @@
 
 struct Button
 {
-  // coordonates of the button (top left corner)
+  char label[100];
+
+  // drawing info
+  // coordonates refer to center of button
   int x;
   int y;
   int width;
-
-  char label[100];
-
-  // will determine scaling
   int size;
 
   // pointer to a function
