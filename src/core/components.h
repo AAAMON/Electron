@@ -13,16 +13,22 @@ struct Component
 	int bonds[2][5];
 
 	// drawing info
-	int x;
+	int x; 
 	int y;
-	int size;
+	int size; // default, can be scaled by user in-program
 	int orientation;
+	// drawing instructions that are read from file
 	int nrOfInstr;
+	int nrOfDrawCoordinates;
 	char drawInstrType[10];
-	int drawInstr[2][10];
+	float drawCoordinates[50];
 };
 
 void initComponent(Component &component, const char* type);
 void drawComponent(Component component);
+int getNrOfPointsUsed(char instructionType);
+
+// DEBUGGING
+void printComponent(Component component);
 
 #endif

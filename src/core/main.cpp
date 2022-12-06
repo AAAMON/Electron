@@ -1,5 +1,6 @@
 #include <graphics.h>
 #include "project.h"
+#include "components.h"
 
 // To compile (SDL_BGI):
 // g++ -o bin/electron src/core/*.cpp src/gui/*.cpp -std=c++20 -pedantic-errors -Wall -Weffc++ -Wextra -Wsign-conversion -lSDL_bgi -lSDL2 -lstdc++ -lm
@@ -12,6 +13,7 @@ int main()
 
   initSdlbgi();
   titleScreen();
+
 
   //////////////////////////////////////////////////////////////////////////////
   /// M A I N   S C R E E N ////////////////////////////////////////////////////

@@ -35,6 +35,7 @@ void titleScreen()
 
   // Drawing
   // since nothing needs to get redrawn, it's safe to draw everything only once
+  // the image path must be relative to compile location (aka folder "Electron")
   readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
   message("=== Esc button or x to exit ===");
   drawButton(buttonStart);
@@ -45,7 +46,7 @@ void titleScreen()
   while(titleIsRunning)
   {
     // apparently ismouseclick() is much faster than mouseclick()
-    
+    int ev = getevent();
     // can't use activateButton here because it's the only one that needs an argument
     // start main program
     if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
@@ -55,9 +56,12 @@ void titleScreen()
     activateButton(buttonCredits);
     
     // exit the program
-    int ev = getevent();
+    
     if (KEY_ESC == ev || QUIT == ev)
+    {
       titleIsRunning = NOPE;
+      isRunning = NOPE;
+    }
   }
 }
 
