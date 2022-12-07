@@ -45,19 +45,19 @@ void titleScreen(bool& isRunning)
   // Run loop
   while(titleIsRunning)
   {
-    int ev = getevent();
+    kbhit();
     // apparently ismouseclick() is much faster than mouseclick()
     
     // can't use activateButton here because it's the only one that needs an argument
     // start main program
-    if (WM_LBUTTONDOWN == ev && IsMouseOnButton(buttonStart))
+    if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
       titleIsRunning = NOPE;
 
     // show credits
     activateButton(buttonCredits);
     
     // exit the program
-    if (KEY_ESC == ev || QUIT == ev)
+    if (lastkey() == KEY_ESC)
     {
       titleIsRunning = NOPE;
       isRunning = NOPE;

@@ -31,15 +31,33 @@ void initMenu(Menu& menu)
     menuFile.getline(menu.elements[i], 30);
 }
 
+// Draws the menu on the built-in SDL_Surface
 void drawMenu(Menu menu)
 {
   setcolor(BLACK);
+  // SCROLL BAR
   rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
   line(menu.width - menu.buttonWidth, HEIGHT/2, menu.width, HEIGHT/2);
-  setfillstyle (SOLID_FILL, getcolor ());
-  // draw all the 12 elements based on scroll
-  int c = menu.scroll;
-  for (int i = menu.scroll; i < 12;)
+  // plz replace this with some arrows...
+  outtextxy(menu.width - menu.buttonWidth/2, menu.buttonWidth/2, (char*)"n");
+  outtextxy(menu.width - menu.buttonWidth/2, menu.buttonWidth/2*3, (char*)"n");
+  outtextxy(menu.width - menu.buttonWidth/2, menu.buttonWidth/2*5, (char*)"n");
+  outtextxy(menu.width - menu.buttonWidth/2, menu.height - menu.buttonWidth/2*5, (char*)"u");
+  outtextxy(menu.width - menu.buttonWidth/2, menu.height - menu.buttonWidth/2*3, (char*)"u");
+  outtextxy(menu.width - menu.buttonWidth/2, menu.height - menu.buttonWidth/2, (char*)"u");
+
+  // MENU ELEMENTS
+  int c = 0;
+  for (int i = 0; i < menu.scroll; i++)
+  {
+    if (strstr(menu.elements[c], "CATEGORY"))
+      c++;
+    else if (strstr(menu.elements[c+1], "CATEGORY")) 
+      c++;
+    else
+      c+=2;
+  }
+  for (int i = 0; i < 12;)
   {
     // IF THE ELEMENT IS A CATEGORY NAME
     if (strstr(menu.elements[c], "CATEGORY"))
@@ -80,8 +98,33 @@ void drawMenu(Menu menu)
       }
     }
   }
+}
 
-  //refresh();
+void activateScrollMenu(Menu& menu)
+{
+  //rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
+  if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, 0, menu.width, menu.height/2) && menu.scroll > 0)
+  {
+    menu.scroll--;
+    delay(100);
+  }
+    
+  // fix the -5, we need the nr or categories...
+  if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, menu.height/2, menu.width, menu.height) && menu.scroll < menu.nrOfElements-5)
+  {
+    menu.scroll++;
+    delay(100);
+  }
+}
+
+bool isMouseOnBox(int x1, int y1, int x2, int y2)
+{
+  if (mousex() > x1 && mousex() < x2)
+    if (mousey() > y1 && mousey() < y2)
+      {
+        return YEAH;
+      }
+  return NOPE;
 }
 
 //////////////////////////////////////////////////////////////////////////////

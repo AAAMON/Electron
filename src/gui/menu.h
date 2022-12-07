@@ -14,7 +14,7 @@ struct Menu
   int buttonWidth;
 
   int nrOfElements;
-  char elements[24][30];
+  char elements[50][30];
 
   int scroll;
 };
@@ -22,5 +22,7 @@ struct Menu
 void initMenu(Menu& menu);
 void drawMenu(Menu menu);
 void printMenu(Menu menu);
+void activateScrollMenu(Menu& menu);
+bool isMouseOnBox(int x1, int y1, int x2, int y2);
 
 #endif
