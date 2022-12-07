@@ -7,7 +7,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 bool titleIsRunning = YEAH;
-bool isRunning = YEAH;
 
 //////////////////////////////////////////////////////////////////////////////
 /// M A I N   F U N C T I O N S //////////////////////////////////////////////
@@ -26,7 +25,7 @@ void initSdlbgi()
 }
 
 // Starts title screen
-void titleScreen()
+void titleScreen(bool& isRunning)
 {
   // Initialization
   Button buttonStart;
@@ -38,7 +37,7 @@ void titleScreen()
   // since nothing needs to get redrawn, it's safe to draw everything only once
   // the image path must be relative to compile location (aka folder "Electron")
   readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
-  message("=== Esc button or x to exit ===");
+  message("=== Esc button to exit ===");
   drawButton(buttonStart);
   drawButton(buttonCredits);
   refresh();
@@ -67,6 +66,8 @@ void titleScreen()
 }
 
 
+
+
 //////////////////////////////////////////////////////////////////////////////
 /// M I S C //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -77,12 +78,12 @@ void message(const char* text)
   // message box
   setcolor (WHITE);
   setfillstyle (SOLID_FILL, getcolor ());
-  bar(WIDTH/2-350, HEIGHT-120, WIDTH/2+350, HEIGHT-70);
+  bar(WIDTH/2-350, HEIGHT-50, WIDTH/2+350, HEIGHT-10);
 
   // message text
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
-  settextjustify (CENTER_TEXT, TOP_TEXT);
+  settextjustify (CENTER_TEXT, CENTER_TEXT);
   setcolor (RED);
-  outtextxy (WIDTH / 2, HEIGHT - 100,(char*)text);
-  refresh ();
+  outtextxy (WIDTH / 2, HEIGHT - 30,(char*)text);
+  //refresh();
 }

@@ -17,9 +17,9 @@ void initMenu(Menu& menu)
   menu.scroll = 0;
   menu.buttonWidth = 20;
 
-  for (int i = 0; i < 12; i++)
+  for (int i = 0; i < 24; i++)
   {
-    strcpy(menu.elements[i], "");
+    strcpy(menu.elements[i], " ");
   }
 
   
@@ -36,7 +36,7 @@ void drawMenu(Menu menu)
   setcolor(BLACK);
   rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
   line(menu.width - menu.buttonWidth, HEIGHT/2, menu.width, HEIGHT/2);
-
+  setfillstyle (SOLID_FILL, getcolor ());
   // draw all the 12 elements based on scroll
   int c = menu.scroll;
   for (int i = menu.scroll; i < 12;)
@@ -60,11 +60,10 @@ void drawMenu(Menu menu)
       settextjustify (CENTER_TEXT, CENTER_TEXT);
       rectangle(0, menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth * (i + 1));
       line(menu.width/2 - menu.buttonWidth, menu.elementHeigth * i, menu.width/2 - menu.buttonWidth, menu.elementHeigth * (i + 1));
-      std::cout << menu.elements[c] << "here\n";
       // ONE COMPONENT ON ROW
       if (strstr(menu.elements[c+1], "CATEGORY")) // odd number of components on line
       {
-        if (strcmp(menu.elements[c], ""))
+        if (strcmp(menu.elements[c], " "))
           outtextxy(0 + menu.width/4 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.elements[c]);
         c++;
         i++;
@@ -72,17 +71,17 @@ void drawMenu(Menu menu)
       // TWO COMPONENTS ON ROW
       else
       {
-        if (strcmp(menu.elements[c], ""))
-        outtextxy(0 + menu.width/4 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.elements[c]);
-        if (strcmp(menu.elements[c+1], ""))
-        outtextxy(0 + menu.width/4*3 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.elements[c+1]);
+        if (strcmp(menu.elements[c], " "))
+          outtextxy(0 + menu.width/4 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.elements[c]);
+        if (strcmp(menu.elements[c+1], " "))
+          outtextxy(0 + menu.width/4*3 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.elements[c+1]);
         c+=2;
         i++;
       }
     }
   }
 
-  refresh();
+  //refresh();
 }
 
 //////////////////////////////////////////////////////////////////////////////

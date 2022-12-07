@@ -14,7 +14,7 @@ const int WIDTH = getmaxwidth();
 //////////////////////////////////////////////////////////////////////////////
 
 void initSdlbgi();
-void titleScreen();
+void titleScreen(bool& isRunning);
 void message(const char*);
 
 
