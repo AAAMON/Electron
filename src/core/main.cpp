@@ -20,8 +20,8 @@ int main()
 
   // even if it wouldn't execute the main loop, with this we can skip waiting
   // for the initializations
-  if (!isRunning)
-    return EXIT_SUCCESS;
+  // if (!isRunning)
+  //   return EXIT_SUCCESS;
 
   //////////////////////////////////////////////////////////////////////////////
   /// M A I N   S C R E E N ////////////////////////////////////////////////////
@@ -32,6 +32,7 @@ int main()
   // INITIALIZATIONS...
   Menu menu;
   initMenu(menu);
+  //printMenu(menu);
 
   // MAIN LOOP!
   while(isRunning == YEAH)
