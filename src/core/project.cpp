@@ -1,7 +1,9 @@
 #include "project.h"
+#include "files.h"
+#include "components.h"
 #include "../gui/button.h"
 #include "../gui/menu.h"
-#include "files.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 /// P R O G R A M   V A R I A B L E S ////////////////////////////////////////
@@ -70,19 +72,55 @@ void titleScreen(bool& isRunning)
 /// W O R K S P A C E   F U N C T I O N S ////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+
+
 // initialises the current workspace
-void initElectron(Electron& workspace)
+void initElectron(Electron& workspace, char* startFile)
 {
-  loadFile((char*)"test", workspace);
+  // COMPONENTS
+  workspace.nrOfComponents = 0;
+  loadFile(startFile, workspace);
+  // MENU
   initMenu(workspace.menu);
+  // SCREEN
+  workspace.panningX = 0;
+  workspace.panningY = 0;
+
+  workspace.panning = NOPE;
 }
 
+void activatePanning(Electron& workspace)
+{
+  int panPrevX = workspace.panningX;
+  int panPrevY = workspace.panningY;
+  int x = mousex();
+  int y = mousey();
+  while (workspace.menu.show && isMouseOnBox(workspace.menu.width, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN))
+  {
+
+    workspace.panningX = panPrevX + mousex() - x;
+    workspace.panningY = panPrevY + mousey() - y;
+    draw(workspace);
+    refresh();
+  }
+  while (!workspace.menu.show && isMouseOnBox(workspace.menu.buttonWidth, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN))
+  {
+
+    workspace.panningX = panPrevX + mousex() - x;
+    workspace.panningY = panPrevY + mousey() - y;
+    draw(workspace);
+    refresh();
+  }
+}
+
+void drawWorkspaceComponent(Electron workspace, Component component);
 // draws the current workspace
 void draw(Electron workspace)
 {
+  cleardevice();
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
-    drawComponent(workspace.components[i]);
+    drawWorkspaceComponent(workspace, workspace.components[i]);
   }
   drawMenu(workspace.menu);
   message("=== Esc button to exit ===");
@@ -95,8 +133,20 @@ void logic(Electron& workspace, bool& isRunning)
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
   activateScrollMenu(workspace.menu);
+  activatePanning(workspace);
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+/// A U X   F U N C T I O N S ////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+void drawWorkspaceComponent(Electron workspace, Component component)
+{
+  component.x += workspace.panningX;
+  component.y += workspace.panningY;
+  drawComponent(component);
+}
 
 //////////////////////////////////////////////////////////////////////////////
 /// M I S C //////////////////////////////////////////////////////////////////
@@ -115,4 +165,15 @@ void message(const char* text)
   settextjustify (CENTER_TEXT, CENTER_TEXT);
   setcolor (RED);
   outtextxy (WIDTH / 2, HEIGHT - 30,(char*)text);
+}
+
+// Checks if the mouse is on a box
+bool isMouseOnBox(int x1, int y1, int x2, int y2)
+{
+  if (mousex() > x1 && mousex() < x2)
+    if (mousey() > y1 && mousey() < y2)
+      {
+        return YEAH;
+      }
+  return NOPE;
 }

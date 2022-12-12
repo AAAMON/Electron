@@ -35,9 +35,11 @@ void message(const char*);
 /// W O R K S P A C E   F U N C T I O N S ////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
-void initElectron(Electron& workspace);
+void initElectron(Electron& workspace, char* startFile);
+void activatePanning(Electron& workspace);
 void draw(Electron workspace);
 void logic(Electron& workspace, bool& isRunning);
+bool isMouseOnBox(int x1, int y1, int x2, int y2);
 
 
 #endif

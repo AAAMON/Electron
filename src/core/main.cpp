@@ -33,12 +33,12 @@ int main()
   
   // INITIALIZATION
   Electron workspace;
-  initElectron(workspace);
+  initElectron(workspace, (char*)"test");
 
   // MAIN LOOP!
   while(isRunning == YEAH)
   {
-    cleardevice();
+    
 
     // Deals with all the input/updating
     logic(workspace, isRunning);

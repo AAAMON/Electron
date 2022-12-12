@@ -148,16 +148,7 @@ void activateScrollMenu(Menu& menu)
   }
 }
 
-// Checks if the mouse is on a box
-bool isMouseOnBox(int x1, int y1, int x2, int y2)
-{
-  if (mousex() > x1 && mousex() < x2)
-    if (mousey() > y1 && mousey() < y2)
-      {
-        return YEAH;
-      }
-  return NOPE;
-}
+
 
 
 //////////////////////////////////////////////////////////////////////////////
