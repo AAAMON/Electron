@@ -1,7 +1,8 @@
-#include <graphics.h>
-#include "components.h"
 #ifndef PROJECT_ELECTRON_H
 #define PROJECT_ELECTRON_H
+#include <graphics.h>
+#include "components.h"
+#include "../gui/menu.h"
 
 //////////////////////////////////////////////////////////////////////////////
 /// P R O G R A M   C O N S T A N T S ////////////////////////////////////////
@@ -10,13 +11,16 @@
 const int HEIGHT = getmaxheight();
 const int WIDTH = getmaxwidth();
 
+// Workspace
 struct Electron
 {
-  int nrOfComponents = 0;
+  int nrOfComponents;
   Component components[50];
-  int panningX = 0;
-  int panningY = 0;
-  int zoom = 1;
+  int panningX;
+  int panningY;
+  int zoom;
+
+  Menu menu;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -26,7 +30,14 @@ struct Electron
 void initSdlbgi();
 void titleScreen(bool& isRunning);
 void message(const char*);
-void draw(Electron electron);
+
+//////////////////////////////////////////////////////////////////////////////
+/// W O R K S P A C E   F U N C T I O N S ////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+void initElectron(Electron& workspace);
+void draw(Electron workspace);
+void logic(Electron& workspace, bool& isRunning);
 
 
 #endif

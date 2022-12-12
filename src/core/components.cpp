@@ -129,6 +129,7 @@ int getNrOfPointsUsed(char instructionType)
     return -1;
 }
 
+// Moves component to specified location
 void moveComponent(Component& component, int x, int y)
 {
     component.x = x;

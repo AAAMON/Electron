@@ -1,6 +1,7 @@
 #include "project.h"
 #include "../gui/button.h"
 #include "../gui/menu.h"
+#include "files.h"
 
 //////////////////////////////////////////////////////////////////////////////
 /// P R O G R A M   V A R I A B L E S ////////////////////////////////////////
@@ -65,12 +66,35 @@ void titleScreen(bool& isRunning)
   }
 }
 
-void draw(Electron electron)
+//////////////////////////////////////////////////////////////////////////////
+/// W O R K S P A C E   F U N C T I O N S ////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+// initialises the current workspace
+void initElectron(Electron& workspace)
 {
-  for (int i = 0; i < electron.nrOfComponents; i++)
+  loadFile((char*)"test", workspace);
+  initMenu(workspace.menu);
+}
+
+// draws the current workspace
+void draw(Electron workspace)
+{
+  for (int i = 0; i < workspace.nrOfComponents; i++)
   {
-    drawComponent(electron.components[i]);
+    drawComponent(workspace.components[i]);
   }
+  drawMenu(workspace.menu);
+  message("=== Esc button to exit ===");
+}
+
+// updates the current workspace
+void logic(Electron& workspace, bool& isRunning)
+{
+  kbhit();
+  if (lastkey() == KEY_ESC)
+    isRunning = NOPE;
+  activateScrollMenu(workspace.menu);
 }
 
 
@@ -81,15 +105,14 @@ void draw(Electron electron)
 // Immediately displays a red message on the bottom of the screen
 void message(const char* text)
 {
-  // message box
-  setcolor (WHITE);
-  setfillstyle (SOLID_FILL, getcolor ());
-  bar(WIDTH/2-350, HEIGHT-50, WIDTH/2+350, HEIGHT-10);
+  // // message box
+  // setcolor (WHITE);
+  // setfillstyle (SOLID_FILL, getcolor ());
+  // bar(WIDTH/2-350, HEIGHT-50, WIDTH/2+350, HEIGHT-10);
 
   // message text
-  settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
   setcolor (RED);
   outtextxy (WIDTH / 2, HEIGHT - 30,(char*)text);
-  //refresh();
 }
