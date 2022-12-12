@@ -31,6 +31,7 @@ struct Menu
   Component components[80];
 
   int scroll;
+  bool show;
 };
 
 void initMenu(Menu& menu);

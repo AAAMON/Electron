@@ -21,7 +21,7 @@ void initSdlbgi()
 
   // so it runs faster, but we need to put refresh() to draw graphics
   sdlbgifast();
-  setbkcolor (YELLOW);
+  setbkcolor (BLACK);
 }
 
 // Starts title screen
@@ -65,7 +65,13 @@ void titleScreen(bool& isRunning)
   }
 }
 
-
+void draw(Electron electron)
+{
+  for (int i = 0; i < electron.nrOfComponents; i++)
+  {
+    drawComponent(electron.components[i]);
+  }
+}
 
 
 //////////////////////////////////////////////////////////////////////////////

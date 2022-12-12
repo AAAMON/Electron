@@ -11,9 +11,10 @@
 
 void initMenu(Menu& menu)
 {
+  menu.show = true;
   menu.width = WIDTH/5;
-  menu.height = HEIGHT;
-  menu.elementHeigth = HEIGHT/12;
+  menu.height = HEIGHT-48;
+  menu.elementHeigth = menu.height/12;
   menu.buttonWidth = 20;
   menu.scroll = 0;
   
@@ -73,67 +74,113 @@ void initMenu(Menu& menu)
 // // Draws the menu on the built-in SDL_Surface
 void drawMenu(Menu menu)
 {
-  setcolor(BLACK);
-  // SCROLL BAR
-  rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
-  line(menu.width - menu.buttonWidth, HEIGHT/2, menu.width, HEIGHT/2);
-  // plz replace this with some arrows...
-  outtextxy(menu.width - menu.buttonWidth/2, menu.buttonWidth/2, (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2, menu.buttonWidth/2*3, (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2, menu.buttonWidth/2*5, (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2, menu.height - menu.buttonWidth/2*5, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2, menu.height - menu.buttonWidth/2*3, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2, menu.height - menu.buttonWidth/2, (char*)"u");
+  if (menu.show) {
+    // BACKGROUND
+    setfillstyle(SOLID_FILL, COLOR(138,132,155));
+    bar(0, 24, menu.width, 24 + menu.height);
+    // SCROLL BAR
+    setcolor(COLOR(36,35,39));
+    setfillstyle(SOLID_FILL, COLOR(176,168,159));
+    bar(menu.width - menu.buttonWidth, 24, menu.width, 24 + menu.height);
+    setcolor(COLOR(36,35,39));
+    rectangle(menu.width - menu.buttonWidth, 24, menu.width, 24 + menu.height);
+    line(menu.width - menu.buttonWidth, 24 + menu.height/2-20, menu.width, 24 + menu.height/2-20);
+    line(menu.width - menu.buttonWidth, 24 + menu.height/2+20, menu.width, 24 + menu.height/2+20);
+    // plz replace this with some arrows...
+    setcolor(COLOR(36,35,39));
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.buttonWidth/2, (char*)"n");
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.buttonWidth/2*3, (char*)"n");
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.buttonWidth/2*5, (char*)"n");
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.height/2, (char*)"<");
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.height - menu.buttonWidth/2*5, (char*)"u");
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.height - menu.buttonWidth/2*3, (char*)"u");
+    outtextxy(menu.width - menu.buttonWidth/2, 24 + menu.height - menu.buttonWidth/2, (char*)"u");
 
-  // MENU ELEMENTS
-  int c = menu.scroll;
-  for (int i = 0; i < 12; i++)
-  {
-    // IF THE COLUMN IS A C(A)TEGORY NAME
-    if (menu.columns[c+i].content[0] == 'A')
+    // MENU ELEMENTS
+    int c = menu.scroll;
+    for (int i = 0; i < 12; i++)
     {
-      setcolor(BLACK);
-      settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
-      settextjustify (CENTER_TEXT, CENTER_TEXT);
-      rectangle(0, menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth * (i + 1));
-      outtextxy(0 + menu.width/2 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
-    }
-    // IF THE ELEMENT IS A C(O)MPONENT
-    else
-    {
-      setcolor(BLACK);
-      settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
-      settextjustify (CENTER_TEXT, CENTER_TEXT);
-      rectangle(0, menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth * (i + 1));
-      line(menu.width/2 - menu.buttonWidth, menu.elementHeigth * i, menu.width/2 - menu.buttonWidth, menu.elementHeigth * (i + 1));
-      // TWO COMPONENT ON ROW
-      if (menu.columns[c+i].content[2])
+      // IF THE COLUMN IS A C(A)TEGORY NAME
+      if (menu.columns[c+i].content[0] == 'A')
       {
-        outtextxy(0 + menu.width/4 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
-        outtextxy(0 + menu.width/4*3 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.components[(int)menu.columns[c+i].content[2]-'0'].name);
+        setcolor(COLOR(36,35,39));
+        settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+        settextjustify (CENTER_TEXT, CENTER_TEXT);
+        rectangle(0, 24 + menu.elementHeigth * i, menu.width - menu.buttonWidth, 24 + menu.elementHeigth * (i + 1));
+        setcolor(WHITE);
+        outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
       }
-      // ONE COMPONENTS ON ROW
+      // IF THE ELEMENT IS A C(O)MPONENT
       else
-        outtextxy(0 + menu.width/4 - menu.buttonWidth/2, menu.elementHeigth * i + menu.elementHeigth/2, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
+      {
+        setcolor(COLOR(36,35,39));
+        settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+        settextjustify (CENTER_TEXT, CENTER_TEXT);
+        rectangle(0, 24 + menu.elementHeigth * i, menu.width - menu.buttonWidth, 24 + menu.elementHeigth * (i + 1));
+        line(menu.width/2 - menu.buttonWidth, 24 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth, 24 + menu.elementHeigth * (i + 1));
+        // black bars
+        setfillstyle(SOLID_FILL, COLOR(87,87,87));
+        bar(2, 26 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth -2, 24 + menu.elementHeigth * (i + 1) - 2);
+        bar(2 + menu.width/2 - menu.buttonWidth, 26 + menu.elementHeigth * i, menu.width - menu.buttonWidth - 2, 24 + menu.elementHeigth * (i + 1) - 2);
+        // TWO COMPONENT ON ROW
+        if (menu.columns[c+i].content[2])
+        {
+          moveComponent(menu.components[(int)menu.columns[c+i].content[1]-'0'], 0 + menu.width/4 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
+          moveComponent(menu.components[(int)menu.columns[c+i].content[2]-'0'], 0 + menu.width/4*3 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
+          setcolor(COLOR(153,200,153));
+          drawComponent(menu.components[(int)menu.columns[c+i].content[1]-'0']);
+          drawComponent(menu.components[(int)menu.columns[c+i].content[2]-'0']);
+          setcolor(WHITE);
+          outtextxy(0 + menu.width/4 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
+          outtextxy(0 + menu.width/4*3 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[2]-'0'].name);
+        }
+        // ONE COMPONENTS ON ROW
+        else
+        {
+          moveComponent(menu.components[(int)menu.columns[c+i].content[1]-'0'], 0 + menu.width/4 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
+          setcolor(COLOR(153,200,153));
+          drawComponent(menu.components[(int)menu.columns[c+i].content[1]-'0']);
+          setcolor(WHITE);
+          outtextxy(0 + menu.width/4 - menu.buttonWidth/2, 24 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
+        }
+      }
     }
   }
-
-
+  else
+  {
+    setfillstyle(SOLID_FILL, COLOR(138,132,155));
+    setcolor(COLOR(36,35,39));
+    bar(0, 24, menu.buttonWidth, 24 + menu.height);
+    setfillstyle(SOLID_FILL, COLOR(176,168,159));
+    bar(0, 24 + menu.height/2 - 20, menu.buttonWidth, 24 + menu.height/2 + 20);
+    rectangle(0, 24, menu.buttonWidth, 24 + menu.height);
+    line(0, 24 + menu.height/2-20, menu.buttonWidth, 24 + menu.height/2-20);
+    line(0, 24 + menu.height/2+20, menu.buttonWidth, 24 + menu.height/2+20);
+    outtextxy(menu.buttonWidth/2, 24 + menu.height/2, (char*)">");
+  }
 }
 
 void activateScrollMenu(Menu& menu)
 {
   //rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
-  if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, 0, menu.width, menu.height/2) && menu.scroll > 0)
+  if (menu.show && ismouseclick(WM_LBUTTONDOWN)&& isMouseOnBox(menu.width - menu.buttonWidth, 24, menu.width, 24 + menu.height/2-20) && menu.scroll > 0)
   {
     menu.scroll--;
     delay(100);
   }
-    
-  // fix the -5, we need the nr or categories...
-  if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, menu.height/2, menu.width, menu.height) && menu.scroll < menu.nrOfColumns-12)
+  if (menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, 24 + menu.height/2+20, menu.width, 24 + menu.height) && menu.scroll < menu.nrOfColumns-12)
   {
     menu.scroll++;
+    delay(100);
+  }
+  if (menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, 24 + menu.height/2-20, menu.width, 24 + menu.height/2+20))
+  {
+    menu.show = false;
+    delay(100);
+  }
+  if (!menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(0, 24, menu.buttonWidth, 24 + menu.height))
+  {
+    menu.show = true;
     delay(100);
   }
 }

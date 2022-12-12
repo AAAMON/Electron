@@ -1,7 +1,9 @@
+#include <iostream>
 #include <graphics.h>
 #include "project.h"
 #include "components.h"
 #include "../gui/menu.h"
+#include "files.h"
 
 
 bool isRunning = YEAH;
@@ -32,13 +34,16 @@ int main()
   // INITIALIZATIONS...
   Menu menu;
   initMenu(menu);
-  //printMenu(menu);
+
+  Electron electron;
+  loadFile((char*)"test", electron);
+  printFile(electron);
 
   // MAIN LOOP!
   while(isRunning == YEAH)
   {
     cleardevice();
-    //logic();
+    //logic();= YEA
     //draw();
     
     // put this in logic();
@@ -46,12 +51,12 @@ int main()
     if (lastkey() == KEY_ESC)
       isRunning = NOPE;
     activateScrollMenu(menu);
-
-    bar(menu.width - menu.buttonWidth, 0, menu.width, menu.height/2);
-    bar(menu.width - menu.buttonWidth, menu.height/2, menu.width, menu.height);
+    
     // put this in draw();
+    draw(electron);
     drawMenu(menu);
     message("=== Esc button to exit ===");
+    
 
     // please please please don't modify this it didn't work before but one day
     // it miraculously started working and idk how or why so just leave it be
