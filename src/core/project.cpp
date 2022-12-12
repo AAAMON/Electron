@@ -85,8 +85,39 @@ void initElectron(Electron& workspace, char* startFile)
   // SCREEN
   workspace.panningX = 0;
   workspace.panningY = 0;
+  workspace.zoom = 1;
+}
 
-  workspace.panning = NOPE;
+void activateZooming(Electron& workspace)
+{
+  int x = mousex();
+  int y = mousey();
+  while (workspace.menu.show && isMouseOnBox(workspace.menu.width, 24, WIDTH, HEIGHT) && ismouseclick(WM_RBUTTONDOWN) && ismouseclick(WM_MBUTTONDOWN))
+  {
+    if (mousex() - x > 0)
+    {
+      workspace.zoom += 0.005;
+      workspace.panningX -= 5;
+      workspace.panningY -= 2.5;
+    }
+    if (mousex() - x < 0)
+    {
+      workspace.zoom -= 0.005;
+      workspace.panningX += 5;
+      workspace.panningY += 2.5;
+    }
+      
+    draw(workspace);
+    refresh();
+  }
+  // while (!workspace.menu.show && isMouseOnBox(workspace.menu.buttonWidth, 24, WIDTH, HEIGHT) && ismouseclick(WM_RBUTTONDOWN) && ismouseclick(WM_MBUTTONDOWN))
+  // {
+  //   z = zoomPrev + mousex() - x + mousey() - y;
+  //   //if (z > 10 && z < 50)
+  //   workspace.zoom = z;
+  //   draw(workspace);
+  //   refresh();
+  // }
 }
 
 void activatePanning(Electron& workspace)
@@ -95,7 +126,7 @@ void activatePanning(Electron& workspace)
   int panPrevY = workspace.panningY;
   int x = mousex();
   int y = mousey();
-  while (workspace.menu.show && isMouseOnBox(workspace.menu.width, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN))
+  while (workspace.menu.show && isMouseOnBox(workspace.menu.width, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN)  && !ismouseclick(WM_RBUTTONDOWN))
   {
 
     workspace.panningX = panPrevX + mousex() - x;
@@ -103,7 +134,7 @@ void activatePanning(Electron& workspace)
     draw(workspace);
     refresh();
   }
-  while (!workspace.menu.show && isMouseOnBox(workspace.menu.buttonWidth, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN))
+  while (!workspace.menu.show && isMouseOnBox(workspace.menu.buttonWidth, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN)  && !ismouseclick(WM_RBUTTONDOWN))
   {
 
     workspace.panningX = panPrevX + mousex() - x;
@@ -122,6 +153,7 @@ void draw(Electron workspace)
   {
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
+  SDL_RenderSetScale(bgi_renderer, 1, 1);
   drawMenu(workspace.menu);
   message("=== Esc button to exit ===");
 }
@@ -132,7 +164,9 @@ void logic(Electron& workspace, bool& isRunning)
   kbhit();
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
+  
   activateScrollMenu(workspace.menu);
+  activateZooming(workspace);
   activatePanning(workspace);
 }
 
@@ -143,8 +177,9 @@ void logic(Electron& workspace, bool& isRunning)
 
 void drawWorkspaceComponent(Electron workspace, Component component)
 {
-  component.x += workspace.panningX;
-  component.y += workspace.panningY;
+  component.x = workspace.panningX + component.x * workspace.zoom;
+  component.y = workspace.panningY + component.y * workspace.zoom;
+  component.size = 15*workspace.zoom;
   drawComponent(component);
 }
 

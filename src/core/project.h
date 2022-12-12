@@ -16,9 +16,9 @@ struct Electron
 {
   int nrOfComponents;
   Component components[50];
-  int panningX;
-  int panningY;
-  int zoom;
+  float panningX;
+  float panningY;
+  float zoom;
 
   Menu menu;
 };
@@ -37,6 +37,8 @@ void message(const char*);
 
 void initElectron(Electron& workspace, char* startFile);
 void activatePanning(Electron& workspace);
+void activateZooming(Electron& workspace);
+void drawWorkspaceComponent(Electron workspace, Component component);
 void draw(Electron workspace);
 void logic(Electron& workspace, bool& isRunning);
 bool isMouseOnBox(int x1, int y1, int x2, int y2);

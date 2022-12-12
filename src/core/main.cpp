@@ -48,6 +48,8 @@ int main()
     // Updates screen
     // please please please don't modify this it didn't work before but one day
     // it miraculously started working and idk how or why so just leave it be
+    
+
     refresh();
   }
 
