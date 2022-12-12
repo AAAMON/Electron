@@ -47,6 +47,7 @@ void drawButton(Button button)
   refresh();
 }
 
+// replace this with isMouseOnBox
 // Checks if the mouse if hovering over the button
 bool IsMouseOnButton(Button button)
 {

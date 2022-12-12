@@ -1,12 +1,12 @@
 #include "project.h"
 #include "../gui/button.h"
+#include "../gui/menu.h"
 
 //////////////////////////////////////////////////////////////////////////////
 /// P R O G R A M   V A R I A B L E S ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 bool titleIsRunning = YEAH;
-bool isRunning = YEAH;
 
 //////////////////////////////////////////////////////////////////////////////
 /// M A I N   F U N C T I O N S //////////////////////////////////////////////
@@ -16,16 +16,16 @@ bool isRunning = YEAH;
 void initSdlbgi()
 {
   // windowed full screen size
-  setwinoptions ((char *)"E L E C T R O N", 0, 0, SDL_WINDOW_RESIZABLE);
+  setwinoptions ((char *)"E L E C T R O N", 0, 0, SDL_WINDOW_FULLSCREEN);
   initwindow (WIDTH, HEIGHT); 
 
   // so it runs faster, but we need to put refresh() to draw graphics
   sdlbgifast();
-  setbkcolor (YELLOW);
+  setbkcolor (BLACK);
 }
 
 // Starts title screen
-void titleScreen()
+void titleScreen(bool& isRunning)
 {
   // Initialization
   Button buttonStart;
@@ -37,7 +37,7 @@ void titleScreen()
   // since nothing needs to get redrawn, it's safe to draw everything only once
   // the image path must be relative to compile location (aka folder "Electron")
   readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
-  message("=== Esc button or x to exit ===");
+  message("=== Esc button to exit ===");
   drawButton(buttonStart);
   drawButton(buttonCredits);
   refresh();
@@ -45,8 +45,9 @@ void titleScreen()
   // Run loop
   while(titleIsRunning)
   {
+    kbhit();
     // apparently ismouseclick() is much faster than mouseclick()
-    int ev = getevent();
+    
     // can't use activateButton here because it's the only one that needs an argument
     // start main program
     if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
@@ -56,12 +57,19 @@ void titleScreen()
     activateButton(buttonCredits);
     
     // exit the program
-    
-    if (KEY_ESC == ev || QUIT == ev)
+    if (lastkey() == KEY_ESC)
     {
       titleIsRunning = NOPE;
       isRunning = NOPE;
     }
+  }
+}
+
+void draw(Electron electron)
+{
+  for (int i = 0; i < electron.nrOfComponents; i++)
+  {
+    drawComponent(electron.components[i]);
   }
 }
 
@@ -76,12 +84,12 @@ void message(const char* text)
   // message box
   setcolor (WHITE);
   setfillstyle (SOLID_FILL, getcolor ());
-  bar(WIDTH/2-350, HEIGHT-120, WIDTH/2+350, HEIGHT-70);
+  bar(WIDTH/2-350, HEIGHT-50, WIDTH/2+350, HEIGHT-10);
 
   // message text
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
-  settextjustify (CENTER_TEXT, TOP_TEXT);
+  settextjustify (CENTER_TEXT, CENTER_TEXT);
   setcolor (RED);
-  outtextxy (WIDTH / 2, HEIGHT - 100,(char*)text);
-  refresh ();
+  outtextxy (WIDTH / 2, HEIGHT - 30,(char*)text);
+  //refresh();
 }

@@ -25,6 +25,7 @@ struct Component
 };
 
 void initComponent(Component &component, const char* type);
+void moveComponent(Component& component, int x, int y);
 void drawComponent(Component component);
 int getNrOfPointsUsed(char instructionType);
 

@@ -1,8 +1,14 @@
+#include <iostream>
 #include <graphics.h>
 #include "project.h"
 #include "components.h"
+#include "../gui/menu.h"
+#include "files.h"
 
-// To compile (SDL_BGI):
+
+bool isRunning = YEAH;
+
+// To compile (u need SDL_BGI):
 // g++ -o bin/electron src/core/*.cpp src/gui/*.cpp -std=c++20 -pedantic-errors -Wall -Weffc++ -Wextra -Wsign-conversion -lSDL_bgi -lSDL2 -lstdc++ -lm
 
 int main()
@@ -12,18 +18,50 @@ int main()
   //////////////////////////////////////////////////////////////////////////////
 
   initSdlbgi();
-  titleScreen();
+  titleScreen(isRunning);
 
+  // even if it wouldn't execute the main loop, with this we can skip waiting
+  // for the initializations
+  // if (!isRunning)
+  //   return EXIT_SUCCESS;
 
   //////////////////////////////////////////////////////////////////////////////
   /// M A I N   S C R E E N ////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // while(isRunning == YEAH)
-  // {
-  //    logic();
-  //    draw();
-  // }
+  cleardevice(); // if stuff takes too long just put some loading screen here...
+  
+  // INITIALIZATIONS...
+  Menu menu;
+  initMenu(menu);
+
+  Electron electron;
+  loadFile((char*)"test", electron);
+  printFile(electron);
+
+  // MAIN LOOP!
+  while(isRunning == YEAH)
+  {
+    cleardevice();
+    //logic();= YEA
+    //draw();
+    
+    // put this in logic();
+    kbhit();
+    if (lastkey() == KEY_ESC)
+      isRunning = NOPE;
+    activateScrollMenu(menu);
+    
+    // put this in draw();
+    draw(electron);
+    drawMenu(menu);
+    message("=== Esc button to exit ===");
+    
+
+    // please please please don't modify this it didn't work before but one day
+    // it miraculously started working and idk how or why so just leave it be
+    refresh();
+  }
 
   return EXIT_SUCCESS;
 }

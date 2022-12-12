@@ -1,4 +1,5 @@
 #include <graphics.h>
+#include "components.h"
 #ifndef PROJECT_ELECTRON_H
 #define PROJECT_ELECTRON_H
 
@@ -9,13 +10,23 @@
 const int HEIGHT = getmaxheight();
 const int WIDTH = getmaxwidth();
 
+struct Electron
+{
+  int nrOfComponents = 0;
+  Component components[50];
+  int panningX = 0;
+  int panningY = 0;
+  int zoom = 1;
+};
+
 //////////////////////////////////////////////////////////////////////////////
 /// P R O G R A M   F U N C T I O N S ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 void initSdlbgi();
-void titleScreen();
+void titleScreen(bool& isRunning);
 void message(const char*);
+void draw(Electron electron);
 
 
 #endif

@@ -60,6 +60,7 @@ void initComponent(Component &component, const char* type)
 // Immediately draws component on screen
 void drawComponent(Component component)
 {
+    setcolor(COLOR(153,200,153));
     int coord = 0; // iterator for drawing coordinates
     // doing each instruction
     for (int i = 0; i < component.nrOfInstr; i++)
@@ -128,6 +129,11 @@ int getNrOfPointsUsed(char instructionType)
     return -1;
 }
 
+void moveComponent(Component& component, int x, int y)
+{
+    component.x = x;
+    component.y = y;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 /// D E B U G ////////////////////////////////////////////////////////////////
