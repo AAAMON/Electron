@@ -3,6 +3,7 @@
 #include "components.h"
 #include "../gui/button.h"
 #include "../gui/menu.h"
+#include "../gui/boxes.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -91,18 +92,17 @@ void initElectron(Electron& workspace, char* startFile)
 void activateZooming(Electron& workspace)
 {
   int x = mousex();
-  int y = mousey();
   while (workspace.menu.show && isMouseOnBox(workspace.menu.width, 24, WIDTH, HEIGHT) && ismouseclick(WM_RBUTTONDOWN) && ismouseclick(WM_MBUTTONDOWN))
   {
     if (mousex() - x > 0)
     {
-      workspace.zoom += 0.005;
+      workspace.zoom += 0.007;
       workspace.panningX -= 5;
       workspace.panningY -= 2.5;
     }
     if (mousex() - x < 0)
     {
-      workspace.zoom -= 0.005;
+      workspace.zoom -= 0.007;
       workspace.panningX += 5;
       workspace.panningY += 2.5;
     }
@@ -110,14 +110,24 @@ void activateZooming(Electron& workspace)
     draw(workspace);
     refresh();
   }
-  // while (!workspace.menu.show && isMouseOnBox(workspace.menu.buttonWidth, 24, WIDTH, HEIGHT) && ismouseclick(WM_RBUTTONDOWN) && ismouseclick(WM_MBUTTONDOWN))
-  // {
-  //   z = zoomPrev + mousex() - x + mousey() - y;
-  //   //if (z > 10 && z < 50)
-  //   workspace.zoom = z;
-  //   draw(workspace);
-  //   refresh();
-  // }
+  while (!workspace.menu.show && isMouseOnBox(workspace.menu.buttonWidth, 24, WIDTH, HEIGHT) && ismouseclick(WM_RBUTTONDOWN) && ismouseclick(WM_MBUTTONDOWN))
+  {
+    if (mousex() - x > 0)
+    {
+      workspace.zoom += 0.007;
+      workspace.panningX -= 5;
+      workspace.panningY -= 2.5;
+    }
+    if (mousex() - x < 0)
+    {
+      workspace.zoom -= 0.007;
+      workspace.panningX += 5;
+      workspace.panningY += 2.5;
+    }
+      
+    draw(workspace);
+    refresh();
+  }
 }
 
 void activatePanning(Electron& workspace)
@@ -153,7 +163,6 @@ void draw(Electron workspace)
   {
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
-  SDL_RenderSetScale(bgi_renderer, 1, 1);
   drawMenu(workspace.menu);
   message("=== Esc button to exit ===");
 }

@@ -4,6 +4,7 @@
 #include "../core/project.h"
 #include "../core/components.h"
 #include "menu.h"
+#include "boxes.h"
 
 
 
@@ -100,6 +101,7 @@ void drawMenu(Menu menu)
       // IF THE ROW IS A C(A)TEGORY NAME
       if (menu.columns[c+i].content[0] == 'A')
       {
+        bigBox(0, 24 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 2);
         settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
         settextjustify (CENTER_TEXT, CENTER_TEXT);
         setcolor(WHITE);
