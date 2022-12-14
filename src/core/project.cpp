@@ -144,7 +144,6 @@ void activatePanning(Electron& workspace)
   int y = mousey();
   while (workspace.menu.show && isMouseOnBox(workspace.menu.width, 24, WIDTH, HEIGHT) && ismouseclick(WM_MBUTTONDOWN)  && !ismouseclick(WM_RBUTTONDOWN))
   {
-
     workspace.panningX = panPrevX + mousex() - x;
     workspace.panningY = panPrevY + mousey() - y;
     cleardevice();
@@ -166,25 +165,20 @@ void moveComponent(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
-
-    while (isMouseOnComponent(
-          workspace,
-          workspace.components[i].x-100, 
-          workspace.components[i].y-100,
-          workspace.components[i].x+100, 
-          workspace.components[i].y+100) 
+    while (isMouseOnComponent(workspace, workspace.components[i].x-100, workspace.components[i].y-100, workspace.components[i].x+100, workspace.components[i].y+100) 
            && ismouseclick(WM_LBUTTONDOWN))
     {
-      workspace.components[i].x = mousex() - workspace.panningX;
-      workspace.components[i].y = mousey() - workspace.panningY;
+      workspace.components[i].x = (mousex() - workspace.panningX)/workspace.zoom;
+      workspace.components[i].y = (mousey() - workspace.panningY)/workspace.zoom;
       cleardevice();
       draw(workspace);
-          setcolor(RED);
-    rectangle(          
-          workspace.components[i].x-100 + workspace.panningX, 
-          workspace.components[i].y-100 + workspace.panningY,
-          workspace.components[i].x+100 + workspace.panningX, 
-          workspace.components[i].y+100 + workspace.panningY);
+      setcolor(RED);
+      //workspace.panningX + component.x * workspace.zoom
+      rectangle(          
+        workspace.components[i].x*workspace.zoom-75*workspace.zoom + workspace.panningX, 
+        workspace.components[i].y*workspace.zoom-75*workspace.zoom + workspace.panningY,
+        workspace.components[i].x*workspace.zoom+75*workspace.zoom + workspace.panningX, 
+        workspace.components[i].y*workspace.zoom+75*workspace.zoom + workspace.panningY);
       refresh();
     }
   }
@@ -281,8 +275,8 @@ void message(const char* text)
 
 bool isMouseOnComponent(Electron workspace, int x1, int y1, int x2, int y2)
 {
-  if (mousex() - workspace.panningX > x1 && mousex() - workspace.panningX < x2)
-    if (mousey() - workspace.panningY > y1 && mousey() - workspace.panningY < y2)
+  if ((mousex() - workspace.panningX)/workspace.zoom > x1 && (mousex() - workspace.panningX)/workspace.zoom < x2)
+    if ((mousey() - workspace.panningY)/workspace.zoom > y1 && (mousey() - workspace.panningY)/workspace.zoom < y2)
       {
         return YEAH;
       }
