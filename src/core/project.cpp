@@ -130,7 +130,7 @@ void activateZooming(Electron& workspace)
       workspace.panningX += 5;
       workspace.panningY += 2.5;
     }
-      
+    cleardevice();
     draw(workspace);
     refresh();
   }
@@ -162,11 +162,38 @@ void activatePanning(Electron& workspace)
   }
 }
 
+void moveComponent(Electron& workspace)
+{
+  for (int i = 0; i < workspace.nrOfComponents; i++)
+  {
+
+    while (isMouseOnComponent(
+          workspace,
+          workspace.components[i].x-100, 
+          workspace.components[i].y-100,
+          workspace.components[i].x+100, 
+          workspace.components[i].y+100) 
+           && ismouseclick(WM_LBUTTONDOWN))
+    {
+      workspace.components[i].x = mousex() - workspace.panningX;
+      workspace.components[i].y = mousey() - workspace.panningY;
+      cleardevice();
+      draw(workspace);
+          setcolor(RED);
+    rectangle(          
+          workspace.components[i].x-100 + workspace.panningX, 
+          workspace.components[i].y-100 + workspace.panningY,
+          workspace.components[i].x+100 + workspace.panningX, 
+          workspace.components[i].y+100 + workspace.panningY);
+      refresh();
+    }
+  }
+}
+
 void drawWorkspaceComponent(Electron workspace, Component component);
 // draws the current workspace
 void draw(Electron workspace)
 {
-
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
     drawWorkspaceComponent(workspace, workspace.components[i]);
@@ -198,6 +225,7 @@ void logic(Electron& workspace, bool& isRunning)
   activateScrollMenu(workspace.menu);
   activateZooming(workspace);
   activatePanning(workspace);
+  moveComponent(workspace);
   if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
   {
     system("supertuxkart");
@@ -249,6 +277,16 @@ void message(const char* text)
   settextjustify (CENTER_TEXT, CENTER_TEXT);
   setcolor (RED);
   outtextxy (WIDTH / 2, HEIGHT - 33,(char*)text);
+}
+
+bool isMouseOnComponent(Electron workspace, int x1, int y1, int x2, int y2)
+{
+  if (mousex() - workspace.panningX > x1 && mousex() - workspace.panningX < x2)
+    if (mousey() - workspace.panningY > y1 && mousey() - workspace.panningY < y2)
+      {
+        return YEAH;
+      }
+  return NOPE;
 }
 
 // Checks if the mouse is on a box

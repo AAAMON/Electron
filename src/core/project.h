@@ -59,6 +59,7 @@ void draw(Electron workspace);
 void logic(Electron& workspace, bool& isRunning);
 bool isMouseOnBox(int x1, int y1, int x2, int y2);
 void drawStatusBar(Electron workspace);
+bool isMouseOnComponent(Electron workspace, int x1, int y1, int x2, int y2);
 
 
 #endif
