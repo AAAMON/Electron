@@ -33,23 +33,24 @@ int main()
   
   // INITIALIZATION
   Electron workspace;
-  initElectron(workspace, (char*)"test");
-
+  initElectron(workspace);
   // MAIN LOOP!
   while(isRunning == YEAH)
   {
-    
-
-    // Deals with all the input/updating
     logic(workspace, isRunning);
-    // Draws everyting on SDL_Surface
+    cleardevice();
+    // draw(workspace);
+    // readimagefile((char*)"assets/hell.bmp", 0, 0, 100, 100);
     draw(workspace);
+    // Deals with all the input/updating
     
+    // Draws everyting on SDL_Surface
+    
+    //delay(100);
     // Updates screen
     // please please please don't modify this it didn't work before but one day
     // it miraculously started working and idk how or why so just leave it be
     
-
     refresh();
   }
 

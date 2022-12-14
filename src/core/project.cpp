@@ -76,17 +76,23 @@ void titleScreen(bool& isRunning)
 
 
 // initialises the current workspace
-void initElectron(Electron& workspace, char* startFile)
+void initElectron(Electron& workspace)
 {
   // COMPONENTS
   workspace.nrOfComponents = 0;
-  loadFile(startFile, workspace);
+  strcpy(workspace.currentFile, "test");
+  loadFile(workspace.currentFile, workspace);
   // MENU
   initMenu(workspace.menu);
+  strcpy(workspace.menuBarButtons[0].text, "File");
+  workspace.menuBarButtons[0].x = 0;
+  workspace.menuBarButtons[0].y = 0;
+  workspace.menuBarButtons[0].w = 50;
   // SCREEN
   workspace.panningX = 0;
   workspace.panningY = 0;
   workspace.zoom = 1;
+  
 }
 
 void activateZooming(Electron& workspace)
@@ -106,7 +112,7 @@ void activateZooming(Electron& workspace)
       workspace.panningX += 5;
       workspace.panningY += 2.5;
     }
-      
+    cleardevice();
     draw(workspace);
     refresh();
   }
@@ -141,6 +147,7 @@ void activatePanning(Electron& workspace)
 
     workspace.panningX = panPrevX + mousex() - x;
     workspace.panningY = panPrevY + mousey() - y;
+    cleardevice();
     draw(workspace);
     refresh();
   }
@@ -149,6 +156,7 @@ void activatePanning(Electron& workspace)
 
     workspace.panningX = panPrevX + mousex() - x;
     workspace.panningY = panPrevY + mousey() - y;
+    cleardevice();
     draw(workspace);
     refresh();
   }
@@ -158,12 +166,25 @@ void drawWorkspaceComponent(Electron workspace, Component component);
 // draws the current workspace
 void draw(Electron workspace)
 {
-  cleardevice();
+
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
   drawMenu(workspace.menu);
+  drawStatusBar(workspace);
+  drawMenuBar();
+  //
+  bigBox(workspace.menuBarButtons[0].x, 0, workspace.menuBarButtons[0].w, 36, 1);
+  setcolor(WHITE);
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+  settextjustify (CENTER_TEXT, CENTER_TEXT);
+  outtextxy(workspace.menuBarButtons[0].x + workspace.menuBarButtons[0].w/2, 18, workspace.menuBarButtons[0].text);
+
+  // TUX PLZ PUT THIS ON A BUTTON THX 
+  bigBox(WIDTH-30, 0, 30, 36, 1);
+
+  //
   message("=== Esc button to exit ===");
 }
 
@@ -177,8 +198,27 @@ void logic(Electron& workspace, bool& isRunning)
   activateScrollMenu(workspace.menu);
   activateZooming(workspace);
   activatePanning(workspace);
+  if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
+  {
+    system("supertuxkart");
+    //system("xdotool key alt+Tab");
+  }
+  if (SDL_GetWindowFlags(bgi_window) & SDL_WINDOW_HIDDEN)
+  {
+    system("echo sdfsdf && xdotool keydown 0xffea + key 0xff09");
+    delay(2000);
+    system("xdotool keyup 0xffea");
+  }
 }
 
+void drawStatusBar(Electron workspace)
+{
+  setfillstyle(SOLID_FILL, BLUE);
+  bar(0, HEIGHT-24, WIDTH, HEIGHT);
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+  settextjustify (LEFT_TEXT, TOP_TEXT);
+  outtextxy(5, HEIGHT-15, workspace.currentFile);
+}
 
 //////////////////////////////////////////////////////////////////////////////
 /// A U X   F U N C T I O N S ////////////////////////////////////////////////
@@ -208,7 +248,7 @@ void message(const char* text)
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
   setcolor (RED);
-  outtextxy (WIDTH / 2, HEIGHT - 30,(char*)text);
+  outtextxy (WIDTH / 2, HEIGHT - 33,(char*)text);
 }
 
 // Checks if the mouse is on a box
@@ -221,3 +261,10 @@ bool isMouseOnBox(int x1, int y1, int x2, int y2)
       }
   return NOPE;
 }
+
+
+
+
+/* 
+
+*/
