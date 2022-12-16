@@ -176,3 +176,428 @@ void hollowBox(int x, int y, int x2, int y2)
     }
   }
 }
+
+void longButtonBox(int x, int y, int w, int h, bool reverse)
+{
+
+  setfillstyle(SOLID_FILL, RED);
+  bar(x, y, x+w, y+h);
+  int r = 128;
+  int g = 123;
+  int b = 115;
+  float nr = r;
+  float ng = g;
+  float nb = b;
+
+  // OUTLINE
+  int i = 0;
+     if (!reverse)
+  { 
+  for (i = 0; i < 3; i++)
+  {    
+    r = 128;
+    g = 123;
+    b = 115;
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+i; x1 < x+w-i+1; x1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+i, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+i; y1 < y+h-i+1; y1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+i, y1, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+   r = 128;
+   g = 123;
+   b = 115;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+w-i; x1 > x+i-1; x1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+h-i, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+h-i; y1 > y+i-1; y1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+w-i, y1, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+  }
+
+  for (;i < 5; i++)
+  {
+  //    // OUTLINE 2
+
+    r = 182;
+    g = 175;
+    b = 166;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+i; x1 < x+w-i+1; x1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+i, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+i; y1 < y+h-i+1; y1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+i, y1, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+
+    r = 182;
+    g = 175;
+    b = 166;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+w-i; x1 > x+i-1; x1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+h-i, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+h-i; y1 > y+i-1; y1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+w-i, y1, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+  }
+// GRADIENT
+    int xy;
+    r = 106;
+    g = 101;
+    b = 96;
+    for (int x1 = x+4; x1 < x+w-4; x1++)
+    {
+      for (int y1 = y+4; y1 < y+h-4; y1++)
+      {
+        xy = abs(distance(x1, y1, x, y));
+        nr = r + 0.03*xy*log(xy);
+        ng = g + 0.03*xy*log(xy);
+        nb = b + 0.03*xy*log(xy);
+        putpixel(x1, y1, COLOR(nr, ng, nb));
+      }
+    }
+    return;
+  }
+  
+  
+  
+  for (i = 0; i < 3; i++)
+  {    
+    r = 128;
+    g = 123;
+    b = 115;
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+w-i; x1 > x+i-1; x1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+i, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+h-i; y1 > y+i-1; y1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+i, y1, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+   r = 128;
+   g = 123;
+   b = 115;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+i; x1 < x+w-i+1; x1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+h-i, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+i; y1 < y+h-i+1; y1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+w-i, y1, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+  }
+
+  for (;i < 5; i++)
+  {
+  //    // OUTLINE 2
+
+    r = 182;
+    g = 175;
+    b = 166;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+w-i; x1 > x+i-1; x1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+i, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+h-i; y1 > y+i-1; y1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+i, y1, getcolor());
+      nr+=0.15;
+      ng+=0.15;
+      nb+=0.15;
+    }
+
+    r = 182;
+    g = 175;
+    b = 166;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+i; x1 < x+w-i+1; x1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+h-i, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+i; y1 < y+h-i+1; y1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+w-i, y1, getcolor());
+      nr-=0.15;
+      ng-=0.15;
+      nb-=0.15;
+    }
+  }
+  
+  int xy;
+  r = 106;
+  g = 101;
+  b = 96;
+  for (int x1 = x+4; x1 < x+w-4; x1++)
+  {
+    for (int y1 = y+4; y1 < y+h-4; y1++)
+    {
+      xy = abs(distance(x1, y1, x+w, y+h));
+      nr = r + 0.03*xy*log(xy);
+      ng = g + 0.03*xy*log(xy);
+      nb = b + 0.03*xy*log(xy);
+      putpixel(x1, y1, COLOR(nr, ng, nb));
+    }
+  }
+}
+
+void buttonBox(int x, int y, int w, int h)
+{
+  setfillstyle(SOLID_FILL, RED);
+  bar(x, y, x+w, y+h);
+  int r = 128;
+  int g = 123;
+  int b = 115;
+  int nr = r;
+  int ng = g;
+  int nb = b;
+
+  // OUTLINE
+  int i = 0;
+  for (i = 0; i < 3; i++)
+  {    
+    r = 128;
+    g = 123;
+    b = 115;
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+i; x1 < x+w-i+1; x1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+i, getcolor());
+      nr+=2;
+      ng+=2;
+      nb+=2;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+i; y1 < y+h-i+1; y1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+i, y1, getcolor());
+      nr+=2;
+      ng+=2;
+      nb+=2;
+    }
+   r = 128;
+   g = 123;
+   b = 115;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+w-i; x1 > x+i-1; x1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+h-i, getcolor());
+      nr-=2;
+      ng-=2;
+      nb-=2;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+h-i; y1 > y+i-1; y1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+w-i, y1, getcolor());
+      nr-=2;
+      ng-=2;
+      nb-=2;
+    }
+  }
+
+  for (;i < 5; i++)
+  {
+  //    // OUTLINE 2
+
+    r = 182;
+    g = 175;
+    b = 166;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+i; x1 < x+w-i+1; x1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+i, getcolor());
+      nr+=2;
+      ng+=2;
+      nb+=2;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+i; y1 < y+h-i+1; y1++)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+i, y1, getcolor());
+      nr+=2;
+      ng+=2;
+      nb+=2;
+    }
+
+    r = 182;
+    g = 175;
+    b = 166;
+
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int x1 = x+w-i; x1 > x+i-1; x1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x1, y+h-i, getcolor());
+      nr-=2;
+      ng-=2;
+      nb-=2;
+    }
+    nr = r;
+    ng = g;
+    nb = b;
+    for (int y1 = y+h-i; y1 > y+i-1; y1--)
+    {
+      setcolor(COLOR(nr, ng, nb));
+      putpixel(x+w-i, y1, getcolor());
+      nr-=2;
+      ng-=2;
+      nb-=2;
+    }
+  }
+  // GRADIENT
+  int xy;
+  r = 106;
+  g = 101;
+  b = 96;
+  for (int x1 = x+4; x1 < x+w-4; x1++)
+  {
+    for (int y1 = y+4; y1 < y+h-4; y1++)
+    {
+      xy = abs(distance(x1, y1, x, y));
+      nr = r + xy*log(xy);
+      ng = g + xy*log(xy);
+      nb = b + xy*log(xy);
+      putpixel(x1, y1, COLOR(nr, ng, nb));
+    }
+  }
+}

@@ -161,13 +161,29 @@ void activatePanning(Electron& workspace)
   }
 }
 
-void moveComponent(Electron& workspace)
+bool isMouseOnWorkspace(Electron workspace)
+{
+  if (workspace.menu.show)
+  {
+    if (isMouseOnBox(workspace.menu.width, 0, WIDTH, HEIGHT))
+      return YEAH;
+    return NOPE;
+  }
+  else
+  {
+    if (isMouseOnBox(workspace.menu.buttonWidth, 0, WIDTH, HEIGHT))
+      return YEAH;
+    return NOPE;
+  }
+}
+
+void moveComponents(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
-    while (isMouseOnComponent(workspace, workspace.components[i].x-100, workspace.components[i].y-100, workspace.components[i].x+100, workspace.components[i].y+100) 
+    while (isMouseOnWorkspace(workspace) && isMouseOnComponent(workspace, workspace.components[i].x-100, workspace.components[i].y-100, workspace.components[i].x+100, workspace.components[i].y+100) 
            && ismouseclick(WM_LBUTTONDOWN))
-    {
+    { 
       workspace.components[i].x = (mousex() - workspace.panningX)/workspace.zoom;
       workspace.components[i].y = (mousey() - workspace.panningY)/workspace.zoom;
       cleardevice();
@@ -190,6 +206,7 @@ void draw(Electron workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
+
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
   drawMenu(workspace.menu);
@@ -209,6 +226,76 @@ void draw(Electron workspace)
   message("=== Esc button to exit ===");
 }
 
+// Allows for drag and drop
+void activateMenuComponents(Electron& workspace)
+{
+  // if the menu is hidden, this doesn't need to run
+  if (!workspace.menu.show)
+    return;
+  
+  int c = workspace.menu.scroll;
+  for (int i = 0; i < 12; i++)
+  {
+    // if the column is a category name, skip it
+    if (workspace.menu.columns[i].content[0] == 'A')
+      i++;
+    
+    // ONE COMPONENT
+    // menu.components[(int)menu.columns[c+i].content[1]-'0']
+    if (isMouseOnBox(2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2) && ismouseclick(WM_LBUTTONDOWN))
+    {
+      // daca nu e asta aici o sa dea eroare drawComponent
+      // nu intreba dc
+      delay(100);
+      // CREATING NEW COMPONENT
+      workspace.nrOfComponents++;
+      initComponent(workspace.components[workspace.nrOfComponents-1], workspace.menu.components[(int)workspace.menu.columns[c+i].content[1]-'0'].name);
+      /// DRAG
+      while (ismouseclick(WM_LBUTTONDOWN))
+      {
+        setcolor(RED);
+        
+        moveComponent(workspace.components[workspace.nrOfComponents-1], (mousex() - workspace.panningX)/workspace.zoom, (mousey() - workspace.panningY)/workspace.zoom);
+        cleardevice();
+        draw(workspace);
+        drawWorkspaceComponent(workspace, workspace.components[workspace.nrOfComponents-1]);
+        rectangle (2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2);
+        refresh();
+      }
+      /// DROP
+      moveComponent(workspace.components[workspace.nrOfComponents-1], (mousex() - workspace.panningX)/workspace.zoom, (mousey() - workspace.panningY)/workspace.zoom);
+    }
+
+    // TWO COMPONENTS
+    if (workspace.menu.columns[c+i].content[2])
+    {
+      if (isMouseOnBox(2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2) && ismouseclick(WM_LBUTTONDOWN))
+      {
+        // daca nu e asta aici o sa dea eroare drawComponent
+        // nu intreba dc
+        delay(100);
+        // CREATING NEW COMPONENT
+        workspace.nrOfComponents++;
+        initComponent(workspace.components[workspace.nrOfComponents-1], workspace.menu.components[(int)workspace.menu.columns[c+i].content[2]-'0'].name);
+        /// DRAG
+        while (ismouseclick(WM_LBUTTONDOWN))
+        {
+          setcolor(RED);
+          
+          moveComponent(workspace.components[workspace.nrOfComponents-1], (mousex() - workspace.panningX)/workspace.zoom, (mousey() - workspace.panningY)/workspace.zoom);
+          cleardevice();
+          draw(workspace);
+          drawWorkspaceComponent(workspace, workspace.components[workspace.nrOfComponents-1]);
+          rectangle (2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2);
+          refresh();
+        }
+        /// DROP
+        moveComponent(workspace.components[workspace.nrOfComponents-1], (mousex() - workspace.panningX)/workspace.zoom, (mousey() - workspace.panningY)/workspace.zoom);
+      }
+    }
+  }
+}
+
 // updates the current workspace
 void logic(Electron& workspace, bool& isRunning)
 {
@@ -217,9 +304,10 @@ void logic(Electron& workspace, bool& isRunning)
     isRunning = NOPE;
   
   activateScrollMenu(workspace.menu);
+  activateMenuComponents(workspace);
   activateZooming(workspace);
   activatePanning(workspace);
-  moveComponent(workspace);
+  moveComponents(workspace);
   if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
   {
     system("supertuxkart");

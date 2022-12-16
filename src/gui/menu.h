@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <graphics.h>
-#include "../core/project.h"
 #include "../core/components.h"
 // merge component name with components
 
@@ -43,7 +42,6 @@ struct Menu
 void initMenu(Menu& menu);
 void drawMenu(Menu menu);
 void activateScrollMenu(Menu& menu);
-void activateMenuComponents(Menu& menu);
 void drawMenuBar();
 
 //////////////////////////////////////////////////////////////////////////////

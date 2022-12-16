@@ -54,6 +54,7 @@ void message(const char*);
 void initElectron(Electron& workspace);
 void activatePanning(Electron& workspace);
 void activateZooming(Electron& workspace);
+void activateMenuComponents(Electron& workspace);
 void drawWorkspaceComponent(Electron workspace, Component component);
 void draw(Electron workspace);
 void logic(Electron& workspace, bool& isRunning);

@@ -94,8 +94,8 @@ void drawComponent(Component component)
                 );
                 coord += 6;
                 break;
-            default:
-                std::cerr << "Eroare fa\n";
+            default:;
+                std::cerr << component.name << " Eroare fa1\n";
         }
     }
 }

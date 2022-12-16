@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <graphics.h>
+#include "menu.h"
 #include "../core/project.h"
 #include "../core/components.h"
-#include "menu.h"
 #include "boxes.h"
 
 
@@ -150,19 +150,7 @@ void activateScrollMenu(Menu& menu)
   }
 }
 
-// Allows for drag and drop
-void activateMenuComponents(Menu& menu)
-{
-  int c = menu.scroll;
-  for (int i = 0; i < 12; i++)
-  {
-    if (menu.columns[i].content[0] == 'A')
-      c++;
-    
-    // menu.components[(int)menu.columns[c+i].content[1]-'0']
-    if (ismouse)
-  }
-}
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -174,26 +162,32 @@ void drawMenuScroll(Menu menu)
 {
   // BACKGROUND
   setfillstyle(SOLID_FILL, COLOR(176,168,159));
+  
   bar(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height);
+  longButtonBox(menu.width - menu.buttonWidth, 36, menu.buttonWidth, menu.height/2 - 20, 0);
+  longButtonBox(menu.width - menu.buttonWidth, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2 - 20, 1);
 
   // LINES
   setcolor(COLOR(36,35,39));
   rectangle(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height);
+  buttonBox(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.buttonWidth, 40);
+  setcolor(COLOR(36,35,39));
   line(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.width, 36 + menu.height/2-20);
   line(menu.width - menu.buttonWidth, 36 + menu.height/2+20, menu.width, 36 + menu.height/2+20);
+
 
   // DETAILS
   // plz replace this with some arrows...
   setcolor(COLOR(36,35,39));
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.buttonWidth/2,                 (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.buttonWidth/2*3,               (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.buttonWidth/2*5,               (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.height/2,                      (char*)"<");
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.height - menu.buttonWidth/2*5, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.height - menu.buttonWidth/2*3, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2, 36 + menu.height - menu.buttonWidth/2,   (char*)"u");
+  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2,                 (char*)"n");
+  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2*3,               (char*)"n");
+  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2*5,               (char*)"n");
+  outtextxy(menu.width - menu.buttonWidth/2+2, 36 + menu.height/2,                      (char*)"<");
+  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2*5, (char*)"u");
+  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2*3, (char*)"u");
+  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2,   (char*)"u");
 }
 
 // Draws menu when it's closed
@@ -204,10 +198,12 @@ void drawMenuClosed(Menu menu)
   bigBox(0, 36, menu.buttonWidth, menu.height/2-20, 1);
   bigBox(0, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2-20, 1);
   //bar(0, 36, menu.buttonWidth, 36 + menu.height);
+  
 
   // BUTTON AREA - BACKGROUND
   setfillstyle(SOLID_FILL, COLOR(176,168,159));
-  bar(0, 36 + menu.height/2 - 20, menu.buttonWidth, 36 + menu.height/2 + 20);
+  buttonBox(0, 36 + menu.height/2 - 20, menu.buttonWidth, 40);
+
 
   // BUTTON AREA - LINES
   setcolor(COLOR(36,35,39));
@@ -270,7 +266,7 @@ void drawMenuBar()
 
 void printMenu(Menu menu)
 {
-  std::cout << menu.nrOfColumns << '\n';
+  std::cout << "Nr of columns: " << menu.nrOfColumns << '\n';
   for (int i = 0; i < menu.nrOfColumns; i++)
   {
     std::cout << menu.columns[i].content << "\n";
