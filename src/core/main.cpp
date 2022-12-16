@@ -37,20 +37,16 @@ int main()
   // MAIN LOOP!
   while(isRunning == YEAH)
   {
+    // Deals with all the input/updating
     logic(workspace, isRunning);
     cleardevice();
-    // draw(workspace);
-    // readimagefile((char*)"assets/hell.bmp", 0, 0, 100, 100);
-    draw(workspace);
-    // Deals with all the input/updating
-    
     // Draws everyting on SDL_Surface
+    draw(workspace);
     
-    //delay(100);
+    
     // Updates screen
     // please please please don't modify this it didn't work before but one day
     // it miraculously started working and idk how or why so just leave it be
-    
     refresh();
   }
 
