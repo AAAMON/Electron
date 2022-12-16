@@ -28,7 +28,7 @@ void initComponent(Component &component, const char* type)
     std::ifstream compFile(filePath);
 
     // read the component description
-    compFile.getline(component.description, 300);
+    compFile.getline(component.description, 1000);
 
     // read the drawing instructions
     compFile >> component.nrOfInstr;

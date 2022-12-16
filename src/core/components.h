@@ -6,7 +6,7 @@ struct Component
 {
 	// basic info
 	char name[30];
-	char description[300];
+	char description[1000];
 
 	// logic info
 	int nrOfBonds;
