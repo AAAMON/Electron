@@ -151,15 +151,18 @@ void activateScrollMenu(Menu& menu)
 }
 
 // Allows for drag and drop
-// void activateMenuComponents(Menu& menu)
-// {
-//   int c = menu.scroll;
-//   for (int i = 0; i < 12; i++)
-//   {
-//     // menu.components[(int)menu.columns[c+i].content[1]-'0']
-//     if (ismouse)
-//   }
-// }
+void activateMenuComponents(Menu& menu)
+{
+  int c = menu.scroll;
+  for (int i = 0; i < 12; i++)
+  {
+    if (menu.columns[i].content[0] == 'A')
+      c++;
+    
+    // menu.components[(int)menu.columns[c+i].content[1]-'0']
+    if (ismouse)
+  }
+}
 
 
 //////////////////////////////////////////////////////////////////////////////
