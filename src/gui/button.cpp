@@ -27,8 +27,8 @@ void createButton(Button &button, int x, int y, const char* label, int size, voi
 void drawButton(Button button)
 {
   // box
-  setcolor(COLOR(250, 250, 250));
-  // setalpha (getcolor (), 80); // has weird behaviour,,,
+  setcolor(COLOR(0, 0, 0));
+  setalpha (getcolor (), 1); // has weird behaviour,,,
   setfillstyle (SOLID_FILL, getcolor ());
   bar(
       button.x - button.width/2, button.y - 5*button.size, 
@@ -38,7 +38,11 @@ void drawButton(Button button)
   // label
   settextstyle  (GOTHIC_FONT, HORIZ_DIR, button.size);
   settextjustify(CENTER_TEXT, CENTER_TEXT);
-  setcolor      (COLOR(1, 0, 26));
+  // setcolor      (COLOR(1, 0, 26));
+  setcolor(BLACK);
+  outtextxy(button.x+2, button.y, button.label);
+  outtextxy(button.x+2, button.y+1, button.label);
+  setcolor(WHITE);
   outtextxy(button.x, button.y, button.label);
 
   // so the START button on the title screen is a bit wider

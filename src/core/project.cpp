@@ -1,5 +1,6 @@
 #include "project.h"
 #include "files.h"
+#include <ctime>
 #include "components.h"
 #include "../gui/button.h"
 #include "../gui/menu.h"
@@ -22,11 +23,106 @@ void initSdlbgi()
   // windowed full screen size
   setwinoptions ((char *)"E L E C T R O N", 0, 0, SDL_WINDOW_FULLSCREEN);
   initwindow (WIDTH, HEIGHT); 
-
   // so it runs faster, but we need to put refresh() to draw graphics
   sdlbgifast();
   setbkcolor (BLACK);
 }
+
+
+// TITLE SCREEN - BACKGROUND ANIMATION
+void backgroundAnimation()
+{
+    cleardevice();
+    // number of particles
+    int nrOfParticles = 1000000;
+    // screen
+    int scree[960][540];
+    // particle values
+    int px;
+    int py;
+    // offsets
+    int dx;
+    int dy;
+
+  // set up a palette
+  int x;
+  // initialise it to black
+  for (x = 0; x < PALETTE_SIZE; x++)
+    setrgbpalette (x, 0, 0, 0);
+  
+  // blue fading to white
+  for (x = 0; x < 128; x++)
+    setrgbpalette (x, 2*x, 2*x, 255);
+
+  // white fading to yellow
+  for (x = 128; x < 256; x++)
+    setrgbpalette (x, 255, 255, 255 - x);
+  
+  // yellow fading to red
+  for (x = 256; x < 512; x++)
+    setrgbpalette (x, 255, 512 - x, 0);
+  
+  // red fading to black
+  for (x = 512; x < 1024; x += 2)
+    setrgbpalette (x, 1024 - 2*x, 0, 0);
+
+    unsigned long iterations = 0;
+    // int color;
+
+
+    std::srand(time(NULL));
+    // set the seeds
+    for (int i = 0; i < 15; i++)
+    {
+        scree[std::rand() % 960][std::rand() % 540] = 1;
+    }
+    for (int i = 0; i < nrOfParticles; i++)
+    {
+        // set the particle's initial position
+        px = std::rand() % 960;
+        py = std::rand() % 540;
+        while (1)
+        {
+            // random direction
+            dx = std::rand() % 3 - 1;
+            dy = std::rand() % 3 - 1;
+
+            while (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540)
+            {
+                // put it in a random location
+                px = std::rand() % 960;
+                py = std::rand() % 540;
+            }
+            if (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540);
+            else if (scree[px + dx][py + dy] != 0)
+            {
+                // bumped into something
+                scree[px][py] = 1;
+                iterations++;
+                break;
+            } else
+            {
+                py += dy;
+                px += dx;
+            }
+        }
+            // DRAWING
+            
+            int color = iterations/350;
+            if (color > 1024)
+              color = 1024;
+            
+            setrgbcolor(color);
+            //setcolor(WHITE);
+            _putpixel((px-dx)*2,(py-dy)*2);
+            _putpixel((px-dx)*2+1,(py-dy)*2);
+            _putpixel((px-dx)*2,(py-dy)*2+1);
+            _putpixel((px-dx)*2+1,(py-dy)*2+1);
+            if (i%5 == 0)
+            refresh();
+    }
+}
+
 
 // Starts title screen
 void titleScreen(bool& isRunning)
@@ -40,12 +136,57 @@ void titleScreen(bool& isRunning)
   // Drawing
   // since nothing needs to get redrawn, it's safe to draw everything only once
   // the image path must be relative to compile location (aka folder "Electron")
-  readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
-  message("=== Esc button to exit ===");
-  drawButton(buttonStart);
-  drawButton(buttonCredits);
+  //readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
+
   refresh();
 
+
+  // ANIMATION
+     cleardevice();
+    // number of particles
+    int nrOfParticles = 1000000;
+    // screen
+    int scree[960][540];
+    // particle values
+    int px;
+    int py;
+    // offsets
+    int dx;
+    int dy;
+
+  // set up a palette
+  int x;
+  // initialise it to black
+  for (x = 0; x < PALETTE_SIZE; x++)
+    setrgbpalette (x, 0, 0, 0);
+  
+  // blue fading to white
+  for (x = 0; x < 128; x++)
+    setrgbpalette (x, 2*x, 2*x, 255);
+
+  // white fading to yellow
+  for (x = 128; x < 256; x++)
+    setrgbpalette (x, 255, 255, 255 - x);
+  
+  // yellow fading to red
+  for (x = 256; x < 512; x++)
+    setrgbpalette (x, 255, 512 - x, 0);
+  
+  // red fading to black
+  for (x = 512; x < 1024; x += 2)
+    setrgbpalette (x, 1024 - 2*x, 0, 0);
+
+    unsigned long iterations = 0;
+    // int color;
+
+
+    std::srand(time(NULL));
+    // set the seeds
+    for (int i = 0; i < 15; i++)
+    {
+        scree[std::rand() % 960][std::rand() % 540] = 1;
+    }
+  int i = 0;
   // Run loop
   while(titleIsRunning)
   {
@@ -66,7 +207,78 @@ void titleScreen(bool& isRunning)
       titleIsRunning = NOPE;
       isRunning = NOPE;
     }
+
+
+
+    if (i < nrOfParticles)
+    {
+      // set the particle's initial position
+      px = std::rand() % 960;
+      py = std::rand() % 540;
+      while (1)
+      {
+          // random direction
+          dx = std::rand() % 3 - 1;
+          dy = std::rand() % 3 - 1;
+
+          while (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540)
+          {
+              // put it in a random location
+              px = std::rand() % 960;
+              py = std::rand() % 540;
+          }
+          if (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540);
+          else if (scree[px + dx][py + dy] != 0)
+          {
+              // bumped into something
+              scree[px][py] = 1;
+              iterations++;
+              break;
+          } else
+          {
+              py += dy;
+              px += dx;
+          }
+      }
+      // DRAWING
+      
+      int color = iterations/350;
+      if (color > 1024)
+        color = 1024;
+      
+      setrgbcolor(color);
+      //setcolor(WHITE);
+      _putpixel((px-dx)*2,(py-dy)*2);
+      _putpixel((px-dx)*2+1,(py-dy)*2);
+      _putpixel((px-dx)*2,(py-dy)*2+1);
+      _putpixel((px-dx)*2+1,(py-dy)*2+1);
+      if (i%5 == 0)
+      {
+        message("=== Esc button to exit ===");
+        drawButton(buttonStart);
+        drawButton(buttonCredits);
+
+
+        setcolor(BLACK);
+        setalpha (BLACK, 1); // has weird behaviour,,,
+        setfillstyle (SOLID_FILL, getcolor ());
+        bar(
+            WIDTH/2 - WIDTH/6, HEIGHT/4 - 5*9, 
+            WIDTH/2 + WIDTH/6, HEIGHT/4 + 8*9
+          );
+        // label
+        settextstyle  (GOTHIC_FONT, HORIZ_DIR, 9);
+        settextjustify(CENTER_TEXT, CENTER_TEXT);
+        setcolor      (WHITE);
+        outtextxy(WIDTH/2, HEIGHT/4, (char*)"ELECTRON");
+        outtextxy(WIDTH/2+1, HEIGHT/4, (char*)"ELECTRON");
+        refresh();
+      }
+        
+      i++;
+    }
   }
+  setalpha(BLACK, 255);
 }
 
 //////////////////////////////////////////////////////////////////////////////
