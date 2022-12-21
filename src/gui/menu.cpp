@@ -102,7 +102,7 @@ void drawMenu(Menu menu)
       if (menu.columns[c+i].content[0] == 'A')
       {
         bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1);
-        settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+        settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
         settextjustify (CENTER_TEXT, CENTER_TEXT);
         setcolor(WHITE);
         outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
@@ -226,13 +226,15 @@ void drawMenuComponents(Menu menu, int c, int i, bool twoComponents)
   outtextxy(0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
   
   // COMPONENT - IMAGE
-  moveComponent(menu.components[(int)menu.columns[c+i].content[1]-'0'], 0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
+  menu.components[(int)menu.columns[c+i].content[1]-'0'].size=10;
+  moveComponent(menu.components[(int)menu.columns[c+i].content[1]-'0'], 0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2-5);
   setcolor(COLOR(153,200,153));
   drawComponent(menu.components[(int)menu.columns[c+i].content[1]-'0']);
 
   if (twoComponents)
   {
-    moveComponent(menu.components[(int)menu.columns[c+i].content[2]-'0'], 0 + menu.width/4*3 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
+    menu.components[(int)menu.columns[c+i].content[2]-'0'].size=10;
+    moveComponent(menu.components[(int)menu.columns[c+i].content[2]-'0'], 0 + menu.width/4*3 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2-5);
     setcolor(COLOR(153,200,153));
     drawComponent(menu.components[(int)menu.columns[c+i].content[2]-'0']);
     setcolor(WHITE);

@@ -45,6 +45,7 @@ void saveFile(Electron& workspace, char* fileName)
   f << workspace.nrOfComponents << '\n';
   for (int i = 0; i < workspace.nrOfComponents; i++)
     f << workspace.components[i].name << ' ' << workspace.components[i].x << ' ' << workspace.components[i].y << '\n';
+    f.close();
 }
 
 void newFile(Electron& workspace, char* fileName)

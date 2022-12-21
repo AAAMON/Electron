@@ -1,0 +1,14 @@
+The analogue (or PETR) switch, also called the bilateral switch, is an electronic component that behaves in a similar way to a relay, but has no moving parts.
+
+6
+L -4 0 -1 0
+L -1 0 0 -2
+L 1 0 4 0
+C -1 0 0.25
+C 1 0 0.25
+L 0 1 0 2
+
+3
+4 0
+-4 0
+0 -2

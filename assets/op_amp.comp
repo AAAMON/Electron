@@ -1,0 +1,17 @@
+An operational amplifier (often op amp or opamp) is a DC-coupled high-gain electronic voltage amplifier with a differential input and, usually, a single-ended output.
+
+9
+L -1 2 -1 -2
+L -1 2 2 0
+L -1 -2 2 0
+L 2 0 4 0
+L -1 1.5 -4 1.5
+L -1 -1.5 -4 -1.5
+L -0.5 0.75 -0.5 1.25
+L -0.75 1 -0.25 1
+L -0.75 -1 -0.25 -1
+
+3
+-4 1.5
+-4 -1.5
+4 0
