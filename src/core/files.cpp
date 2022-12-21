@@ -36,8 +36,25 @@ void loadFile(char* fileName, Electron& electron)
   }
 }
 
-void saveFile(char* fileName);
-void newFile(char* fileName);
+void saveFile(Electron& workspace, char* fileName)
+{
+  char filePath[100] = { "files/" };
+  strcat(filePath, fileName);
+  strcat(filePath,  ".file");
+  std::ofstream f(filePath);
+  f << workspace.nrOfComponents << '\n';
+  for (int i = 0; i < workspace.nrOfComponents; i++)
+    f << workspace.components[i].name << ' ' << workspace.components[i].x << ' ' << workspace.components[i].y << '\n';
+}
+
+void newFile(Electron& workspace, char* fileName)
+{
+  char filePath[100] = { "files/" };
+  strcat(filePath, fileName);
+  strcat(filePath,  ".file");
+  std::ofstream f(filePath);
+  strcpy(workspace.currentFile, fileName);
+}
 
 void printFile(Electron electron)
 {
