@@ -46,6 +46,19 @@ void initMenu(Menu& menu)
       strcpy(menu.columns[i].content, content); 
       menu.columns[i].visible = true;
     }
+    else if (strstr(text, "WIRE"))
+    {
+      // CREATE NEW CATEGORY/WIRE
+      cat++;
+      strcpy(menu.categories[cat].name, text); 
+      menu.categories[cat].nrOfColumns = 0;
+      // UPDATE COLUMN
+      char content[3] = { "W" };
+      content[1] = { '0' };
+      content[1] += cat;
+      strcpy(menu.columns[i].content, content); 
+      menu.columns[i].visible = true;
+    }
     else
     {
       // CREATE NEW COMPONENT
@@ -93,7 +106,7 @@ void drawMenu(Menu menu)
 
     // MENU ROWS
     int c = menu.scroll;
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < 14; i++)
     {
       // ROW OUTLINE
       setcolor(COLOR(36,35,39));
@@ -108,7 +121,7 @@ void drawMenu(Menu menu)
         outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
       }
       // IF THE ELEMENT IS A C(O)MPONENT
-      else
+      else if(menu.columns[c+i].content[0]=='O')
       {
         drawMenuComponentsRow(menu, i);
         // TWO COMPONENT ON ROW
@@ -117,6 +130,15 @@ void drawMenu(Menu menu)
         // ONE COMPONENTS ON ROW
         else
           drawMenuComponents(menu, c, i, 0);
+      }
+      //IF THE ELEMENT IS FOR WIRES
+      else
+      {
+        bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1);
+        settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+        settextjustify (CENTER_TEXT, CENTER_TEXT);
+        setcolor(WHITE);
+        outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2,menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
       }
     }
   }

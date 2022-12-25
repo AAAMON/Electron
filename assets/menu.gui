@@ -1,4 +1,4 @@
-13
+15
 CATEGORY Essentials
 cell battery
 resistor
@@ -12,3 +12,5 @@ transistorN transistorP
 CATEGORY Building Blocks
 op_amp analog_switch
 schmitt_trigger
+ADD WIRE
+REMOVE WIRE

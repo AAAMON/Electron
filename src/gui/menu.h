@@ -14,7 +14,7 @@ struct Category
 
 struct Column
 {
-  char content[10]; // A for cAtegory, O for cOmponent, next 2 chars for indexes
+  char content[10]; // A for cAtegory, O for cOmponent, next 2 chars for indexes/ W for wire
   bool visible;
 };
 
