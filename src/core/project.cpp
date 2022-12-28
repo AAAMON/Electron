@@ -29,100 +29,7 @@ void initSdlbgi()
 }
 
 
-// TITLE SCREEN - BACKGROUND ANIMATION
-void backgroundAnimation()
-{
-    cleardevice();
-    // number of particles
-    int nrOfParticles = 1000000;
-    // screen
-    int scree[960][540];
-    // particle values
-    int px;
-    int py;
-    // offsets
-    int dx;
-    int dy;
-
-  // set up a palette
-  int x;
-  // initialise it to black
-  for (x = 0; x < PALETTE_SIZE; x++)
-    setrgbpalette (x, 0, 0, 0);
-  
-  // blue fading to white
-  for (x = 0; x < 128; x++)
-    setrgbpalette (x, 2*x, 2*x, 255);
-
-  // white fading to yellow
-  for (x = 128; x < 256; x++)
-    setrgbpalette (x, 255, 255, 255 - x);
-  
-  // yellow fading to red
-  for (x = 256; x < 512; x++)
-    setrgbpalette (x, 255, 512 - x, 0);
-  
-  // red fading to black
-  for (x = 512; x < 1024; x += 2)
-    setrgbpalette (x, 1024 - 2*x, 0, 0);
-
-    unsigned long iterations = 0;
-    // int color;
-
-
-    std::srand(time(NULL));
-    // set the seeds
-    for (int i = 0; i < 15; i++)
-    {
-        scree[std::rand() % 960][std::rand() % 540] = 1;
-    }
-    for (int i = 0; i < nrOfParticles; i++)
-    {
-        // set the particle's initial position
-        px = std::rand() % 960;
-        py = std::rand() % 540;
-        while (1)
-        {
-            // random direction
-            dx = std::rand() % 3 - 1;
-            dy = std::rand() % 3 - 1;
-
-            while (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540)
-            {
-                // put it in a random location
-                px = std::rand() % 960;
-                py = std::rand() % 540;
-            }
-            if (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540);
-            else if (scree[px + dx][py + dy] != 0)
-            {
-                // bumped into something
-                scree[px][py] = 1;
-                iterations++;
-                break;
-            } else
-            {
-                py += dy;
-                px += dx;
-            }
-        }
-            // DRAWING
-            
-            int color = iterations/350;
-            if (color > 1024)
-              color = 1024;
-            
-            setrgbcolor(color);
-            //setcolor(WHITE);
-            _putpixel((px-dx)*2,(py-dy)*2);
-            _putpixel((px-dx)*2+1,(py-dy)*2);
-            _putpixel((px-dx)*2,(py-dy)*2+1);
-            _putpixel((px-dx)*2+1,(py-dy)*2+1);
-            if (i%5 == 0)
-            refresh();
-    }
-}
-
+int scree[240][135];
 
 // Starts title screen
 void titleScreen(bool& isRunning)
@@ -144,9 +51,9 @@ void titleScreen(bool& isRunning)
   // ANIMATION
      cleardevice();
     // number of particles
-    int nrOfParticles = 1000000;
+    int nrOfParticles = 32000;
     // screen
-    int scree[960][540];
+
     // particle values
     int px;
     int py;
@@ -157,40 +64,42 @@ void titleScreen(bool& isRunning)
   // set up a palette
   int x;
   // initialise it to black
-  for (x = 0; x < PALETTE_SIZE; x++)
+  for (x = 0; x < getrgbpalettesize (); x++)
     setrgbpalette (x, 0, 0, 0);
   
-  // blue fading to white
+  // blue fading to red
   for (x = 0; x < 128; x++)
-    setrgbpalette (x, 2*x, 2*x, 255);
+    setrgbpalette (x, 2*x, 0, 255-2*x);
 
-  // white fading to yellow
+  // red fading to blue
   for (x = 128; x < 256; x++)
-    setrgbpalette (x, 255, 255, 255 - x);
+    setrgbpalette (x, 255-(2*(x-128)), 0, 2*(x-128));
   
-  // yellow fading to red
+  // yellow fading to cyan
   for (x = 256; x < 512; x++)
-    setrgbpalette (x, 255, 512 - x, 0);
+    setrgbpalette (x, (x-256), 0, 255-(x-256));
   
   // red fading to black
   for (x = 512; x < 1024; x += 2)
     setrgbpalette (x, 1024 - 2*x, 0, 0);
 
-    unsigned long iterations = 0;
+  int iterations = 0;
     // int color;
 
 
     std::srand(time(NULL));
     // set the seeds
-    for (int i = 0; i < 15; i++)
-    {
-        scree[std::rand() % 960][std::rand() % 540] = 1;
-    }
+    // for (int i = 0; i < 50; i++)
+    // {
+    //     scree[std::rand() % 480][std::rand() % 270] = 1;
+    // }
+    scree[120][65] = 1;
   int i = 0;
+   float diam = 20;
   // Run loop
   while(titleIsRunning)
   {
-    kbhit();
+    xkbhit ();
     // apparently ismouseclick() is much faster than mouseclick()
     
     // can't use activateButton here because it's the only one that needs an argument
@@ -208,26 +117,38 @@ void titleScreen(bool& isRunning)
       isRunning = NOPE;
     }
 
-
+   
 
     if (i < nrOfParticles)
     {
       // set the particle's initial position
-      px = std::rand() % 960;
-      py = std::rand() % 540;
+        px = 120 + std::rand() % ((int)diam + 50) - diam/2- 25;
+        py = 65 + std::rand() % (int)diam - diam/2;
+
+      // avoid center
+
+      // while (px  > 240-diam/4 && px < 240+diam/4 && py > 135-diam/4 && py < 135+diam/4)
+      // {
+
+      // }
+      while(scree[px][py] == 1 || (px  > 120-diam/4 && px < 120+diam/4 && py > 65-diam/4 && py < 65+diam/4))
+      {
+        px = 120 + std::rand() % ((int)diam + 50)- diam/2 - 25;
+        py = 65 + std::rand() % (int)diam - diam/2;
+      }
       while (1)
       {
           // random direction
           dx = std::rand() % 3 - 1;
           dy = std::rand() % 3 - 1;
 
-          while (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540)
+          while (dx + px < 0 || dx + px >= 240 || dy + py < 0 || dy + py >= 135 || scree[px][py] == 1)
           {
               // put it in a random location
-              px = std::rand() % 960;
-              py = std::rand() % 540;
+              px = std::rand() % 240;
+              py = std::rand() % 135;
           }
-          if (dx + px < 0 || dx + px >= 960 || dy + py < 0 || dy + py >= 540);
+          if (dx + px < 0 || dx + px >= 240 || dy + py < 0 || dy + py >= 135|| scree[px][py] == 1);
           else if (scree[px + dx][py + dy] != 0)
           {
               // bumped into something
@@ -241,18 +162,33 @@ void titleScreen(bool& isRunning)
           }
       }
       // DRAWING
-      
-      int color = iterations/350;
+      if (diam < 140)
+       diam+= 0.02;
+      int color = iterations/30;
       if (color > 1024)
         color = 1024;
-      
+            setcolor(RED);
+      //circle(WIDTH/2, HEIGHT/2, diam*4);
       setrgbcolor(color);
       //setcolor(WHITE);
-      _putpixel((px-dx)*2,(py-dy)*2);
-      _putpixel((px-dx)*2+1,(py-dy)*2);
-      _putpixel((px-dx)*2,(py-dy)*2+1);
-      _putpixel((px-dx)*2+1,(py-dy)*2+1);
-      if (i%5 == 0)
+      _putpixel((px-dx)*8,(py-dy)*8);
+      _putpixel((px-dx)*8+1,(py-dy)*8);
+      _putpixel((px-dx)*8,(py-dy)*8+1);
+      _putpixel((px-dx)*8+1,(py-dy)*8+1);
+      //outer
+      _putpixel((px-dx)*8+2,(py-dy)*8);
+      _putpixel((px-dx)*8+2,(py-dy)*8+1);
+      _putpixel((px-dx)*8+2,(py-dy)*8+2);
+      _putpixel((px-dx)*8+1,(py-dy)*8+2);
+      _putpixel((px-dx)*8,(py-dy)*8+2);
+      // outerouter
+      _putpixel((px-dx)*8+2,(py-dy)*8);
+      _putpixel((px-dx)*8+2,(py-dy)*8+1);
+      _putpixel((px-dx)*8+2,(py-dy)*8+2);
+      _putpixel((px-dx)*8+1,(py-dy)*8+2);
+      _putpixel((px-dx)*8,(py-dy)*8+2);
+
+      if (i%8 == 0)
       {
         message("=== Esc button to exit ===");
         drawButton(buttonStart);
@@ -296,10 +232,7 @@ void initElectron(Electron& workspace)
   loadFile(workspace.currentFile, workspace);
   // MENU
   initMenu(workspace.menu);
-  strcpy(workspace.menuBarButtons[0].text, "File");
-  workspace.menuBarButtons[0].x = 0;
-  workspace.menuBarButtons[0].y = 0;
-  workspace.menuBarButtons[0].w = 50;
+  initMenuBar(workspace.menuBar);
   // SCREEN
   workspace.panningX = 0;
   workspace.panningY = 0;
@@ -423,13 +356,7 @@ void draw(Electron workspace)
   }
   drawMenu(workspace.menu);
   drawStatusBar(workspace);
-  drawMenuBar();
-  //
-  bigBox(workspace.menuBarButtons[0].x, 0, workspace.menuBarButtons[0].w, 36, 1);
-  setcolor(WHITE);
-  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
-  settextjustify (CENTER_TEXT, CENTER_TEXT);
-  outtextxy(workspace.menuBarButtons[0].x + workspace.menuBarButtons[0].w/2, 18, workspace.menuBarButtons[0].text);
+  drawMenuBar(workspace.menuBar);
 
   // TUX PLZ PUT THIS ON A BUTTON THX 
   bigBox(WIDTH-30, 0, 30, 36, 1);
@@ -511,7 +438,8 @@ void activateMenuComponents(Electron& workspace)
 // updates the current workspace
 void logic(Electron& workspace, bool& isRunning)
 {
-  kbhit();
+
+  k_bhit();
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
   
@@ -520,6 +448,8 @@ void logic(Electron& workspace, bool& isRunning)
   activateZooming(workspace);
   activatePanning(workspace);
   moveComponents(workspace);
+
+  // EASTER EGG
   if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
   {
     system("supertuxkart");

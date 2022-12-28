@@ -2,6 +2,7 @@
 #include <fstream>
 #include <graphics.h>
 #include "menu.h"
+#include "../core/files.h"
 #include "../core/project.h"
 #include "../core/components.h"
 #include "boxes.h"
@@ -12,6 +13,17 @@
 /// M A I N   F U N C T I O N S //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+void initMenuBar(MenuBar& menuBar)
+{
+  std::ifstream menuFile("assets/menubar.gui");
+  menuFile >> menuBar.nrOfElements;
+
+  for (int i = 0; i < menuBar.nrOfElements; i++)
+  {
+    menuFile >> menuBar.menuBarElement[i].name;
+    menuBar.menuBarElement[i].open = false;
+  }
+}
 
 void initMenu(Menu& menu)
 {
@@ -150,7 +162,19 @@ void activateScrollMenu(Menu& menu)
   }
 }
 
+void drawMenuBar(MenuBar menuBar)
+{
+  /* bigBox(workspace.menuBarButtons[0].x, 0, workspace.menuBarButtons[0].w, 36, 1);
 
+  outtextxy(workspace.menuBarButtons[0].x + workspace.menuBarButtons[0].w/2, 18, workspace.menuBarButtons[0].text);
+  */
+  setcolor(WHITE);
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+  settextjustify (CENTER_TEXT, CENTER_TEXT);
+  // FILES
+  bigBox(0, 0, 100, 36, 1);
+  outtextxy(50, 18, menuBar.menuBarElement[0].name);
+}
 
 
 //////////////////////////////////////////////////////////////////////////////

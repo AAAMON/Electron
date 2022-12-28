@@ -4,6 +4,7 @@
 #include <fstream>
 #include <graphics.h>
 #include "../core/components.h"
+#include "button.h"
 // merge component name with components
 
 struct Category
@@ -35,14 +36,32 @@ struct Menu
 };
 
 
+struct MenuBarElement
+{
+  char name[20];
+  bool open;
+};
+
+struct MenuBar
+{
+  MenuBarElement menuBarElement[10];
+  int nrOfElements;
+};
+
+
 //////////////////////////////////////////////////////////////////////////////
 /// M A I N   F U N C T I O N S //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 void initMenu(Menu& menu);
+void initMenuBar(MenuBar& menuBar); 
 void drawMenu(Menu menu);
 void activateScrollMenu(Menu& menu);
-void drawMenuBar();
+void drawMenuBar(MenuBar menuBar);
+
+/*  //
+
+*/
 
 //////////////////////////////////////////////////////////////////////////////
 /// M I S C //////////////////////////////////////////////////////////////////

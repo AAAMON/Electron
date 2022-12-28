@@ -31,7 +31,7 @@ struct Electron
   float zoom;
 
   Menu menu;
-  menuBarButton menuBarButtons[10];
+  MenuBar menuBar;
 
   char currentFile[30];
 };

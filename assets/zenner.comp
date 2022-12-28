@@ -1,7 +1,7 @@
 A Zener diode is a special type of diode designed to reliably allow current to flow "backwards" (inverted polarity) when a certain set reverse voltage.
 
 8
-L -4 0 -2 0
+L -4 0 -1 0
 L -1 1.5 -1 -1.5
 L -1 1.5 1 0
 L -1 -1.5 1 0

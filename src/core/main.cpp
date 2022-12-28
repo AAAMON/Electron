@@ -30,7 +30,7 @@ int main()
   //////////////////////////////////////////////////////////////////////////////
 
   cleardevice(); // if stuff takes too long just put a loading screen here...
-  
+
   // INITIALIZATION
   Electron workspace;
   initElectron(workspace);
