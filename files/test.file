@@ -1,4 +1,4 @@
-8
+9
 diode 500 500
 lamp 1000 500
 cell 100 400
@@ -7,3 +7,4 @@ capacitor 1700 200
 switch 100 100
 transistorN 2000 100
 transistorP 1500 900
+cell 65 142
