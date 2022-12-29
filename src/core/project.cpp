@@ -442,12 +442,15 @@ void logic(Electron& workspace, bool& isRunning)
   k_bhit();
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
+  activateMenuBarElement(workspace, workspace.menuBar);
+  activateMenuBar(workspace.menuBar);
   
   activateScrollMenu(workspace.menu);
   activateMenuComponents(workspace);
   activateZooming(workspace);
   activatePanning(workspace);
   moveComponents(workspace);
+
 
   // EASTER EGG
   if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
@@ -476,6 +479,92 @@ void drawStatusBar(Electron workspace)
 /// A U X   F U N C T I O N S ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+
+void activateMenuBarElement(Electron& workspace, MenuBar menuBar)
+{
+  
+  for (int i = 0; i < menuBar.nrOfElements; i++)
+  {
+    if (menuBar.menuBarElement[i].open)
+    {
+      activateMenuBarOption(workspace, menuBar.menuBarElement[i]);
+    }
+      
+  }
+}
+
+void drawMenuBarOptions(MenuBarElement menuBarElement)
+{
+  for (int i = 0; i < menuBarElement.nrOfOptions; i++)
+  {
+    setcolor(COLOR(255,255,255));
+    setfillstyle(SOLID_FILL, getcolor());
+    bar(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
+    setcolor(COLOR(0,0,0));
+    rectangle(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
+    settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+    settextjustify (LEFT_TEXT, CENTER_TEXT);
+    outtextxy(menuBarElement.x + 10, 36+ 15 +30*i, menuBarElement.options[i].name);
+  }
+}
+
+void activateMenuBar(MenuBar& menuBar)
+{
+  for (int i = 0; i < menuBar.nrOfElements; i++)
+  {  
+    while (menuBar.menuBarElement[i].open && ismouseclick(WM_LBUTTONDOWN)) // if we click somewhere else
+    {
+      while (ismouseclick(WM_LBUTTONDOWN));
+      menuBar.menuBarElement[i].open = NOPE;
+      menuBar.open = -1;
+    }
+    if (menuBar.open == -1 && isMouseOnBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w, 36)
+        && ismouseclick(WM_LBUTTONDOWN))
+    {
+      while (ismouseclick(WM_LBUTTONDOWN));
+      menuBar.menuBarElement[i].open = YEAH;
+      menuBar.open = i;
+    }
+    if (menuBar.open != -1 && !menuBar.menuBarElement[i].open && isMouseOnBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w, 36))
+    {
+      menuBar.menuBarElement[menuBar.open].open = NOPE;
+      menuBar.menuBarElement[i].open = YEAH;
+      menuBar.open = i;
+    }
+  }
+}
+
+void activateMenuBarOption(Electron& workspace, MenuBarElement menuBarElement)
+{
+  for (int i = 0; i < menuBarElement.nrOfOptions; i++)
+  {
+    if (isMouseOnBox(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1)))
+    {
+      setcolor(COLOR(0,0,255));
+      rectangle(menuBarElement.x+1, 36 + 30*i+1, menuBarElement.x + menuBarElement.optionsWidth-1, 36 + 30*(i+1)-1);
+    }
+    if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1)))
+    {
+      setcolor(COLOR(255,0,0));
+      rectangle(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
+      switch(menuBarElement.options[i].functionId)
+      {
+        case 0: // NEW FILE
+          std::cout << "newfile\n";
+          newFile(workspace, (char*)"new");
+          break;
+        case 1: // LOAD FILE
+          break;
+        case 2: // SAVE FILE
+          std::cout << "saving file...\n";
+          saveFile(workspace, workspace.currentFile);
+          break;
+        default:
+          std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
+      }
+    }
+  }
+}
 void drawWorkspaceComponent(Electron workspace, Component component)
 {
   component.x = workspace.panningX + component.x * workspace.zoom;

@@ -54,6 +54,7 @@ void newFile(Electron& workspace, char* fileName)
   strcat(filePath,  ".file");
   std::ofstream f(filePath);
   strcpy(workspace.currentFile, fileName);
+  strcpy(workspace.currentFile, fileName);
 }
 
 void printFile(Electron electron)

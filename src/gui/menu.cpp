@@ -1,11 +1,5 @@
-#include <iostream>
-#include <fstream>
-#include <graphics.h>
 #include "menu.h"
-#include "../core/files.h"
 #include "../core/project.h"
-#include "../core/components.h"
-#include "boxes.h"
 
 
 
@@ -17,11 +11,26 @@ void initMenuBar(MenuBar& menuBar)
 {
   std::ifstream menuFile("assets/menubar.gui");
   menuFile >> menuBar.nrOfElements;
-
+  int x = 0;
+  menuBar.open = -1;
   for (int i = 0; i < menuBar.nrOfElements; i++)
   {
     menuFile >> menuBar.menuBarElement[i].name;
+    menuBar.menuBarElement[i].x = x;
+    menuFile >> menuBar.menuBarElement[i].w;
+    menuFile >> menuBar.menuBarElement[i].optionsWidth;
     menuBar.menuBarElement[i].open = false;
+    x += menuBar.menuBarElement[i].w;
+
+    char id;
+    // READ OPTIONS
+    menuFile >> menuBar.menuBarElement[i].nrOfOptions;
+    for (int j = 0; j < menuBar.menuBarElement[i].nrOfOptions; j++)
+    {
+      menuFile >> id;
+      menuBar.menuBarElement[i].options[j].functionId = id - '0';
+      menuFile.getline(menuBar.menuBarElement[i].options[j].name, 50);
+    }
   }
 }
 
@@ -164,17 +173,27 @@ void activateScrollMenu(Menu& menu)
 
 void drawMenuBar(MenuBar menuBar)
 {
-  /* bigBox(workspace.menuBarButtons[0].x, 0, workspace.menuBarButtons[0].w, 36, 1);
-
-  outtextxy(workspace.menuBarButtons[0].x + workspace.menuBarButtons[0].w/2, 18, workspace.menuBarButtons[0].text);
-  */
-  setcolor(WHITE);
+  bigBox(0, 0, WIDTH, 36, 1);
+  setcolor(COLOR(255, 255, 255));
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
-  settextjustify (CENTER_TEXT, CENTER_TEXT);
-  // FILES
-  bigBox(0, 0, 100, 36, 1);
-  outtextxy(50, 18, menuBar.menuBarElement[0].name);
+  
+  for (int i = 0; i < menuBar.nrOfElements; i++)
+  {
+    bigBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].w, 36, 1);
+    setcolor(COLOR(255, 255, 255));
+    settextjustify (CENTER_TEXT, CENTER_TEXT);
+    outtextxy(menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w/2, 18, menuBar.menuBarElement[i].name);
+    
+    
+    if (menuBar.menuBarElement[i].open)
+    {
+      drawMenuBarOptions(menuBar.menuBarElement[i]);
+    }
+  }
 }
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -279,10 +298,6 @@ void drawMenuComponentsRow(Menu menu, int i)
   // bar(2 + menu.width/2 - menu.buttonWidth, 26 + menu.elementHeigth * i, menu.width - menu.buttonWidth - 2, 36 + menu.elementHeigth * (i + 1) - 2);
 }
 
-void drawMenuBar()
-{
-  bigBox(0, 0, WIDTH, 36, 1);
-}
 
 //////////////////////////////////////////////////////////////////////////////
 /// D E B U G ////////////////////////////////////////////////////////////////

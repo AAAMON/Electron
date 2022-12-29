@@ -5,6 +5,7 @@
 #include <graphics.h>
 #include "../core/components.h"
 #include "button.h"
+#include "boxes.h"
 // merge component name with components
 
 struct Category
@@ -35,17 +36,28 @@ struct Menu
   bool show;
 };
 
+struct MenuBarOption
+{
+  char name[50];
+  int functionId; // for the function that will get called on click
+};
 
 struct MenuBarElement
 {
   char name[20];
+  int x;
+  int w;
   bool open;
+  int nrOfOptions;
+  MenuBarOption options[5];
+  int optionsWidth;
 };
-
+// NEW_FILE SAVE_FILE LOAD_FILE 
 struct MenuBar
 {
   MenuBarElement menuBarElement[10];
   int nrOfElements;
+  int open;
 };
 
 

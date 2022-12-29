@@ -38,11 +38,11 @@ int main()
   while(isRunning == YEAH)
   {
     // Deals with all the input/updating
-    logic(workspace, isRunning);
+    
     cleardevice();
     // Draws everyting on SDL_Surface
     draw(workspace);
-    
+    logic(workspace, isRunning);
     
     // Updates screen
     // please please please don't modify this it didn't work before but one day
