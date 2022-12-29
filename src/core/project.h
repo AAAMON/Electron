@@ -33,12 +33,12 @@ struct Electron
   Menu menu;
   MenuBar menuBar;
 
-  char currentFile[30];
+  char currentFile[100];
 };
 
 void activateMenuBar(MenuBar& menuBar);
 void drawMenuBarOptions(MenuBarElement menuBarElement);
-void activateMenuBarOption(Electron& workspace, MenuBarElement menuBarElement);
+void activateMenuBarOption(Electron& workspace, int i);
 void activateMenuBarElement(Electron& workspace, MenuBar menuBar);
 //////////////////////////////////////////////////////////////////////////////
 /// P R O G R A M   F U N C T I O N S ////////////////////////////////////////

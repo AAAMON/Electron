@@ -351,7 +351,6 @@ void draw(Electron workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
-
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
   drawMenu(workspace.menu);
@@ -444,7 +443,6 @@ void logic(Electron& workspace, bool& isRunning)
     isRunning = NOPE;
   activateMenuBarElement(workspace, workspace.menuBar);
   activateMenuBar(workspace.menuBar);
-  
   activateScrollMenu(workspace.menu);
   activateMenuComponents(workspace);
   activateZooming(workspace);
@@ -487,9 +485,8 @@ void activateMenuBarElement(Electron& workspace, MenuBar menuBar)
   {
     if (menuBar.menuBarElement[i].open)
     {
-      activateMenuBarOption(workspace, menuBar.menuBarElement[i]);
+      activateMenuBarOption(workspace, i);
     }
-      
   }
 }
 
@@ -534,24 +531,29 @@ void activateMenuBar(MenuBar& menuBar)
   }
 }
 
-void activateMenuBarOption(Electron& workspace, MenuBarElement menuBarElement)
+void activateMenuBarOption(Electron& workspace, int i)
 {
-  for (int i = 0; i < menuBarElement.nrOfOptions; i++)
+  for (int j = 0; j < workspace.menuBar.menuBarElement[i].nrOfOptions; j++)
   {
-    if (isMouseOnBox(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1)))
+    if (isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 36 + 30*j, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth, 36 + 30*(j+1)))
     {
       setcolor(COLOR(0,0,255));
-      rectangle(menuBarElement.x+1, 36 + 30*i+1, menuBarElement.x + menuBarElement.optionsWidth-1, 36 + 30*(i+1)-1);
+      rectangle(workspace.menuBar.menuBarElement[i].x+1, 36 + 30*j+1, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth-1, 36 + 30*(j+1)-1);
     }
-    if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1)))
+    if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 36 + 30*j, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth, 36 + 30*(j+1)))
     {
+      workspace.menuBar.menuBarElement[i].open = false;
+      workspace.menuBar.open = -1;
       setcolor(COLOR(255,0,0));
-      rectangle(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
-      switch(menuBarElement.options[i].functionId)
+      rectangle(workspace.menuBar.menuBarElement[i].x, 36 + 30*j, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth, 36 + 30*(j+1));
+      switch(workspace.menuBar.menuBarElement[i].options[j].functionId)
       {
         case 0: // NEW FILE
           std::cout << "newfile\n";
-          newFile(workspace, (char*)"new");
+          cleardevice();
+          draw(workspace);
+          refresh();
+          newFile(workspace);
           break;
         case 1: // LOAD FILE
           break;
@@ -562,9 +564,11 @@ void activateMenuBarOption(Electron& workspace, MenuBarElement menuBarElement)
         default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
       }
+
     }
   }
 }
+
 void drawWorkspaceComponent(Electron workspace, Component component)
 {
   component.x = workspace.panningX + component.x * workspace.zoom;

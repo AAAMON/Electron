@@ -9,7 +9,8 @@
 
 void loadFile(char* fileName, Electron& electron);
 void saveFile(Electron& workspace, char* fileName);
-void newFile(Electron& workspace, char* fileName);
+void newFile(Electron& workspace);
+void getInput(Electron workspace, char* input);
 
 //////////////////////////////////////////////////////////////////////////////
 /// D E B U G ////////////////////////////////////////////////////////////////
