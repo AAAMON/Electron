@@ -40,11 +40,6 @@ void titleScreen(bool& isRunning)
   createButton(buttonStart, WIDTH/2, HEIGHT/2, "Start", 9, &bVoid);
   createButton(buttonCredits, WIDTH/2, HEIGHT-300, "Credits", 7, &bCredits);
 
-  // Drawing
-  // since nothing needs to get redrawn, it's safe to draw everything only once
-  // the image path must be relative to compile location (aka folder "Electron")
-  //readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
-
   refresh();
 
 
@@ -87,35 +82,15 @@ void titleScreen(bool& isRunning)
     // int color;
 
 
-    std::srand(time(NULL));
-    // set the seeds
-    // for (int i = 0; i < 50; i++)
-    // {
-    //     scree[std::rand() % 480][std::rand() % 270] = 1;
-    // }
-    scree[120][65] = 1;
+  std::srand(time(NULL));
+
+  scree[120][65] = 1;
   int i = 0;
-   float diam = 20;
+  float diam = 20;
   // Run loop
   while(titleIsRunning)
   {
-    xkbhit ();
-    // apparently ismouseclick() is much faster than mouseclick()
-    
-    // can't use activateButton here because it's the only one that needs an argument
-    // start main program
-    if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
-      titleIsRunning = NOPE;
 
-    // show credits
-    activateButton(buttonCredits);
-    
-    // exit the program
-    if (lastkey() == KEY_ESC)
-    {
-      titleIsRunning = NOPE;
-      isRunning = NOPE;
-    }
 
    
 
@@ -213,6 +188,23 @@ void titleScreen(bool& isRunning)
         
       i++;
     }
+
+    xkbhit ();
+    // can't use activateButton here because it's the only one that needs an argument
+    // start main program
+    if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
+      titleIsRunning = NOPE;
+
+    // show credits
+    activateButton(buttonCredits);
+    
+    // exit the program
+    if (lastkey() == KEY_ESC)
+    {
+      titleIsRunning = NOPE;
+      isRunning = NOPE;
+    }
+
   }
   setalpha(BLACK, 255);
 }

@@ -56,7 +56,7 @@ void newFile(Electron& workspace)
   strcat(filePath,  ".file");
   std::ofstream f(filePath);
   strcpy(workspace.currentFile, fileName);
-  loadFile(fileName, workspace);
+  workspace.nrOfComponents = 0;
 }
 
 void printFile(Electron electron)
