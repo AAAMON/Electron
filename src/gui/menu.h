@@ -1,9 +1,11 @@
-#include "../core/project.h"
-#include "../core/components.h"
 #ifndef COMPONENTS_MENU_ELECTRON_H
 #define COMPONENTS_MENU_ELECTRON_H
-
-
+#include <iostream>
+#include <fstream>
+#include <graphics.h>
+#include "../core/components.h"
+#include "button.h"
+#include "boxes.h"
 // merge component name with components
 
 struct Category
@@ -34,11 +36,56 @@ struct Menu
   bool show;
 };
 
+struct MenuBarOption
+{
+  char name[50];
+  int functionId; // for the function that will get called on click
+};
+
+struct MenuBarElement
+{
+  char name[20];
+  int x;
+  int w;
+  bool open;
+  int nrOfOptions;
+  MenuBarOption options[5];
+  int optionsWidth;
+};
+// NEW_FILE SAVE_FILE LOAD_FILE 
+struct MenuBar
+{
+  MenuBarElement menuBarElement[10];
+  int nrOfElements;
+  int open;
+};
+
+
+//////////////////////////////////////////////////////////////////////////////
+/// M A I N   F U N C T I O N S //////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
 void initMenu(Menu& menu);
-void initMenuComponents(Menu& menu);
+void initMenuBar(MenuBar& menuBar); 
 void drawMenu(Menu menu);
-void printMenu(Menu menu);
 void activateScrollMenu(Menu& menu);
+void drawMenuBar(MenuBar menuBar);
+
+/*  //
+
+*/
+
+//////////////////////////////////////////////////////////////////////////////
+/// M I S C //////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
 bool isMouseOnBox(int x1, int y1, int x2, int y2);
+
+//////////////////////////////////////////////////////////////////////////////
+/// D E B U G ////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+void printMenu(Menu menu);
+
 
 #endif

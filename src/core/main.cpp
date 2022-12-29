@@ -22,42 +22,29 @@ int main()
 
   // even if it wouldn't execute the main loop, with this we can skip waiting
   // for the initializations
-  // if (!isRunning)
-  //   return EXIT_SUCCESS;
+  if (!isRunning)
+    return EXIT_SUCCESS;
 
   //////////////////////////////////////////////////////////////////////////////
   /// M A I N   S C R E E N ////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  cleardevice(); // if stuff takes too long just put some loading screen here...
-  
-  // INITIALIZATIONS...
-  Menu menu;
-  initMenu(menu);
+  cleardevice(); // if stuff takes too long just put a loading screen here...
 
-  Electron electron;
-  loadFile((char*)"test", electron);
-  printFile(electron);
-
+  // INITIALIZATION
+  Electron workspace;
+  initElectron(workspace);
   // MAIN LOOP!
   while(isRunning == YEAH)
   {
+    // Deals with all the input/updating
+    
     cleardevice();
-    //logic();= YEA
-    //draw();
+    // Draws everyting on SDL_Surface
+    draw(workspace);
+    logic(workspace, isRunning);
     
-    // put this in logic();
-    kbhit();
-    if (lastkey() == KEY_ESC)
-      isRunning = NOPE;
-    activateScrollMenu(menu);
-    
-    // put this in draw();
-    draw(electron);
-    drawMenu(menu);
-    message("=== Esc button to exit ===");
-    
-
+    // Updates screen
     // please please please don't modify this it didn't work before but one day
     // it miraculously started working and idk how or why so just leave it be
     refresh();

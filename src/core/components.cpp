@@ -28,7 +28,7 @@ void initComponent(Component &component, const char* type)
     std::ifstream compFile(filePath);
 
     // read the component description
-    compFile.getline(component.description, 300);
+    compFile.getline(component.description, 1000);
 
     // read the drawing instructions
     compFile >> component.nrOfInstr;
@@ -94,8 +94,8 @@ void drawComponent(Component component)
                 );
                 coord += 6;
                 break;
-            default:
-                std::cerr << "Eroare fa\n";
+            default:;
+               // std::cerr << component.name << " Eroare fa1\n";
         }
     }
 }
@@ -129,6 +129,7 @@ int getNrOfPointsUsed(char instructionType)
     return -1;
 }
 
+// Moves component to specified location
 void moveComponent(Component& component, int x, int y)
 {
     component.x = x;

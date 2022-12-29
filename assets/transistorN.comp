@@ -1,0 +1,18 @@
+An NPN transistor comprises two semiconductor junctions that share a thin p-doped region, and a PNP transistor comprises two semiconductor junctions that share a thin n-doped region. N-type means doped with impurities (such as phosphorus or arsenic) that provide mobile electrons, while p-type means doped with impurities (such as boron) that provide holes that readily accept electrons. 
+
+10
+L -3 0 1 0
+L 1 1 1 -1
+L 1 0 2.15 1.15
+L 1 0 2.15 -1.15
+L 2.15 1.15 2.15 3
+L 2.15 -1.15 2.15 -3
+C 1 0 1.5
+L 2.15 -1.15 1.75 -0.25
+L 2.15 -1.15 1.25 -0.75
+L 1.25 -0.75 1.75 -0.25
+
+3
+-3 0
+2.15 -3
+2.15 3

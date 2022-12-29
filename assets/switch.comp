@@ -1,0 +1,12 @@
+In electrical engineering, a switch is an electrical component that can disconnect or connect the conducting path in an electrical circuit, interrupting the electric current or diverting it from one conductor to another.
+
+5
+L -4 0 -1 0
+L -1 0 0 2
+L 1 0 4 0
+C -1 0 0.25
+C 1 0 0.25
+
+2
+4 0
+-4 0
