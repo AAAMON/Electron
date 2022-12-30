@@ -93,16 +93,6 @@ void deleteFile(Electron& workspace)
   strcat(filePath,  ".file");
   remove(filePath);
 }
-void getInput(Electron workspace, char* input);
-void deleteFile(Electron& workspace)
-{
-  char filePath[100]={"files/"};
-  char fileName[100];
-  getInput(workspace, fileName);
-  strcat(filePath, fileName);
-  strcat(filePath,  ".file");
-  remove(filePath);
-}
 
 void printFile(Electron electron)
 {

@@ -10,14 +10,9 @@
 void loadFile(Electron& workspace, bool init);
 void saveFile(Electron& workspace, char* fileName);
 void newFile(Electron& workspace);
-<<<<<<< HEAD
 void deleteFile(Electron& workspace);
 void getInput(char* input);
 
-=======
-void getInput(Electron workspace, char* input);
-void deleteFile(Electron& workspace);
->>>>>>> main
 //////////////////////////////////////////////////////////////////////////////
 /// D E B U G ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
