@@ -650,6 +650,10 @@ void activateMenuBarOption(Electron& workspace, int i)
           std::cout << "saving file...\n";
           saveFile(workspace, workspace.currentFile);
           break;
+        case 3: // DELETE FILE
+          std::cout << "deleting file...\n";
+          deleteFile(workspace);
+          break;
         default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
       }

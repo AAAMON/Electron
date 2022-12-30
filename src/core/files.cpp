@@ -83,6 +83,16 @@ void newFile(Electron& workspace)
   workspace.nrOfComponents = 0;
 }
 
+void deleteFile(Electron& workspace)
+{
+  char filePath[100]={"files/"};
+  char fileName[100];
+  getInput(fileName);
+  strcat(filePath, fileName);
+  strcat(filePath,  ".file");
+  remove(filePath);
+}
+
 void printFile(Electron electron)
 {
   std::cout << electron.nrOfComponents;
