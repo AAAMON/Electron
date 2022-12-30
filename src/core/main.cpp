@@ -42,6 +42,7 @@ int main()
     cleardevice();
     // Draws everyting on SDL_Surface
     draw(workspace);
+    strcpy(workspace.currentMessage, "");
     logic(workspace, isRunning);
     
     // Updates screen

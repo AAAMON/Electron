@@ -40,11 +40,6 @@ void titleScreen(bool& isRunning)
   createButton(buttonStart, WIDTH/2, HEIGHT/2, "Start", 9, &bVoid);
   createButton(buttonCredits, WIDTH/2, HEIGHT-300, "Credits", 7, &bCredits);
 
-  // Drawing
-  // since nothing needs to get redrawn, it's safe to draw everything only once
-  // the image path must be relative to compile location (aka folder "Electron")
-  //readimagefile((char*)"assets/title.bmp", 0, 0, WIDTH, HEIGHT);
-
   refresh();
 
 
@@ -87,35 +82,15 @@ void titleScreen(bool& isRunning)
     // int color;
 
 
-    std::srand(time(NULL));
-    // set the seeds
-    // for (int i = 0; i < 50; i++)
-    // {
-    //     scree[std::rand() % 480][std::rand() % 270] = 1;
-    // }
-    scree[120][65] = 1;
+  std::srand(time(NULL));
+
+  scree[120][65] = 1;
   int i = 0;
-   float diam = 20;
+  float diam = 20;
   // Run loop
   while(titleIsRunning)
   {
-    xkbhit ();
-    // apparently ismouseclick() is much faster than mouseclick()
-    
-    // can't use activateButton here because it's the only one that needs an argument
-    // start main program
-    if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
-      titleIsRunning = NOPE;
 
-    // show credits
-    activateButton(buttonCredits);
-    
-    // exit the program
-    if (lastkey() == KEY_ESC)
-    {
-      titleIsRunning = NOPE;
-      isRunning = NOPE;
-    }
 
    
 
@@ -213,6 +188,23 @@ void titleScreen(bool& isRunning)
         
       i++;
     }
+
+    xkbhit ();
+    // can't use activateButton here because it's the only one that needs an argument
+    // start main program
+    if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
+      titleIsRunning = NOPE;
+
+    // show credits
+    activateButton(buttonCredits);
+    
+    // exit the program
+    if (lastkey() == KEY_ESC)
+    {
+      titleIsRunning = NOPE;
+      isRunning = NOPE;
+    }
+
   }
   setalpha(BLACK, 255);
 }
@@ -229,7 +221,7 @@ void initElectron(Electron& workspace)
   // COMPONENTS
   workspace.nrOfComponents = 0;
   strcpy(workspace.currentFile, "test");
-  loadFile(workspace.currentFile, workspace);
+  loadFile(workspace, 1);
   // MENU
   initMenu(workspace.menu);
   initMenuBar(workspace.menuBar);
@@ -345,6 +337,18 @@ void moveComponents(Electron& workspace)
   }
 }
 
+void activateComponents(Electron& workspace)
+{
+  for (int i = 0; i < workspace.nrOfComponents; i++)
+  {
+    if (isMouseOnComponent(workspace, workspace.components[i].x-100, workspace.components[i].y-100, workspace.components[i].x+100, workspace.components[i].y+100))
+    {
+      strcpy(workspace.currentMessage, workspace.components[i].name);
+    }
+  }
+  moveComponents(workspace);
+}
+
 void drawWorkspaceComponent(Electron workspace, Component component);
 // draws the current workspace
 void draw(Electron workspace)
@@ -380,6 +384,8 @@ void activateMenuComponents(Electron& workspace)
     
     // ONE COMPONENT
     // menu.components[(int)menu.columns[c+i].content[1]-'0']
+    if (isMouseOnBox(2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2))
+      strcpy(workspace.currentMessage, workspace.menu.components[(int)workspace.menu.columns[c+i].content[1]-'0'].name);
     if (isMouseOnBox(2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2) && ismouseclick(WM_LBUTTONDOWN))
     {
       // daca nu e asta aici o sa dea eroare drawComponent
@@ -407,6 +413,8 @@ void activateMenuComponents(Electron& workspace)
     // TWO COMPONENTS
     if (workspace.menu.columns[c+i].content[2])
     {
+      if (isMouseOnBox(2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2))
+        strcpy(workspace.currentMessage, workspace.menu.components[(int)workspace.menu.columns[c+i].content[2]-'0'].name);
       if (isMouseOnBox(2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2) && ismouseclick(WM_LBUTTONDOWN))
       {
         // daca nu e asta aici o sa dea eroare drawComponent
@@ -433,7 +441,39 @@ void activateMenuComponents(Electron& workspace)
     }
   }
 }
-
+// Updates menu
+void activateScrollMenu(Electron& workspace)
+{
+  //rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
+  if (workspace.menu.show && ismouseclick(WM_LBUTTONDOWN)&& isMouseOnBox(workspace.menu.width - workspace.menu.buttonWidth, 36, workspace.menu.width, 36 + workspace.menu.height/2-20) && workspace.menu.scroll > 0)
+  {
+    workspace.menu.scroll--;
+    delay(100);
+  }
+  if (workspace.menu.show && isMouseOnBox(workspace.menu.width - workspace.menu.buttonWidth, 36, workspace.menu.width, 36 + workspace.menu.height/2-20))
+  {
+    strcpy(workspace.currentMessage, "scroll up");
+  }
+  if (workspace.menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(workspace.menu.width - workspace.menu.buttonWidth, 36 + workspace.menu.height/2+20, workspace.menu.width, 36 + workspace.menu.height) && workspace.menu.scroll < workspace.menu.nrOfColumns-12)
+  {
+    workspace.menu.scroll++;
+    delay(100);
+  }
+  if (workspace.menu.show && isMouseOnBox(workspace.menu.width - workspace.menu.buttonWidth, 36 + workspace.menu.height/2+20, workspace.menu.width, 36 + workspace.menu.height))
+  {
+    strcpy(workspace.currentMessage, "scroll down");
+  }
+  if (workspace.menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(workspace.menu.width - workspace.menu.buttonWidth, 36 + workspace.menu.height/2-20, workspace.menu.width, 36 + workspace.menu.height/2+20))
+  {
+    workspace.menu.show = false;
+    delay(100);
+  }
+  if (!workspace.menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(0, 36, workspace.menu.buttonWidth, 36 + workspace.menu.height))
+  {
+    workspace.menu.show = true;
+    delay(100);
+  }
+}
 // updates the current workspace
 void logic(Electron& workspace, bool& isRunning)
 {
@@ -442,35 +482,40 @@ void logic(Electron& workspace, bool& isRunning)
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
   activateMenuBarElement(workspace, workspace.menuBar);
-  activateMenuBar(workspace.menuBar);
-  activateScrollMenu(workspace.menu);
+  activateMenuBar(workspace);
+  activateScrollMenu(workspace);
   activateMenuComponents(workspace);
   activateZooming(workspace);
   activatePanning(workspace);
-  moveComponents(workspace);
+  activateComponents(workspace);
 
 
   // EASTER EGG
-  if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
-  {
-    system("supertuxkart");
-    //system("xdotool key alt+Tab");
-  }
-  if (SDL_GetWindowFlags(bgi_window) & SDL_WINDOW_HIDDEN)
-  {
-    system("echo sdfsdf && xdotool keydown 0xffea + key 0xff09");
-    delay(2000);
-    system("xdotool keyup 0xffea");
-  }
+  // if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
+  // {
+  //   system("supertuxkart");
+  //   //system("xdotool key alt+Tab");
+  // }
+  // if (SDL_GetWindowFlags(bgi_window) & SDL_WINDOW_HIDDEN)
+  // {
+  //   system("echo sdfsdf && xdotool keydown 0xffea + key 0xff09");
+  //   delay(2000);
+  //   system("xdotool keyup 0xffea");
+  // }
+
 }
 
 void drawStatusBar(Electron workspace)
 {
+  char text[1000];
   setfillstyle(SOLID_FILL, BLUE);
   bar(0, HEIGHT-24, WIDTH, HEIGHT);
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (LEFT_TEXT, TOP_TEXT);
-  outtextxy(5, HEIGHT-15, workspace.currentFile);
+  strcat(text, workspace.currentFile);
+  strcat(text, " > ");
+  strcat(text, workspace.currentMessage);
+  outtextxy(5, HEIGHT-15, text);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -505,28 +550,71 @@ void drawMenuBarOptions(MenuBarElement menuBarElement)
   }
 }
 
-void activateMenuBar(MenuBar& menuBar)
+
+void activateMenuBar(Electron& workspace)
 {
-  for (int i = 0; i < menuBar.nrOfElements; i++)
+  for (int i = 0; i < workspace.menuBar.nrOfElements; i++)
   {  
-    while (menuBar.menuBarElement[i].open && ismouseclick(WM_LBUTTONDOWN)) // if we click somewhere else
+    while (workspace.menuBar.menuBarElement[i].open && ismouseclick(WM_LBUTTONDOWN)) // if we click somewhere else
     {
       while (ismouseclick(WM_LBUTTONDOWN));
-      menuBar.menuBarElement[i].open = NOPE;
-      menuBar.open = -1;
+      workspace.menuBar.menuBarElement[i].open = NOPE;
+      workspace.menuBar.open = -1;
     }
-    if (menuBar.open == -1 && isMouseOnBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w, 36)
+    if (workspace.menuBar.open == -1 && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 0, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w, 36)
         && ismouseclick(WM_LBUTTONDOWN))
     {
       while (ismouseclick(WM_LBUTTONDOWN));
-      menuBar.menuBarElement[i].open = YEAH;
-      menuBar.open = i;
+      workspace.menuBar.menuBarElement[i].open = YEAH;
+      workspace.menuBar.open = i;
     }
-    if (menuBar.open != -1 && !menuBar.menuBarElement[i].open && isMouseOnBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w, 36))
+    if (workspace.menuBar.open != -1 && !workspace.menuBar.menuBarElement[i].open && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 0, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w, 36))
     {
-      menuBar.menuBarElement[menuBar.open].open = NOPE;
-      menuBar.menuBarElement[i].open = YEAH;
-      menuBar.open = i;
+      workspace.menuBar.menuBarElement[workspace.menuBar.open].open = NOPE;
+      workspace.menuBar.menuBarElement[i].open = YEAH;
+      workspace.menuBar.open = i;
+    }
+    if (ismouseclick(WM_MBUTTONDOWN) && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 0, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w, 36)) //easter egg
+    {
+      int maxx = WIDTH;
+      int minx = 0;
+      // calculate the max x position
+      for (int z = i; z < workspace.menuBar.nrOfElements; z++)
+        maxx -= workspace.menuBar.menuBarElement[z].w;
+      for (int z = 0; z < i; z++)
+        minx += workspace.menuBar.menuBarElement[z].w;
+      while (ismouseclick(WM_MBUTTONDOWN))
+      {
+        int m = mousex();
+        if (m <= maxx && m >= minx) 
+          workspace.menuBar.menuBarElement[i].x = m;
+        else if (m > maxx)
+          m = maxx;
+        else if (m < minx)
+          m = minx;
+        // to the right
+        
+        for (int j = i; j < workspace.menuBar.nrOfElements-1; j++)
+        {
+          while (workspace.menuBar.menuBarElement[j].x + workspace.menuBar.menuBarElement[j].w >= workspace.menuBar.menuBarElement[j+1].x)
+          {
+            workspace.menuBar.menuBarElement[j+1].x++;
+          }
+        }
+        for (int j = 1; j <= i; j++)
+        {
+          while (workspace.menuBar.menuBarElement[j].x <= workspace.menuBar.menuBarElement[j-1].x + workspace.menuBar.menuBarElement[j-1].w)
+          {
+            workspace.menuBar.menuBarElement[j-1].x--;
+          }
+        }
+        
+        
+          
+        cleardevice();
+        draw(workspace);
+        refresh();
+      }
     }
   }
 }
@@ -556,15 +644,23 @@ void activateMenuBarOption(Electron& workspace, int i)
           newFile(workspace);
           break;
         case 1: // LOAD FILE
+          loadFile(workspace, 0);
           break;
         case 2: // SAVE FILE
           std::cout << "saving file...\n";
           saveFile(workspace, workspace.currentFile);
           break;
+<<<<<<< HEAD
+        case 3: // DELETE FILE
+          std::cout << "deleting file...\n";
+          deleteFile(workspace);
+          break;
+=======
         case 3: //DELETE FILE
         std::cout<<"deleting file...\n";
         deleteFile(workspace);
         break;
+>>>>>>> main
         default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
       }

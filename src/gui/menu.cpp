@@ -145,31 +145,7 @@ void drawMenu(Menu menu)
     drawMenuClosed(menu);
 }
 
-// Updates menu
-void activateScrollMenu(Menu& menu)
-{
-  //rectangle(menu.width - menu.buttonWidth, 0, menu.width, HEIGHT);
-  if (menu.show && ismouseclick(WM_LBUTTONDOWN)&& isMouseOnBox(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height/2-20) && menu.scroll > 0)
-  {
-    menu.scroll--;
-    delay(100);
-  }
-  if (menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, 36 + menu.height/2+20, menu.width, 36 + menu.height) && menu.scroll < menu.nrOfColumns-12)
-  {
-    menu.scroll++;
-    delay(100);
-  }
-  if (menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.width, 36 + menu.height/2+20))
-  {
-    menu.show = false;
-    delay(100);
-  }
-  if (!menu.show && ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(0, 36, menu.buttonWidth, 36 + menu.height))
-  {
-    menu.show = true;
-    delay(100);
-  }
-}
+
 
 void drawMenuBar(MenuBar menuBar)
 {

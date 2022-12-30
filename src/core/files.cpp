@@ -16,24 +16,48 @@ int charToInt(char* cstring)
   return nr;
 }
 
-void loadFile(char* fileName, Electron& electron)
+void loadFile(Electron& workspace, bool init)
 {
   char filePath[100] = { "files/" };
+  char fileName[100];
+  if (init)
+  {
+    strcpy(fileName, "test");
+  }
+  else
+  {
+    getInput(fileName);
+  }
   strcat(filePath, fileName);
   strcat(filePath,".file");
   std::ifstream file (filePath);
 
-  // LOADING COMPONENTS
-  char text1[30];
-  char text2[30];
-  file >> electron.nrOfComponents;
-  for (int i = 0; i < electron.nrOfComponents; i++)
+  if (file)
   {
-    file >> text1;
-    initComponent(electron.components[i], text1);
-    file >> text1;
-    file >> text2;
-    moveComponent(electron.components[i], charToInt(text1), charToInt(text2));
+    // LOADING COMPONENTS
+    char text1[30];
+    char text2[30];
+    file >> workspace.nrOfComponents;
+    for (int i = 0; i < workspace.nrOfComponents; i++)
+    {
+      file >> text1;
+      initComponent(workspace.components[i], text1);
+      file >> text1;
+      file >> text2;
+      moveComponent(workspace.components[i], charToInt(text1), charToInt(text2));
+    }
+  }
+  else
+  {
+    std::cout << "file does not exist\n";
+    bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1);
+    settextstyle (SIMPLEX_FONT, HORIZ_DIR, 4);
+    settextjustify (CENTER_TEXT, TOP_TEXT);
+    setcolor(COLOR(255,255,255));
+    outtextxy(WIDTH/2, HEIGHT/2 - 180, (char*)"FILE DOES NOT EXIST ");
+    refresh();
+    delay(1000);
+    loadFile(workspace, 0);
   }
 }
 
@@ -52,12 +76,22 @@ void newFile(Electron& workspace)
 {
   char filePath[100] = { "files/" };
   char fileName[100];
-  getInput(workspace, fileName);
+  getInput(fileName);
   strcat(filePath, fileName);
   strcat(filePath,  ".file");
   std::ofstream f(filePath);
   strcpy(workspace.currentFile, fileName);
-  loadFile(fileName, workspace);
+  workspace.nrOfComponents = 0;
+}
+
+void deleteFile(Electron& workspace)
+{
+  char filePath[100]={"files/"};
+  char fileName[100];
+  getInput(fileName);
+  strcat(filePath, fileName);
+  strcat(filePath,  ".file");
+  remove(filePath);
 }
 void getInput(Electron workspace, char* input);
 void deleteFile(Electron& workspace)
@@ -77,7 +111,7 @@ void printFile(Electron electron)
     std::cout << electron.components[i].name << ' ' << electron.components[i].x << ' ' << electron.components[i].y << '\n';
 }
 
-void getInput(Electron workspace, char* input)
+void getInput(char* input)
 {
   bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1);
   settextstyle (SIMPLEX_FONT, HORIZ_DIR, 4);
