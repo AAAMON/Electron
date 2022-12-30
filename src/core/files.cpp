@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cstdio>
 #include "components.h"
 #include "project.h"
 #include "files.h"
@@ -57,6 +58,16 @@ void newFile(Electron& workspace)
   std::ofstream f(filePath);
   strcpy(workspace.currentFile, fileName);
   loadFile(fileName, workspace);
+}
+void getInput(Electron workspace, char* input);
+void deleteFile(Electron& workspace)
+{
+  char filePath[100]={"files/"};
+  char fileName[100];
+  getInput(workspace, fileName);
+  strcat(filePath, fileName);
+  strcat(filePath,  ".file");
+  remove(filePath);
 }
 
 void printFile(Electron electron)
