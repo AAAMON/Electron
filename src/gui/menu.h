@@ -68,7 +68,7 @@ struct MenuBar
 void initMenu(Menu& menu);
 void initMenuBar(MenuBar& menuBar); 
 void drawMenu(Menu menu);
-void activateScrollMenu(Menu& menu);
+
 void drawMenuBar(MenuBar menuBar);
 
 /*  //

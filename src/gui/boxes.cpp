@@ -4,8 +4,7 @@
 #include "boxes.h"
 #include "../core/project.h"
 
-// LT d2Dd1h
-// RB
+
 
 int distance(int x1, int y1, int x2, int y2)
 {
