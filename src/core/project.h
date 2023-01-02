@@ -11,6 +11,9 @@
 const int HEIGHT = getmaxheight();
 const int WIDTH = getmaxwidth();
 
+enum {
+  NEW_FILE, LOAD_FILE, SAVE_FILE, DELETE_FILE
+};
 
 struct menuBarButton
 {

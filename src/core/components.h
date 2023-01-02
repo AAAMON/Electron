@@ -1,7 +1,7 @@
 #ifndef COMPONENTS_ELECTRON_H
 #define COMPONENTS_ELECTRON_H
 
-// an electronic component
+// An electronic component
 struct Component 
 {
 	// basic info
@@ -10,17 +10,20 @@ struct Component
 
 	// logic info
 	int nrOfBonds;
+	// 0 is x coordonate of bond point, 1 is y
 	int bonds[2][5];
 
 	// drawing info
 	int x; 
 	int y;
-	int size; // default, can be scaled by user in-program
+	// TODO: make it scalable
+	int size;
 	int orientation;
+
 	// drawing instructions that are read from file
-	int nrOfInstr;
-	int nrOfDrawCoordinates;
-	char drawInstrType[10];
+	int      nrOfInstructions;
+	int   nrOfDrawCoordinates;
+	char 	drawInstrType[10];
 	float drawCoordinates[50];
 };
 
@@ -29,14 +32,8 @@ struct Component
 //////////////////////////////////////////////////////////////////////////////
 
 void initComponent(Component &component, const char* type);
-void moveComponent(Component& component, int x, int y);
 void drawComponent(Component component);
-
-//////////////////////////////////////////////////////////////////////////////
-/// A U X   F U N C T I O N S ////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
-int getNrOfPointsUsed(char instructionType);
+void moveComponent(Component& component, int x, int y);
 
 //////////////////////////////////////////////////////////////////////////////
 /// D E B U G ////////////////////////////////////////////////////////////////

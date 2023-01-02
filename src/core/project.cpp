@@ -13,6 +13,7 @@
 
 bool titleIsRunning = YEAH;
 
+
 //////////////////////////////////////////////////////////////////////////////
 /// M A I N   F U N C T I O N S //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -29,8 +30,14 @@ void initSdlbgi()
 }
 
 
-int scree[240][135];
 
+  int scree[240][135];
+// aux
+void initAnimationPalette();
+void activateTitleScreen(Button buttonStart, Button buttonCredits, bool& isRunning);
+// TODO: make struct for animation, shit has too many variables,,,
+void continueAnimation(int& i, int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], 
+                       int& iterations, Button buttonStart, Button buttonCredits);
 // Starts title screen
 void titleScreen(bool& isRunning)
 {
@@ -38,182 +45,50 @@ void titleScreen(bool& isRunning)
   Button buttonStart;
   Button buttonCredits;
   createButton(buttonStart, WIDTH/2, HEIGHT/2, "Start", 9, &bVoid);
-  createButton(buttonCredits, WIDTH/2, HEIGHT-300, "Credits", 7, &bCredits);
-
-  refresh();
-
+  createButton(buttonCredits, WIDTH/2, HEIGHT-200, "Credits", 7, &bCredits);
 
   // ANIMATION
-     cleardevice();
-    // number of particles
-    int nrOfParticles = 32000;
-    // screen
+  cleardevice();
+  // number of particles
+  int nrOfParticles = 32000;
+  // screen
 
-    // particle values
-    int px;
-    int py;
-    // offsets
-    int dx;
-    int dy;
-
-  // set up a palette
-  int x;
-  // initialise it to black
-  for (x = 0; x < getrgbpalettesize (); x++)
-    setrgbpalette (x, 0, 0, 0);
-  
-  // blue fading to red
-  for (x = 0; x < 128; x++)
-    setrgbpalette (x, 2*x, 0, 255-2*x);
-
-  // red fading to blue
-  for (x = 128; x < 256; x++)
-    setrgbpalette (x, 255-(2*(x-128)), 0, 2*(x-128));
-  
-  // yellow fading to cyan
-  for (x = 256; x < 512; x++)
-    setrgbpalette (x, (x-256), 0, 255-(x-256));
-  
-  // red fading to black
-  for (x = 512; x < 1024; x += 2)
-    setrgbpalette (x, 1024 - 2*x, 0, 0);
-
-  int iterations = 0;
-    // int color;
-
-
-  std::srand(time(NULL));
-
-  scree[120][65] = 1;
-  int i = 0;
+  // particle values
+  int px;
+  int py;
+  // offsets
+  int dx;
+  int dy;
   float diam = 20;
+  int iterations = 0;
+
+  initAnimationPalette();
+
+  // setting seed so every time it's random
+  std::srand(time(NULL));
+  // planting a single seed in the middle of the screen
+  scree[120][65] = 1;
+
+  int i = 0;
+
   // Run loop
   while(titleIsRunning)
   {
-
-
-   
-
+    // continue the animation if it isn't finished
     if (i < nrOfParticles)
     {
-      // set the particle's initial position
-        px = 120 + std::rand() % ((int)diam + 50) - diam/2- 25;
-        py = 65 + std::rand() % (int)diam - diam/2;
-
-      // avoid center
-
-      // while (px  > 240-diam/4 && px < 240+diam/4 && py > 135-diam/4 && py < 135+diam/4)
-      // {
-
-      // }
-      while(scree[px][py] == 1 || (px  > 120-diam/4 && px < 120+diam/4 && py > 65-diam/4 && py < 65+diam/4))
-      {
-        px = 120 + std::rand() % ((int)diam + 50)- diam/2 - 25;
-        py = 65 + std::rand() % (int)diam - diam/2;
-      }
-      while (1)
-      {
-          // random direction
-          dx = std::rand() % 3 - 1;
-          dy = std::rand() % 3 - 1;
-
-          while (dx + px < 0 || dx + px >= 240 || dy + py < 0 || dy + py >= 135 || scree[px][py] == 1)
-          {
-              // put it in a random location
-              px = std::rand() % 240;
-              py = std::rand() % 135;
-          }
-          if (dx + px < 0 || dx + px >= 240 || dy + py < 0 || dy + py >= 135|| scree[px][py] == 1);
-          else if (scree[px + dx][py + dy] != 0)
-          {
-              // bumped into something
-              scree[px][py] = 1;
-              iterations++;
-              break;
-          } else
-          {
-              py += dy;
-              px += dx;
-          }
-      }
-      // DRAWING
-      if (diam < 140)
-       diam+= 0.02;
-      int color = iterations/30;
-      if (color > 1024)
-        color = 1024;
-            setcolor(RED);
-      //circle(WIDTH/2, HEIGHT/2, diam*4);
-      setrgbcolor(color);
-      //setcolor(WHITE);
-      _putpixel((px-dx)*8,(py-dy)*8);
-      _putpixel((px-dx)*8+1,(py-dy)*8);
-      _putpixel((px-dx)*8,(py-dy)*8+1);
-      _putpixel((px-dx)*8+1,(py-dy)*8+1);
-      //outer
-      _putpixel((px-dx)*8+2,(py-dy)*8);
-      _putpixel((px-dx)*8+2,(py-dy)*8+1);
-      _putpixel((px-dx)*8+2,(py-dy)*8+2);
-      _putpixel((px-dx)*8+1,(py-dy)*8+2);
-      _putpixel((px-dx)*8,(py-dy)*8+2);
-      // outerouter
-      _putpixel((px-dx)*8+2,(py-dy)*8);
-      _putpixel((px-dx)*8+2,(py-dy)*8+1);
-      _putpixel((px-dx)*8+2,(py-dy)*8+2);
-      _putpixel((px-dx)*8+1,(py-dy)*8+2);
-      _putpixel((px-dx)*8,(py-dy)*8+2);
-
-      if (i%8 == 0)
-      {
-        message("=== Esc button to exit ===");
-        drawButton(buttonStart);
-        drawButton(buttonCredits);
-
-
-        setcolor(BLACK);
-        setalpha (BLACK, 1); // has weird behaviour,,,
-        setfillstyle (SOLID_FILL, getcolor ());
-        bar(
-            WIDTH/2 - WIDTH/6, HEIGHT/4 - 5*9, 
-            WIDTH/2 + WIDTH/6, HEIGHT/4 + 8*9
-          );
-        // label
-        settextstyle  (GOTHIC_FONT, HORIZ_DIR, 9);
-        settextjustify(CENTER_TEXT, CENTER_TEXT);
-        setcolor      (WHITE);
-        outtextxy(WIDTH/2, HEIGHT/4, (char*)"ELECTRON");
-        outtextxy(WIDTH/2+1, HEIGHT/4, (char*)"ELECTRON");
-        refresh();
-      }
-        
-      i++;
+      continueAnimation(i, px, py, dx, dy, diam, scree, iterations, buttonStart, buttonCredits);
     }
-
-    xkbhit ();
-    // can't use activateButton here because it's the only one that needs an argument
-    // start main program
-    if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
-      titleIsRunning = NOPE;
-
-    // show credits
-    activateButton(buttonCredits);
-    
-    // exit the program
-    if (lastkey() == KEY_ESC)
-    {
-      titleIsRunning = NOPE;
-      isRunning = NOPE;
-    }
-
+    activateTitleScreen(buttonStart, buttonCredits, isRunning);
   }
+  // type and pray strategy employed
   setalpha(BLACK, 255);
 }
+
 
 //////////////////////////////////////////////////////////////////////////////
 /// W O R K S P A C E   F U N C T I O N S ////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-
-
 
 // initialises the current workspace
 void initElectron(Electron& workspace)
@@ -518,10 +393,203 @@ void drawStatusBar(Electron workspace)
   outtextxy(5, HEIGHT-15, text);
 }
 
+
 //////////////////////////////////////////////////////////////////////////////
 /// A U X   F U N C T I O N S ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+
+/// titleScreen() ////////////////////////////////////////////////////////////
+
+// aux aux,,,
+void placePoint(int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], int& iterations);
+void drawAnimation(int px, int py, int dx, int dy, float& diam, int iterations);
+void drawTitleButtons(Button buttonStart, Button buttonCredits);
+// self explanatory
+void continueAnimation(int& i, int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], int& iterations, Button buttonStart, Button buttonCredits)
+{
+  placePoint(px, py, dx, dy, diam, scree, iterations);
+  drawAnimation(px, py, dx, dy, diam, iterations);
+
+  // once every 8 drawings so the pc doesn't explode
+  if (i%8 == 0)
+  {
+    drawTitleButtons(buttonStart, buttonCredits);
+    refresh();
+  }
+  i++;
+}
+
+// does what it says it does
+void activateTitleScreen(Button buttonStart, Button buttonCredits, bool& isRunning)
+{
+  // so that lastkey() will work
+  xkbhit ();
+
+  // can't use activateButton here because it's the only one that needs an argument
+  // start main program
+  if (ismouseclick(WM_LBUTTONDOWN) && IsMouseOnButton(buttonStart))
+    titleIsRunning = NOPE;
+
+  // show credits
+  activateButton(buttonCredits);
+  
+  // exit the program
+  if (lastkey() == KEY_ESC)
+  {
+    titleIsRunning = NOPE;
+    isRunning = NOPE;
+  }
+}
+
+// for the titleScreen animation
+void initAnimationPalette()
+{
+  // set up a palette
+  int x;
+  // initialise it to black
+  for (x = 0; x < getrgbpalettesize (); x++)
+    setrgbpalette (x, 0, 0, 0);
+  
+  // blue fading to red
+  for (x = 0; x < 128; x++)
+    setrgbpalette (x, 2*x, 0, 255-2*x);
+
+  // red fading to blue
+  for (x = 128; x < 256; x++)
+    setrgbpalette (x, 255-(2*(x-128)), 0, 2*(x-128));
+  
+  // yellow fading to cyan
+  for (x = 256; x < 512; x++)
+    setrgbpalette (x, (x-256), 0, 255-(x-256));
+  
+  // red fading to black
+  for (x = 512; x < 1024; x += 2)
+    setrgbpalette (x, 1024 - 2*x, 0, 0);
+}
+
+// draws the point added by placePoint()
+void drawAnimation(int px, int py, int dx, int dy, float& diam, int iterations)
+{
+  // DRAWING
+  if (diam < 140)
+    diam += 0.02;
+  int color = iterations/30;
+  if (color > 1024)
+    color = 1024;
+  setrgbcolor(color);
+
+  // 1920x1080p FULL HD resolution
+  if (WIDTH == 1920)
+  {
+  _putpixel((px-dx)*8,   (py-dy)*8);
+  _putpixel((px-dx)*8+1, (py-dy)*8);
+  _putpixel((px-dx)*8,   (py-dy)*8+1);
+  _putpixel((px-dx)*8+1, (py-dy)*8+1);
+  //outer
+  _putpixel((px-dx)*8+2, (py-dy)*8);
+  _putpixel((px-dx)*8+2, (py-dy)*8+1);
+  _putpixel((px-dx)*8+2, (py-dy)*8+2);
+  _putpixel((px-dx)*8+1, (py-dy)*8+2);
+  _putpixel((px-dx)*8,   (py-dy)*8+2);
+  // outerouter
+  _putpixel((px-dx)*8+2, (py-dy)*8);
+  _putpixel((px-dx)*8+2, (py-dy)*8+1);
+  _putpixel((px-dx)*8+2, (py-dy)*8+2);
+  _putpixel((px-dx)*8+1, (py-dy)*8+2);
+  _putpixel((px-dx)*8,   (py-dy)*8+2);
+  }
+  // 1366x768 HD resolution??
+  else
+  {
+  _putpixel((px-dx)*6,   (py-dy)*6);
+  _putpixel((px-dx)*6+1, (py-dy)*6);
+  _putpixel((px-dx)*6,   (py-dy)*6+1);
+  _putpixel((px-dx)*6+1, (py-dy)*6+1);
+  //outer
+  _putpixel((px-dx)*6+2, (py-dy)*6);
+  _putpixel((px-dx)*6+2, (py-dy)*6+1);
+  _putpixel((px-dx)*6+2, (py-dy)*6+2);
+  _putpixel((px-dx)*6+1, (py-dy)*6+2);
+  _putpixel((px-dx)*6,   (py-dy)*6+2);
+  }
+}
+
+// doesn't need a comment
+void drawTitleButtons(Button buttonStart, Button buttonCredits)
+{
+  message("=== Esc button to exit ===");
+  drawButton(buttonStart);
+  drawButton(buttonCredits);
+
+
+  setcolor(BLACK);
+  setalpha (BLACK, 1); // has weird behaviour,,,
+  setfillstyle (SOLID_FILL, getcolor ());
+  bar(
+      WIDTH/2 - WIDTH/6, HEIGHT/4 - 5*9, 
+      WIDTH/2 + WIDTH/6, HEIGHT/4 + 8*9
+    );
+  // label
+  settextstyle  (GOTHIC_FONT, HORIZ_DIR, 9);
+  settextjustify(CENTER_TEXT, CENTER_TEXT);
+  setcolor      (WHITE);
+  outtextxy(WIDTH/2, HEIGHT/4, (char*)"ELECTRON");
+  outtextxy(WIDTH/2+1, HEIGHT/4, (char*)"ELECTRON");
+}
+
+// Places a point on screen for the brownian tree animation
+void placePoint(int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], int& iterations)
+{
+  // set the particle's initial position
+  px = 120 + std::rand() % ((int)diam + 50) - diam/2- 25;
+  py = 65  + std::rand() % (int)diam        - diam/2;
+
+  // if we landed on an existing point
+  while(scree[px][py] == 1 
+  // for optimization
+    || (px  > 120-diam/4 && px < 120+diam/4 && py > 65-diam/4 && py < 65+diam/4))
+  {
+    // try another random position
+    px = 120 + std::rand() % ((int)diam + 50)- diam/2 - 25;
+    py = 65 + std::rand() % (int)diam - diam/2;
+  }
+
+  // put it in a valid random location
+  while (1)
+  {
+    // random direction
+    dx = std::rand() % 3 - 1;
+    dy = std::rand() % 3 - 1;
+
+    // check that it doesn't go out of bounds
+    while (dx + px < 0 || dx + px >= 240 || dy + py < 0 || dy + py >= 135 || scree[px][py] == 1)
+    {
+      // try another random location
+      px = std::rand() % 240;
+      py = std::rand() % 135;
+    }
+
+    // for the else
+    if (dx + px < 0 || dx + px >= 240 || dy + py < 0 || dy + py >= 135 || scree[px][py] == 1);
+    else if (scree[px + dx][py + dy] != 0)
+    {
+      // bumped into a point
+      scree[px][py] = 1;
+      iterations++;
+      // exit the loop after point was placed
+      break;
+    } else
+    {
+      // if not, keep walking
+      py += dy;
+      px += dx;
+    }
+  }
+}
+
+
+///
 
 void activateMenuBarElement(Electron& workspace, MenuBar menuBar)
 {
@@ -650,17 +718,10 @@ void activateMenuBarOption(Electron& workspace, int i)
           std::cout << "saving file...\n";
           saveFile(workspace, workspace.currentFile);
           break;
-<<<<<<< HEAD
         case 3: // DELETE FILE
           std::cout << "deleting file...\n";
           deleteFile(workspace);
           break;
-=======
-        case 3: //DELETE FILE
-        std::cout<<"deleting file...\n";
-        deleteFile(workspace);
-        break;
->>>>>>> main
         default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
       }
@@ -717,9 +778,3 @@ bool isMouseOnBox(int x1, int y1, int x2, int y2)
   return NOPE;
 }
 
-
-
-
-/* 
-
-*/

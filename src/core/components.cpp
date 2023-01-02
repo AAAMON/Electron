@@ -11,43 +11,137 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-// initializes a component
-// type must be the same as the file name that holds the component info
+/// I N I T I A L I Z A T I O N //////////////////////////////////////////////
+
+// aux functions
+void readDrawInstructions(Component& component, std::ifstream& compFile);
+void readLogicInstructions(Component& component, std::ifstream& compFile);
+// Initializes a component
+// Type must be the same as the file name that holds the component info
 void initComponent(Component &component, const char* type)
 {
     strcpy(component.name, type);
+    component.x    =  { 0 };
+    component.y    =  { 0 };
+    // TODO: make this readable from file
+    component.size = { 15 };
+
+    // component-specific data is stored in a file
     char filePath[100] = { "assets/" };
     strcat(filePath,   type);
     strcat(filePath,".comp");
-
-    component.x = 400;
-    component.y = 400;
-    component.size = 15;
-
-    // opening the file with the component data
     std::ifstream compFile(filePath);
 
-    // read the component description
     compFile.getline(component.description, 1000);
 
-    // read the drawing instructions
-    compFile >> component.nrOfInstr;
-    component.nrOfDrawCoordinates = 0; // total number of points for drawing
-    int instrPoints               = 0; // number of points that an instruction uses
-    for (int i = 0; i < component.nrOfInstr; i++)
+    readDrawInstructions(component, compFile);
+
+}
+
+/// D R A W I N G ////////////////////////////////////////////////////////////
+
+// Draws component on sdl surface
+void drawComponent(Component component)
+{
+    // TODO use color from theme,,,
+    setcolor(COLOR(153,200,153));
+
+    // Coordonates are stored in an array, and we need a separate iterator
+    // because different instructions use a different ammount of points
+    int coord = { 0 };
+
+    for (int i = 0; i < component.nrOfInstructions; i++)
     {
+        switch (component.drawInstrType[i])
+        {
+            case 'L': 
+                line
+                (
+                    component.x + component.drawCoordinates[coord]   * component.size, 
+                    component.y + component.drawCoordinates[coord+1] * component.size, 
+                    component.x + component.drawCoordinates[coord+2] * component.size, 
+                    component.y + component.drawCoordinates[coord+3] * component.size
+                );
+                coord += 4; // we've used 4 coordinates
+                break;
+            case 'R': 
+                rectangle
+                (
+                    component.x + component.drawCoordinates[coord]   * component.size, 
+                    component.y + component.drawCoordinates[coord+1] * component.size, 
+                    component.x + component.drawCoordinates[coord+2] * component.size, 
+                    component.y + component.drawCoordinates[coord+3] * component.size
+                );
+                coord += 4;
+                break;
+            case 'C':
+                circle
+                (
+                    component.x + component.drawCoordinates[coord]   * component.size, 
+                    component.y + component.drawCoordinates[coord+1] * component.size, 
+                    component.drawCoordinates[coord+2]               * component.size
+                );
+                coord += 3;
+                break;
+            case 'E':
+                ellipse
+                (
+                    component.x + component.drawCoordinates[coord]   * component.size, 
+                    component.y + component.drawCoordinates[coord+1] * component.size, 
+                    component.drawCoordinates[coord+2], 
+                    component.drawCoordinates[coord+3],
+                    component.drawCoordinates[coord+4] * component.size, 
+                    component.drawCoordinates[coord+5] * component.size
+                );
+                coord += 6;
+                break;
+            default:
+                // Devious
+                std::cerr << component.name << " Eroare fa1\n";
+        }
+    }
+}
+
+/// O T H E R ////////////////////////////////////////////////////////////////
+
+// Moves component to specified location
+void moveComponent(Component& component, int x, int y)
+{
+    component.x = x;
+    component.y = y;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/// A U X ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+// aux aux,,,
+int getNrOfPointsUsed(char instructionType);
+// Reads the drawing instructions from component file
+void readDrawInstructions (Component& component, std::ifstream& compFile)
+{
+    compFile >> component.nrOfInstructions;
+    component.nrOfDrawCoordinates = 0; // total number of points for drawing
+    int pointsPerInstruction      = 0; // number of points that an instruction uses
+    for (int i = 0; i < component.nrOfInstructions; i++)
+    {
+        // A single character that describes the drawing function to be used
         compFile >> component.drawInstrType[i];
         // Different types of instructions require a diff ammount of points
-        instrPoints = getNrOfPointsUsed(component.drawInstrType[i]);
-        // Read the necessary coordinates
-        for (int j = 0; j < instrPoints; j++)
+        pointsPerInstruction = getNrOfPointsUsed(component.drawInstrType[i]);
+
+        // The coordinates are stored in an array
+        for (int j = 0; j < pointsPerInstruction; j++)
         {
             compFile >> component.drawCoordinates[component.nrOfDrawCoordinates];
             component.nrOfDrawCoordinates++;
         }
     }
+}
 
-    // reading the logic info (bonding points)
+// Reads the logic info from component file (bonding points)
+void readLogicInstructions(Component& component, std::ifstream& compFile)
+{
     compFile >> component.nrOfBonds;
     for (int i = 0; i < component.nrOfBonds; i++)
     {
@@ -56,56 +150,7 @@ void initComponent(Component &component, const char* type)
     }
 }
 
-
-// Immediately draws component on screen
-void drawComponent(Component component)
-{
-    setcolor(COLOR(153,200,153));
-    int coord = 0; // iterator for drawing coordinates
-    // doing each instruction
-    for (int i = 0; i < component.nrOfInstr; i++)
-    {
-        // Different types of instructions require a diff ammount of points
-        switch (component.drawInstrType[i])
-        {
-            case 'L': 
-                line(
-                    component.x + component.drawCoordinates[coord]   * component.size, component.y + component.drawCoordinates[coord+1] * component.size, 
-                    component.x + component.drawCoordinates[coord+2] * component.size, component.y + component.drawCoordinates[coord+3] * component.size);
-                coord += 4; // we've used 4 coordinates
-                break;
-            case 'R': 
-                rectangle(
-                    component.x + component.drawCoordinates[coord]   * component.size, component.y + component.drawCoordinates[coord+1] * component.size, 
-                    component.x + component.drawCoordinates[coord+2] * component.size, component.y + component.drawCoordinates[coord+3] * component.size);
-                coord += 4;
-                break;
-            case 'C':
-                circle(
-                    component.x + component.drawCoordinates[coord]   * component.size, component.y + component.drawCoordinates[coord+1] * component.size, 
-                    component.drawCoordinates[coord+2] * component.size);
-                coord += 3;
-                break;
-            case 'E':
-                ellipse(
-                    component.x + component.drawCoordinates[coord]   * component.size, component.y + component.drawCoordinates[coord+1] * component.size, 
-                    component.drawCoordinates[coord+2], component.drawCoordinates[coord+3],                                  // angle
-                    component.drawCoordinates[coord+4] * component.size, component.drawCoordinates[coord+5] * component.size // radius
-                );
-                coord += 6;
-                break;
-            default:;
-               // std::cerr << component.name << " Eroare fa1\n";
-        }
-    }
-}
-
-
-//////////////////////////////////////////////////////////////////////////////
-/// M I S C //////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
-// returns number of points that an instruction uses
+// Returns number of points that an instruction uses
 int getNrOfPointsUsed(char instructionType)
 {
     switch (instructionType)
@@ -129,13 +174,6 @@ int getNrOfPointsUsed(char instructionType)
     return -1;
 }
 
-// Moves component to specified location
-void moveComponent(Component& component, int x, int y)
-{
-    component.x = x;
-    component.y = y;
-}
-
 //////////////////////////////////////////////////////////////////////////////
 /// D E B U G ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -145,8 +183,8 @@ void printComponent(Component component)
 {
     std::cout << component.name << '\n';
     std::cout << component.description << '\n';
-    std::cout << component.nrOfInstr << '\n';
-    for (int i = 0; i < component.nrOfInstr; i++)
+    std::cout << component.nrOfInstructions << '\n';
+    for (int i = 0; i < component.nrOfInstructions; i++)
         std::cout << component.drawInstrType[i] << ' ';
     std::cout << '\n';
 
