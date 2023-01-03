@@ -80,6 +80,7 @@ void titleScreen(bool& isRunning)
       continueAnimation(i, px, py, dx, dy, diam, scree, iterations, buttonStart, buttonCredits);
     }
     activateTitleScreen(buttonStart, buttonCredits, isRunning);
+
   }
   // type and pray strategy employed
   setalpha(BLACK, 255);
