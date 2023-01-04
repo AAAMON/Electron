@@ -12,9 +12,11 @@ struct Component
 	int nrOfBonds;
 	// 0 is x coordonate of bond point, 1 is y
 	int bonds[2][5];
+	bool isBondActive[5];
+	bool current;
 
 	// drawing info
-	int x; 
+	int x;
 	int y;
 	// TODO: make it scalable
 	int size;
@@ -25,6 +27,16 @@ struct Component
 	int   nrOfDrawCoordinates;
 	char 	drawInstrType[10];
 	float drawCoordinates[50];
+};
+
+struct Wire
+{
+	int component1;
+	int bond1;
+	int component2;
+	int bond2;
+
+	bool current;
 };
 
 //////////////////////////////////////////////////////////////////////////////

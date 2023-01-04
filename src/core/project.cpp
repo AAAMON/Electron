@@ -96,6 +96,7 @@ void initElectron(Electron& workspace)
 {
   // COMPONENTS
   workspace.nrOfComponents = 0;
+  workspace.nrOfWires = 0;
   strcpy(workspace.currentFile, "test");
   loadFile(workspace, 1);
   // MENU
@@ -213,6 +214,193 @@ void moveComponents(Electron& workspace)
   }
 }
 
+int activeComponent(Electron workspace)
+{
+  int c = -1;
+  for (int i = 0; i < workspace.nrOfComponents; i++)
+  {
+    if (isMouseOnComponent(workspace, workspace.components[i].x-100, workspace.components[i].y-100, workspace.components[i].x+100, workspace.components[i].y+100))
+    {
+      c = i;
+    }
+  }
+  return c;
+}
+
+int activeBond(Electron workspace)
+{
+  int b = -1;
+  for (int i = 0; i < workspace.nrOfComponents; i++)
+  {
+    for (int j = 0; j <  workspace.components[i].nrOfBonds; j++)
+    {
+      if (isMouseOnComponent(workspace, 
+        workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size - 10, 
+        workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size - 10, 
+        workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size + 10, 
+        workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size + 10))
+      {
+        b = j;
+      }
+    }
+  }
+  return b;
+}
+
+void drawWire(int x1, int y1, int x2, int y2, bool direction1, bool direction2);
+
+void wireComponents(Electron& workspace)
+{
+  for (int i = 0; i < workspace.nrOfComponents; i++)
+  {
+    for (int j = 0; j <  workspace.components[i].nrOfBonds; j++)
+    {
+      
+      if (isMouseOnComponent(workspace, 
+        workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size - 10, 
+        workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size - 10, 
+        workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size + 10, 
+        workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size + 10))
+      {
+        setcolor(COLOR(0,255,0));
+        rectangle(
+          workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningX, 
+          workspace.components[i].y*workspace.zoom + workspace.components[i].bonds[1][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningY, 
+          workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom + 10*workspace.zoom + workspace.panningX, 
+          workspace.components[i].y*workspace.zoom + workspace.components[i].bonds[1][j]*workspace.components[i].size*workspace.zoom + 10*workspace.zoom + workspace.panningY);
+        strcpy(workspace.currentMessage, "add wire");
+        if (ismouseclick(WM_LBUTTONDOWN))
+        {
+          workspace.wires[workspace.nrOfWires].component2 = -1;
+          workspace.wires[workspace.nrOfWires].bond2 = -1;
+          while (ismouseclick(WM_LBUTTONDOWN))
+          {        
+            cleardevice();
+            draw(workspace);
+
+            int x1 = workspace.components[i].x + workspace.components[i].bonds[0][j] * workspace.components[i].size;
+            int y1 = workspace.components[i].y + workspace.components[i].bonds[1][j] * workspace.components[i].size;
+            setcolor(COLOR(0,255,0));
+            drawWire(x1, y1, (mousex() - workspace.panningX)/workspace.zoom, (mousey() - workspace.panningX)/workspace.zoom, j, 0);
+            rectangle(
+            workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningX, 
+            workspace.components[i].y*workspace.zoom + workspace.components[i].bonds[1][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningY, 
+            workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom + 10*workspace.zoom + workspace.panningX, 
+            workspace.components[i].y*workspace.zoom + workspace.components[i].bonds[1][j]*workspace.components[i].size*workspace.zoom + 10*workspace.zoom + workspace.panningY); 
+            int c = activeComponent(workspace);
+            int b = activeBond(workspace);
+            if (c != -1 && b != -1 && c != i)
+            {
+              setcolor(COLOR(0,255,0));
+              workspace.wires[workspace.nrOfWires].component2 = c;
+              workspace.wires[workspace.nrOfWires].bond2 = b;
+              rectangle(
+                workspace.components[c].x*workspace.zoom + workspace.components[c].bonds[0][b]*workspace.components[c].size*workspace.zoom - 10*workspace.zoom + workspace.panningX, 
+                workspace.components[c].y*workspace.zoom + workspace.components[c].bonds[1][b]*workspace.components[c].size*workspace.zoom - 10*workspace.zoom + workspace.panningY, 
+                workspace.components[c].x*workspace.zoom + workspace.components[c].bonds[0][b]*workspace.components[c].size*workspace.zoom + 10*workspace.zoom + workspace.panningX, 
+                workspace.components[c].y*workspace.zoom + workspace.components[c].bonds[1][b]*workspace.components[c].size*workspace.zoom + 10*workspace.zoom + workspace.panningY);
+            }
+            refresh();
+          }
+          if (workspace.wires[workspace.nrOfWires].bond2 != -1)
+          {
+            workspace.wires[workspace.nrOfWires].component1 = i;
+            workspace.wires[workspace.nrOfWires].bond1 = j;
+            std::cout << workspace.wires[workspace.nrOfWires].component1 << ' ' << workspace.wires[workspace.nrOfWires].bond1 << '\n';
+            std::cout << workspace.wires[workspace.nrOfWires].component2 << ' ' << workspace.wires[workspace.nrOfWires].bond2 << '\n';
+            workspace.nrOfWires++;
+          }
+        }
+      }
+    }
+  }
+}
+
+void drawWire(int x1, int y1, int x2, int y2, bool direction1, bool direction2)
+{
+  setcolor(COLOR(0,0,255));
+  if (!direction1 && !direction2){
+    if (x1 > x2)
+    {
+      line(x2, y2, x2, y1);
+      line(x2, y1, x1, y1);
+    }
+    else {
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+  else if (direction1 && direction2)
+  {
+    if (x1 < x2)
+    {
+      line(x2, y2, x2, y1);
+      line(x2, y1, x1, y1);
+    }
+    else {
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+  else if (!direction1 && direction2)
+  {
+    if (x1 < x2 && y1 < y2)
+    {
+      line(x1, y1, x1, y2 - 50);
+      line(x1, y2 - 50, x2, y2 - 50);
+      line(x2, y2-50, x2, y2);
+    }
+    else if (x1 < x2 && y1 > y2)
+    {
+      line(x1, y1, x1, y2 + 50);
+      line(x1, y2 + 50, x2, y2 + 50);
+      line(x2, y2 + 50, x2, y2);
+    }
+        else {
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+  else
+  {
+    if (x1 > x2 && y1 < y2)
+    {
+      line(x1, y1, x1, y2 - 50);
+      line(x1, y2 - 50, x2, y2 - 50);
+      line(x2, y2-50, x2, y2);
+    }
+    else if (x1 > x2 && y1 > y2)
+    {
+      line(x1, y1, x1, y2 + 50);
+      line(x1, y2 + 50, x2, y2 + 50);
+      line(x2, y2 + 50, x2, y2);
+    }
+    else{
+          line(x1, y1, x1, y2);
+    line(x1, y2, x2, y2);
+    }
+  }
+}
+
+void drawWires(Electron workspace)
+{
+  for (int i = 0; i < workspace.nrOfWires; i++)
+  {
+    workspace.components[workspace.wires[i].component1].x = workspace.panningX + workspace.components[workspace.wires[i].component1].x * workspace.zoom;
+    workspace.components[workspace.wires[i].component1].y = workspace.panningY + workspace.components[workspace.wires[i].component1].y * workspace.zoom;
+    workspace.components[workspace.wires[i].component1].size = 15*workspace.zoom;
+    workspace.components[workspace.wires[i].component2].x = workspace.panningX + workspace.components[workspace.wires[i].component2].x * workspace.zoom;
+    workspace.components[workspace.wires[i].component2].y = workspace.panningY + workspace.components[workspace.wires[i].component2].y * workspace.zoom;
+    workspace.components[workspace.wires[i].component2].size = 15*workspace.zoom;
+    int x1 = workspace.components[workspace.wires[i].component1].x + workspace.components[workspace.wires[i].component1].bonds[0][workspace.wires[i].bond1] * workspace.components[workspace.wires[i].component1].size;
+    int y1 = workspace.components[workspace.wires[i].component1].y + workspace.components[workspace.wires[i].component1].bonds[1][workspace.wires[i].bond1] * workspace.components[workspace.wires[i].component1].size;
+    int x2 = workspace.components[workspace.wires[i].component2].x + workspace.components[workspace.wires[i].component2].bonds[0][workspace.wires[i].bond2] * workspace.components[workspace.wires[i].component2].size;
+    int y2 = workspace.components[workspace.wires[i].component2].y + workspace.components[workspace.wires[i].component2].bonds[1][workspace.wires[i].bond2] * workspace.components[workspace.wires[i].component2].size;
+    drawWire(x1, y1, x2, y2, workspace.wires[i].bond1, workspace.wires[i].bond2);
+  }
+}
+
+// fix wire overlapping
 void activateComponents(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
@@ -222,6 +410,7 @@ void activateComponents(Electron& workspace)
       strcpy(workspace.currentMessage, workspace.components[i].name);
     }
   }
+  wireComponents(workspace);
   moveComponents(workspace);
 }
 
@@ -233,10 +422,11 @@ void draw(Electron workspace)
   {
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
-  drawMenu(workspace.menu);
+ 
   drawStatusBar(workspace);
   drawMenuBar(workspace.menuBar);
-
+  drawWires(workspace);
+  drawMenu(workspace.menu);
   // TUX PLZ PUT THIS ON A BUTTON THX 
   bigBox(WIDTH-30, 0, 30, 36, 1);
 
@@ -357,13 +547,14 @@ void logic(Electron& workspace, bool& isRunning)
   k_bhit();
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
+  activateComponents(workspace);
   activateMenuBarElement(workspace, workspace.menuBar);
   activateMenuBar(workspace);
   activateScrollMenu(workspace);
   activateMenuComponents(workspace);
   activateZooming(workspace);
   activatePanning(workspace);
-  activateComponents(workspace);
+  
 
 
   // EASTER EGG

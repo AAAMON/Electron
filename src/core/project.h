@@ -29,6 +29,8 @@ struct Electron
 {
   int nrOfComponents;
   Component components[50];
+  int nrOfWires;
+  Wire wires[200];
   float panningX;
   float panningY;
   float zoom;

@@ -137,6 +137,12 @@ void readDrawInstructions (Component& component, std::ifstream& compFile)
             component.nrOfDrawCoordinates++;
         }
     }
+    compFile >> component.nrOfBonds;
+
+    for (int i = 0; i < component.nrOfBonds; i++)
+    {
+        compFile >> component.bonds[0][i] >> component.bonds[1][i];
+    }
 }
 
 // Reads the logic info from component file (bonding points)
