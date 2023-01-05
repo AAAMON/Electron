@@ -4,7 +4,12 @@
 #include "boxes.h"
 #include "../core/project.h"
 
-
+void getColor(Color &color, int r, int g, int b)
+{
+  color.r=r;
+  color.g=g;
+  color.b=b;
+}
 
 int distance(int x1, int y1, int x2, int y2)
 {
@@ -15,21 +20,21 @@ int distance(int x1, int y1, int x2, int y2)
   return dis;
 }
 
-void bigBox(int x, int y, int w, int h, int size)
+void bigBox(int x, int y, int w, int h, int size, Color color)
 {
   // SOLID FILL
-  setfillstyle(SOLID_FILL, COLOR(138,132,155));
+  setfillstyle(SOLID_FILL, COLOR(color.r,color.g,color.b));
   bar(x, y, x + w, y + h);
   int i = 0;
   // LEFT & TOP
   // OUTLINE 1
-  setcolor(COLOR(86, 82, 98));
+  setcolor(COLOR(color.r-52,color.g-50,color.b-57));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
     //rectangle(x+i, y+i, x + w-i, y + h-i);
-    setcolor(COLOR(36, 35, 39));
+    setcolor(COLOR(color.r-102,color.g-97, color.b-116));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
@@ -37,40 +42,40 @@ void bigBox(int x, int y, int w, int h, int size)
 
 
   // 2
-  setcolor(COLOR(143, 137, 163));
+  setcolor(COLOR(color.r+5,color.g+5, color.b+8));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(69, 66, 77));
+    setcolor(COLOR(color.r/2, color.g/2, color.b/2));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
   }
 
   // 3
-  setcolor(COLOR(60, 57, 66));
+  setcolor(COLOR(color.r-78,color.g-75,color.b-89));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(92, 88, 103));
+    setcolor(COLOR(color.r-46, color.g-50, color.b-52));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
   }
 
   // DARK LINE
-  setcolor(COLOR(37, 35, 41));
+  setcolor(COLOR(color.r-101, color.g-97, color.b-114));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(149, 143, 169));
+    setcolor(COLOR(color.r+11, color.g+11, color.b+14));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
-      setcolor(COLOR(37, 35, 41));
+      setcolor(COLOR(color.r-101, color.g-97, color.b-114));
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);  
     line(x+w-i, y+h-i, x+w-i, y+i);
@@ -79,18 +84,18 @@ void bigBox(int x, int y, int w, int h, int size)
   }
 
   // 5
-  setcolor(COLOR(87, 83, 99));
+  setcolor(COLOR(color.r-51, color.g-49, color.b-56));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(37, 35, 41));
+    setcolor(COLOR(color.r-101, color.g-97, color.b-114));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
   }
   // 6
-  setcolor(COLOR(145, 139, 164));
+  setcolor(COLOR(color.r+7, color.g+7, color.b+9));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
@@ -101,9 +106,9 @@ void bigBox(int x, int y, int w, int h, int size)
 
 
 
-  int r = 132;
-  int g = 126;
-  int b = 149;
+  int r = color.r-6;
+  int g = color.g-6;
+  int b = color.b-6;
   int nr;
   int ng;
   int nb;
@@ -140,24 +145,24 @@ void bigBox(int x, int y, int w, int h, int size)
 
 }
 
-void smallBox(int x, int y, int x2, int y2)
+void smallBox(int x, int y, int x2, int y2,Color color)
 {
   // SOLID FILL
-  setfillstyle(SOLID_FILL, COLOR(138,132,155));
+  setfillstyle(SOLID_FILL, COLOR(color.r,color.g,color.b));
   bar(x, y, x2, y2);
 
-  setcolor(COLOR(86, 82, 98));
+  setcolor(COLOR(color.r-52, color.g-50,color.b-57));
   rectangle(x, y, x2, y2);
   
-  setcolor(COLOR(143, 137, 163));
+  setcolor(COLOR(color.r+5, color.g+5, color.b+8));
   rectangle(x, y, x2, y2);
 }
 
-void hollowBox(int x, int y, int x2, int y2)
+void hollowBox(int x, int y, int x2, int y2,Color color)
 {
-  int r = 87;
-  int g = 87;
-  int b = 87;
+  int r = color.r-51;
+  int g = color.g-45;
+  int b = color.b-68;
   int nr;
   int ng;
   int nb;
@@ -176,14 +181,14 @@ void hollowBox(int x, int y, int x2, int y2)
   }
 }
 
-void longButtonBox(int x, int y, int w, int h, bool reverse)
+void longButtonBox(int x, int y, int w, int h, bool reverse, Color color)
 {
 
   setfillstyle(SOLID_FILL, RED);
   bar(x, y, x+w, y+h);
-  int r = 128;
-  int g = 123;
-  int b = 115;
+  int r = color.r-10;
+  int g = color.g-9;
+  int b = color.b-40;
   float nr = r;
   float ng = g;
   float nb = b;
@@ -194,9 +199,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   { 
   for (i = 0; i < 3; i++)
   {    
-    r = 128;
-    g = 123;
-    b = 115;
+    r = color.r-10;
+    g = color.g-9;
+    b = color.b-40;
     nr = r;
     ng = g;
     nb = b;
@@ -219,9 +224,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       ng+=0.15;
       nb+=0.15;
     }
-   r = 128;
-   g = 123;
-   b = 115;
+   r = color.r-10;
+   g = color.g-9;
+   b = color.b-40;
 
     nr = r;
     ng = g;
@@ -251,9 +256,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   {
   //    // OUTLINE 2
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = color.r+44;
+    g = color.g+43;
+    b = color.b+11;
 
     nr = r;
     ng = g;
@@ -278,9 +283,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nb+=0.15;
     }
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = color.r+44;
+    g = color.g+43;
+    b = color.b+11;
 
     nr = r;
     ng = g;
@@ -305,11 +310,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nb-=0.15;
     }
   }
+ 
 // GRADIENT
     int xy;
-    r = 106;
-    g = 101;
-    b = 96;
+    r = color.r-32;
+    g = color.g-31;
+    b = color.b-59;
     for (int x1 = x+4; x1 < x+w-4; x1++)
     {
       for (int y1 = y+4; y1 < y+h-4; y1++)
@@ -328,9 +334,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   
   for (i = 0; i < 3; i++)
   {    
-    r = 128;
-    g = 123;
-    b = 115;
+    r = color.r-10;
+    g = color.g-9;
+    b = color.b-40;
     nr = r;
     ng = g;
     nb = b;
@@ -353,9 +359,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       ng+=0.15;
       nb+=0.15;
     }
-   r = 128;
-   g = 123;
-   b = 115;
+   r = color.r-10;
+   g = color.g-9;
+   b = color.b-40;
 
     nr = r;
     ng = g;
@@ -385,9 +391,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   {
   //    // OUTLINE 2
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = color.r+44;
+    g = color.b+43;
+    b = color.b+11;
 
     nr = r;
     ng = g;
@@ -411,10 +417,11 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       ng+=0.15;
       nb+=0.15;
     }
+   
+    r = color.r+44;
+    g = color.b+43;
+    b = color.b+11;
 
-    r = 182;
-    g = 175;
-    b = 166;
 
     nr = r;
     ng = g;
@@ -439,11 +446,11 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nb-=0.15;
     }
   }
-  
+ 
   int xy;
-  r = 106;
-  g = 101;
-  b = 96;
+  r = color.r-32;
+  g = color.g-31;
+  b = color.b-59;
   for (int x1 = x+4; x1 < x+w-4; x1++)
   {
     for (int y1 = y+4; y1 < y+h-4; y1++)
@@ -457,13 +464,13 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   }
 }
 
-void buttonBox(int x, int y, int w, int h)
+void buttonBox(int x, int y, int w, int h,Color color)
 {
   setfillstyle(SOLID_FILL, RED);
   bar(x, y, x+w, y+h);
-  int r = 128;
-  int g = 123;
-  int b = 115;
+  int r = color.r-10;
+  int g = color.g-9;
+  int b = color.b-40;
   int nr = r;
   int ng = g;
   int nb = b;
@@ -472,9 +479,9 @@ void buttonBox(int x, int y, int w, int h)
   int i = 0;
   for (i = 0; i < 3; i++)
   {    
-    r = 128;
-    g = 123;
-    b = 115;
+   r = color.r-10;
+   g = color.g-9;
+   b = color.b-40;
     nr = r;
     ng = g;
     nb = b;
@@ -497,10 +504,9 @@ void buttonBox(int x, int y, int w, int h)
       ng+=2;
       nb+=2;
     }
-   r = 128;
-   g = 123;
-   b = 115;
-
+   r = color.r-10;
+   g = color.g-9;
+   b = color.b-40;
     nr = r;
     ng = g;
     nb = b;
@@ -529,9 +535,10 @@ void buttonBox(int x, int y, int w, int h)
   {
   //    // OUTLINE 2
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = color.r+44;
+    g = color.b+43;
+    b = color.b+11;
+
 
     nr = r;
     ng = g;
@@ -556,9 +563,9 @@ void buttonBox(int x, int y, int w, int h)
       nb+=2;
     }
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = color.r+44;
+    g = color.b+43;
+    b = color.b+11;
 
     nr = r;
     ng = g;
@@ -583,11 +590,12 @@ void buttonBox(int x, int y, int w, int h)
       nb-=2;
     }
   }
+
   // GRADIENT
   int xy;
-  r = 106;
-  g = 101;
-  b = 96;
+  r = color.r-32;
+  g = color.g-31;
+  b = color.b-59;
   for (int x1 = x+4; x1 < x+w-4; x1++)
   {
     for (int y1 = y+4; y1 < y+h-4; y1++)

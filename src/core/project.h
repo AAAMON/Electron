@@ -32,7 +32,7 @@ struct Electron
 
   Menu menu;
   MenuBar menuBar;
-
+  Color color;
   char currentFile[100];
   char currentMessage[100];
 };

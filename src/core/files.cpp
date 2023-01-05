@@ -50,7 +50,7 @@ void loadFile(Electron& workspace, bool init)
   else
   {
     std::cout << "file does not exist\n";
-    bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1);
+    bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1,workspace.menu.color);
     settextstyle (SIMPLEX_FONT, HORIZ_DIR, 4);
     settextjustify (CENTER_TEXT, TOP_TEXT);
     setcolor(COLOR(255,255,255));
@@ -103,20 +103,22 @@ void printFile(Electron electron)
 
 void getInput(char* input)
 {
-  bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1);
+  Color color;
+  getColor(color,138,132,155);
+  bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1,color);
   settextstyle (SIMPLEX_FONT, HORIZ_DIR, 4);
   settextjustify (CENTER_TEXT, TOP_TEXT);
   setcolor(COLOR(255,255,255));
   outtextxy(WIDTH/2, HEIGHT/2 - 180, (char*)"Insert file name (only lowercase letters): ");
-      bigBox(WIDTH/3 + 140, HEIGHT/2 - 120, WIDTH/3 - 280, 40, 1);
-    hollowBox(WIDTH/3 + 150, HEIGHT/2 - 110, WIDTH/3*2-150, HEIGHT/2 - 90);
+      bigBox(WIDTH/3 + 140, HEIGHT/2 - 120, WIDTH/3 - 280, 40, 1,color);
+    hollowBox(WIDTH/3 + 150, HEIGHT/2 - 110, WIDTH/3*2-150, HEIGHT/2 - 90,color);
   int i = 0;
   int c = getch();
   char text[100];
 
   while (c != KEY_RET)
   {
-    bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1);
+    bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1,color);
 
 
     settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
@@ -128,7 +130,7 @@ void getInput(char* input)
     }
     else
     {
-      bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1);
+      bigBox(WIDTH/3, HEIGHT/2 - 200, WIDTH/3, 200, 1,color);
       text[i] = c;
       text[i+1] = '\0';
       i++;
@@ -138,8 +140,8 @@ void getInput(char* input)
     setcolor(COLOR(255,255,255));
     outtextxy(WIDTH/2, HEIGHT/2 - 180, (char*)"Insert file name (only lowercase letters): ");
 
-    bigBox(WIDTH/3 + 140, HEIGHT/2 - 120, WIDTH/3 - 280, 40, 1);
-    hollowBox(WIDTH/3 + 150, HEIGHT/2 - 110, WIDTH/3*2-150, HEIGHT/2 - 90);
+    bigBox(WIDTH/3 + 140, HEIGHT/2 - 120, WIDTH/3 - 280, 40, 1,color);
+    hollowBox(WIDTH/3 + 150, HEIGHT/2 - 110, WIDTH/3*2-150, HEIGHT/2 - 90,color);
     setcolor(COLOR(255,255,255));
     settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
     settextjustify (CENTER_TEXT, CENTER_TEXT);

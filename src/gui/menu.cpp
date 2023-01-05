@@ -12,6 +12,7 @@ void initMenuBar(MenuBar& menuBar)
   std::ifstream menuFile("assets/menubar.gui");
   menuFile >> menuBar.nrOfElements;
   int x = 0;
+  getColor(menuBar.color,138,132,155);
   menuBar.open = -1;
   for (int i = 0; i < menuBar.nrOfElements; i++)
   {
@@ -42,7 +43,7 @@ void initMenu(Menu& menu)
   menu.elementHeigth = menu.height/12;
   menu.buttonWidth = 20;
   menu.scroll = 0;
-  
+  getColor(menu.color,138,132,155);
   std::ifstream menuFile("assets/menu.gui");
   menuFile >> menu.nrOfColumns;
 
@@ -122,7 +123,7 @@ void drawMenu(Menu menu)
       // IF THE ROW IS A C(A)TEGORY NAME
       if (menu.columns[c+i].content[0] == 'A')
       {
-        bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1);
+        bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1,menu.color);
         settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
         settextjustify (CENTER_TEXT, CENTER_TEXT);
         setcolor(WHITE);
@@ -149,13 +150,13 @@ void drawMenu(Menu menu)
 
 void drawMenuBar(MenuBar menuBar)
 {
-  bigBox(0, 0, WIDTH, 36, 1);
+  bigBox(0, 0, WIDTH, 36, 1,menuBar.color);
   setcolor(COLOR(255, 255, 255));
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   
   for (int i = 0; i < menuBar.nrOfElements; i++)
   {
-    bigBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].w, 36, 1);
+    bigBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].w, 36, 1,menuBar.color);
     setcolor(COLOR(255, 255, 255));
     settextjustify (CENTER_TEXT, CENTER_TEXT);
     outtextxy(menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w/2, 18, menuBar.menuBarElement[i].name);
@@ -171,7 +172,7 @@ void drawMenuBar(MenuBar menuBar)
 
 
 
-
+  //138 132 155
 //////////////////////////////////////////////////////////////////////////////
 /// A U X   F U N C T I O N S ////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -183,13 +184,13 @@ void drawMenuScroll(Menu menu)
   setfillstyle(SOLID_FILL, COLOR(176,168,159));
   
   bar(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height);
-  longButtonBox(menu.width - menu.buttonWidth, 36, menu.buttonWidth, menu.height/2 - 20, 0);
-  longButtonBox(menu.width - menu.buttonWidth, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2 - 20, 1);
+  longButtonBox(menu.width - menu.buttonWidth, 36, menu.buttonWidth, menu.height/2 - 20, 0,menu.color);
+  longButtonBox(menu.width - menu.buttonWidth, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2 - 20, 1,menu.color);
 
   // LINES
   setcolor(COLOR(36,35,39));
   rectangle(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height);
-  buttonBox(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.buttonWidth, 40);
+  buttonBox(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.buttonWidth, 40,menu.color);
   setcolor(COLOR(36,35,39));
   line(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.width, 36 + menu.height/2-20);
   line(menu.width - menu.buttonWidth, 36 + menu.height/2+20, menu.width, 36 + menu.height/2+20);
@@ -214,14 +215,14 @@ void drawMenuClosed(Menu menu)
 {
   // INACTIVE AREA - BACKGROUND
   setfillstyle(SOLID_FILL, COLOR(138,132,155));
-  bigBox(0, 36, menu.buttonWidth, menu.height/2-20, 1);
-  bigBox(0, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2-20, 1);
+  bigBox(0, 36, menu.buttonWidth, menu.height/2-20, 1,menu.color);
+  bigBox(0, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2-20, 1,menu.color);
   //bar(0, 36, menu.buttonWidth, 36 + menu.height);
   
 
   // BUTTON AREA - BACKGROUND
   setfillstyle(SOLID_FILL, COLOR(176,168,159));
-  buttonBox(0, 36 + menu.height/2 - 20, menu.buttonWidth, 40);
+  buttonBox(0, 36 + menu.height/2 - 20, menu.buttonWidth, 40,menu.color);
 
 
   // BUTTON AREA - LINES
@@ -268,8 +269,8 @@ void drawMenuComponentsRow(Menu menu, int i)
   
   // BOXES
   setfillstyle(SOLID_FILL, COLOR(87,87,87));
-  hollowBox(2, 38 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth -2, 36 + menu.elementHeigth * (i + 1) - 2);
-  hollowBox(2 + menu.width/2 - menu.buttonWidth, 38 + menu.elementHeigth * i, menu.width - menu.buttonWidth - 2, 36 + menu.elementHeigth * (i + 1) - 2);
+  hollowBox(2, 38 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth -2, 36 + menu.elementHeigth * (i + 1) - 2,menu.color);
+  hollowBox(2 + menu.width/2 - menu.buttonWidth, 38 + menu.elementHeigth * i, menu.width - menu.buttonWidth - 2, 36 + menu.elementHeigth * (i + 1) - 2,menu.color);
   // bar(2, 26 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth -2, 36 + menu.elementHeigth * (i + 1) - 2);
   // bar(2 + menu.width/2 - menu.buttonWidth, 26 + menu.elementHeigth * i, menu.width - menu.buttonWidth - 2, 36 + menu.elementHeigth * (i + 1) - 2);
 }

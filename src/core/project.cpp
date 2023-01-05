@@ -362,7 +362,7 @@ void draw(Electron workspace)
   drawMenuBar(workspace.menuBar);
 
   // TUX PLZ PUT THIS ON A BUTTON THX 
-  bigBox(WIDTH-30, 0, 30, 36, 1);
+  bigBox(WIDTH-30, 0, 30, 36, 1,workspace.menu.color);
 
   //
   message("=== Esc button to exit ===");
