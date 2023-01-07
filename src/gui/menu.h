@@ -31,7 +31,6 @@ struct Menu
   Column columns[50]; // maybe change this for a linked list?
   Category categories[10];
   Component components[80];
-
   int scroll;
   bool show;
 };
@@ -52,7 +51,7 @@ struct MenuBarElement
   MenuBarOption options[5];
   int optionsWidth;
 };
-// NEW_FILE SAVE_FILE LOAD_FILE 
+
 struct MenuBar
 {
   MenuBarElement menuBarElement[10];
