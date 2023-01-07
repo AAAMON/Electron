@@ -240,6 +240,16 @@ void activateMenuBarOption(Electron& workspace, int i)
           std::cout << "deleting file...\n";
           deleteFile(workspace);
           break;
+        case 6: //CHANGE THEME
+        std::cout<<"changing theme...\n";
+        loadTheme(workspace,6);
+        break;
+        case 7: //CHANGE THEME
+        std::cout<<"changing theme...\n";
+        loadTheme(workspace,7);
+        case 8: //CHANGE THEME
+        std::cout<<"changing theme...\n";
+        loadTheme(workspace,8);
         default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
       }

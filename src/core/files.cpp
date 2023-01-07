@@ -163,6 +163,37 @@ void handleInput(char* text, char c, int& i)
     i++;
   }
 }
+void loadTheme(Electron& workspace, int init)
+{
+  char filePath[100] = { "assets/" };
+  char fileName[100];
+
+  // on start-up we always load the same file
+  if (init==0)
+    strcpy(fileName, "dark");
+  else
+    switch(init)
+    {
+    case 6:
+      strcpy(fileName, "dark");
+      break;
+    case 7: 
+      strcpy(fileName, "light");
+      break;
+    case 8:
+     strcpy(fileName, "special");
+      break;
+    default:
+          std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
+     
+    }
+  strcat(filePath, fileName);
+  strcat(filePath,  ".theme");
+  std::ifstream file (filePath);
+    file>>workspace.color.r>>workspace.color.g>>workspace.color.b;
+    file>>workspace.menuBar.color.r>>workspace.menuBar.color.g>>workspace.menuBar.color.b;
+    file>>workspace.menu.color.r>>workspace.menu.color.g>>workspace.menu.color.b;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 /// A U X ////////////////////////////////////////////////////////////////////

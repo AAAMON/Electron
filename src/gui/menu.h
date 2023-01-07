@@ -7,7 +7,12 @@
 #include "button.h"
 #include "boxes.h"
 // merge component name with components
-
+struct Color
+{
+  int r;
+  int g;
+  int b;
+};
 struct Category
 {
   char name[30];
@@ -31,7 +36,7 @@ struct Menu
   Column columns[50]; // maybe change this for a linked list?
   Category categories[10];
   Component components[80];
-
+  Color color;
   int scroll;
   bool show;
 };
@@ -58,6 +63,7 @@ struct MenuBar
   MenuBarElement menuBarElement[10];
   int nrOfElements;
   int open;
+  Color color;
 };
 
 struct menuBarButton

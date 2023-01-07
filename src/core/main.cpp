@@ -41,6 +41,7 @@ int main()
     
     cleardevice();
     // Draws everyting on SDL_Surface
+    loadTheme(workspace,0);
     draw(workspace);
     strcpy(workspace.currentMessage, "");
     logic(workspace, isRunning);

@@ -11,6 +11,7 @@ void loadFile(Electron& workspace, bool init);
 void saveFile(Electron& workspace, char* fileName);
 void newFile(Electron& workspace);
 void deleteFile(Electron& workspace);
+void loadTheme(Electron& workspace, int init);
 void getInput(char* input);
 int charToInt(char* cstring);
 
