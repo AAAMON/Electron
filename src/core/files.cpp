@@ -164,6 +164,44 @@ void handleInput(char* text, char c, int& i)
   }
 }
 
+void loadTheme(int init)
+{
+  char filePath[100] = { "assets/" };
+  char fileName[100];
+
+  // on start-up we always load the same file
+  if (init==1)
+    strcpy(fileName, "dark");
+  else
+    switch(init)
+    {
+    case 6:
+      strcpy(fileName, "dark");
+      break;
+    case 7: 
+      strcpy(fileName, "light");
+      break;
+    case 8:
+     strcpy(fileName, "special");
+      break;
+    default:
+          std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
+
+    }
+  strcat(filePath, fileName);
+  strcat(filePath,  ".theme");
+  std::ifstream file (filePath);
+  int r;
+  int g;
+  int b;
+  file >> r >> g >> b;
+  setrgbpalette (0, r, g, b); // workspace
+  file >> r >> g >> b;
+  setrgbpalette (1, r, g, b); // menuBar
+  file >> r >> g >> b;
+  setrgbpalette (2, r, g, b); // menu
+}
+
 //////////////////////////////////////////////////////////////////////////////
 /// A U X ////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

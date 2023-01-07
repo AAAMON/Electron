@@ -30,9 +30,9 @@ void wireComponents(Electron& workspace)
           {        
             cleardevice();
             draw(workspace);
+            setcolor(COLOR(0,255,0));
             int x1 = workspace.panningX + workspace.components[i].x * workspace.zoom + workspace.components[i].bonds[0][j] * 15*workspace.zoom;
             int y1 = workspace.panningY + workspace.components[i].y * workspace.zoom + workspace.components[i].bonds[1][j] * 15*workspace.zoom;
-            setcolor(COLOR(0,255,0));
             //   component.x = workspace.panningX + component.x * workspace.zoom;
             drawWire(workspace, x1, y1, mousex(), mousey(), j, 0);
             rectangle(
@@ -65,8 +65,8 @@ void wireComponents(Electron& workspace)
 
             workspace.wires[workspace.nrOfWires].points[1].type = 'c';
 
-
             workspace.wires[workspace.nrOfWires].nrOfPoints = 2;
+            setUpWirePoints(workspace, workspace.nrOfWires);
             workspace.nrOfWires++;
           }
         }
@@ -75,24 +75,75 @@ void wireComponents(Electron& workspace)
   }
 }
 
+void setUpWirePoints(Electron& workspace, int id)
+{
+  // the number of points is dictated by the length of the wire
+  int length = { 0 };
+  length += abs(workspace.components[workspace.wires[id].points[0].id].x - workspace.components[workspace.wires[id].points[1].id].x);
+  length += abs(workspace.components[workspace.wires[id].points[0].id].y - workspace.components[workspace.wires[id].points[1].id].y);
+
+  // how many 20px segments we have
+  length /= 20;
+  // the first and last one
+  length -= 6;
+  int full = length / 3;
+  int rest = length % 3;
+  workspace.wires[id].nrOfPoints = 2 + full;
+  for (int i = 2; i < workspace.wires[id].nrOfPoints; i++)
+  {
+    // move the last point
+    workspace.wires[id].points[i] = workspace.wires[id].points[i-1];
+
+    workspace.wires[id].points[i-1].type = 'n';
+    workspace.wires[id].points[i-1].x = 60 * (i - 1);
+  }
+}
+
 void drawWirePoints(Electron workspace, Wire wire)
 {
   for (int i = 0; i < wire.nrOfPoints; i++)
   {
+    setcolor(COLOR(0, 100, 100));
     if (wire.points[i].type == 'c')
     {
-      setcolor(COLOR(0, 100, 100));
       rectangle(
           workspace.components[wire.points[i].id].x*workspace.zoom + workspace.components[wire.points[i].id].bonds[0][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size - 10*workspace.zoom + workspace.panningX,
           workspace.components[wire.points[i].id].y*workspace.zoom + workspace.components[wire.points[i].id].bonds[1][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size - 10*workspace.zoom + workspace.panningY, 
           workspace.components[wire.points[i].id].x*workspace.zoom + workspace.components[wire.points[i].id].bonds[0][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size + 10*workspace.zoom + workspace.panningX, 
           workspace.components[wire.points[i].id].y*workspace.zoom + workspace.components[wire.points[i].id].bonds[1][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size + 10*workspace.zoom + workspace.panningY);
     }
+    else
+    {
+
+    }
   }
 }
 
 void drawWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction1, bool direction2)
 {
+  // int direction1 = workspace.wires[i].points[0].direction;
+  // int direction2 = workspace.wires[i].points[1].direction;
+  // int x1;
+  // int y1;
+  // int x2;
+  // int y2;
+
+
+  // if (mouse)
+  // {
+  //   x1 = i;
+  //   y1 = mouse;
+  //   x2 = mousex();
+  //   y2 = mousey();
+  // }
+  // else
+  // {
+  //   x1 = workspace.components[workspace.wires[i].points[0].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[0][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningX;
+  //   y1 = workspace.components[workspace.wires[i].points[0].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[1][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningY;
+  //   x2 = workspace.components[workspace.wires[i].points[1].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[0][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningX;
+  //   y2 = workspace.components[workspace.wires[i].points[1].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[1][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningY;
+  // }
+
   setcolor(COLOR(0,0,255));
   if (!direction1 && !direction2){
     if (x1 > x2)

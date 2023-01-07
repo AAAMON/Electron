@@ -7,6 +7,7 @@
 #include "../gui/boxes.h"
 #include "../interactive/interactive.h"
 #include "workspace.h"
+#include "files.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -47,6 +48,7 @@ void initElectron(Electron& workspace)
   workspace.panningY = 0;
   workspace.zoom = 1;
   
+  loadTheme(1);
 }
 
 
@@ -369,6 +371,7 @@ void drawStatusBar(Electron workspace)
   strcat(text, workspace.currentFile);
   strcat(text, " > ");
   strcat(text, workspace.currentMessage);
+  setcolor(WHITE);
   outtextxy(5, HEIGHT-15, text);
 }
 

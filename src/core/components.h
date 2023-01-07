@@ -29,7 +29,7 @@ struct Component
 	float drawCoordinates[50];
 };
 
-struct wirePoint
+struct WirePoint
 {
 	char type;
 	int id;
@@ -39,10 +39,20 @@ struct wirePoint
 	bool direction;
 };
 
+struct DrawPoint
+{
+	int x;
+	int y;
+};
+
 struct Wire
 {
 	int nrOfPoints;
-	wirePoint points[25];
+	WirePoint points[200];
+
+	int nrOfDrawPoints;
+	DrawPoint drawPoints[10];
+
 	bool current;
 };
 

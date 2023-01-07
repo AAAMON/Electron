@@ -2,7 +2,6 @@
 #include <cmath>
 #include <graphics.h>
 #include "boxes.h"
-#include "../core/project.h"
 
 
 
