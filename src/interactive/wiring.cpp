@@ -143,8 +143,10 @@ void drawWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction
   //   x2 = workspace.components[workspace.wires[i].points[1].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[0][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningX;
   //   y2 = workspace.components[workspace.wires[i].points[1].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[1][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningY;
   // }
-
-  setcolor(COLOR(0,0,255));
+  if(RED_VALUE(0)==0)
+  setcolor(COLOR(153,200,153));
+  else
+  setcolor(COLOR(0,0,152));
   if (!direction1 && !direction2){
     if (x1 > x2)
     {

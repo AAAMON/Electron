@@ -16,12 +16,6 @@ enum {
 };
 
 
-struct Color
-{
-  int r;
-  int g;
-  int b;
-};
 
 // Workspace
 struct Electron

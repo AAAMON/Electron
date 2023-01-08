@@ -106,7 +106,10 @@ void drawMenu(Menu menu)
 {
   if (menu.show) {
     // BACKGROUND
+      if(RED_VALUE(0)==0)
     setfillstyle(SOLID_FILL, COLOR(138,132,155));
+    else
+    setfillstyle(SOLID_FILL,COLOR(255,255,102));
     bar(0, 36, menu.width, 36 + menu.height);
 
     // SCROLL BAR
@@ -117,7 +120,10 @@ void drawMenu(Menu menu)
     for (int i = 0; i < 12; i++)
     {
       // ROW OUTLINE
+        if(RED_VALUE(0)==0)
       setcolor(COLOR(36,35,39));
+      else
+      setcolor(COLOR(198,198,48));
       rectangle(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, 36 + menu.elementHeigth * (i + 1));
       // IF THE ROW IS A C(A)TEGORY NAME
       if (menu.columns[c+i].content[0] == 'A')
@@ -125,7 +131,10 @@ void drawMenu(Menu menu)
         bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1);
         settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
         settextjustify (CENTER_TEXT, CENTER_TEXT);
-        setcolor(WHITE);
+          if(RED_VALUE(0)==0)
+          setcolor(COLOR(153,200,153));
+          else
+          setcolor(COLOR(0,0,152));
         outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
       }
       // IF THE ELEMENT IS A C(O)MPONENT
@@ -150,13 +159,19 @@ void drawMenu(Menu menu)
 void drawMenuBar(MenuBar menuBar)
 {
   bigBox(0, 0, WIDTH, 36, 1);
+      if(RED_VALUE(0)==0)
   setcolor(COLOR(255, 255, 255));
+  else
+  setcolor(BLACK);
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   
   for (int i = 0; i < menuBar.nrOfElements; i++)
   {
     bigBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].w, 36, 1);
-    setcolor(COLOR(255, 255, 255));
+      if(RED_VALUE(0)==0)
+  setcolor(COLOR(255, 255, 255));
+  else
+  setcolor(BLACK);
     settextjustify (CENTER_TEXT, CENTER_TEXT);
     outtextxy(menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w/2, 18, menuBar.menuBarElement[i].name);
     
@@ -180,24 +195,36 @@ void drawMenuBar(MenuBar menuBar)
 void drawMenuScroll(Menu menu)
 {
   // BACKGROUND
+  if(RED_VALUE(0)==0)
   setfillstyle(SOLID_FILL, COLOR(176,168,159));
+  else
+  setfillstyle(SOLID_FILL, COLOR(229,95,104));
   
   bar(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height);
   longButtonBox(menu.width - menu.buttonWidth, 36, menu.buttonWidth, menu.height/2 - 20, 0);
   longButtonBox(menu.width - menu.buttonWidth, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2 - 20, 1);
 
   // LINES
-  setcolor(COLOR(36,35,39));
+ if(RED_VALUE(0)==0)
+    setcolor(COLOR(36, 35, 39));
+    else
+    setcolor(COLOR(198,198,48));
   rectangle(menu.width - menu.buttonWidth, 36, menu.width, 36 + menu.height);
   buttonBox(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.buttonWidth, 40);
-  setcolor(COLOR(36,35,39));
+ if(RED_VALUE(0)==0)
+    setcolor(COLOR(36, 35, 39));
+    else
+    setcolor(COLOR(198,198,48));
   line(menu.width - menu.buttonWidth, 36 + menu.height/2-20, menu.width, 36 + menu.height/2-20);
   line(menu.width - menu.buttonWidth, 36 + menu.height/2+20, menu.width, 36 + menu.height/2+20);
 
 
   // DETAILS
   // plz replace this with some arrows...
-  setcolor(COLOR(36,35,39));
+ if(RED_VALUE(0)==0)
+    setcolor(COLOR(36, 35, 39));
+    else
+    setcolor(COLOR(198,198,48));
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
   outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2,                 (char*)"n");
@@ -213,19 +240,28 @@ void drawMenuScroll(Menu menu)
 void drawMenuClosed(Menu menu)
 {
   // INACTIVE AREA - BACKGROUND
+   if(RED_VALUE(0)==0)
   setfillstyle(SOLID_FILL, COLOR(138,132,155));
+  else
+  setfillstyle(SOLID_FILL, COLOR(255,255,102));
   bigBox(0, 36, menu.buttonWidth, menu.height/2-20, 1);
   bigBox(0, 36 + menu.height/2 + 20, menu.buttonWidth, menu.height/2-20, 1);
   //bar(0, 36, menu.buttonWidth, 36 + menu.height);
   
 
   // BUTTON AREA - BACKGROUND
+    if(RED_VALUE(0)==0)
   setfillstyle(SOLID_FILL, COLOR(176,168,159));
+  else
+  setfillstyle(SOLID_FILL, COLOR(229,95,104));
   buttonBox(0, 36 + menu.height/2 - 20, menu.buttonWidth, 40);
 
 
   // BUTTON AREA - LINES
-  setcolor(COLOR(36,35,39));
+ if(RED_VALUE(0)==0)
+    setcolor(COLOR(36, 35, 39));
+    else
+    setcolor(COLOR(198,198,48));
   rectangle(0, 36, menu.buttonWidth, 36 + menu.height);
   line(0, 36 + menu.height/2-20, menu.buttonWidth, 36 + menu.height/2-20);
   line(0, 36 + menu.height/2+20, menu.buttonWidth, 36 + menu.height/2+20);
@@ -241,18 +277,27 @@ void drawMenuComponents(Menu menu, int c, int i, bool twoComponents)
   // COMPONENT - TEXT
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
+      if(RED_VALUE(0)==0)
   setcolor(WHITE);
+  else
+  setcolor(COLOR(0,0,152));
   outtextxy(0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
   
   // COMPONENT - IMAGE
   moveComponent(menu.components[(int)menu.columns[c+i].content[1]-'0'], 0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
+     if(RED_VALUE(0)==0)
   setcolor(COLOR(153,200,153));
+  else
+   setcolor(COLOR(0,0,152));
   drawComponent(menu.components[(int)menu.columns[c+i].content[1]-'0']);
 
   if (twoComponents)
   {
     moveComponent(menu.components[(int)menu.columns[c+i].content[2]-'0'], 0 + menu.width/4*3 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
-    setcolor(COLOR(153,200,153));
+       if(RED_VALUE(0)==0)
+  setcolor(COLOR(153,200,153));
+  else
+   setcolor(COLOR(0,0,152));
     drawComponent(menu.components[(int)menu.columns[c+i].content[2]-'0']);
     setcolor(WHITE);
     outtextxy(0 + menu.width/4*3 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[2]-'0'].name);
@@ -263,11 +308,17 @@ void drawMenuComponents(Menu menu, int c, int i, bool twoComponents)
 void drawMenuComponentsRow(Menu menu, int i)
 {
   // LINE SEPARATING THE COMPONENTS
+    if(RED_VALUE(0)==0)
   setcolor(COLOR(36,35,39));
+  else
+  setcolor(COLOR(198,198,48));
   line(menu.width/2 - menu.buttonWidth, 36 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth, 36 + menu.elementHeigth * (i + 1));
   
   // BOXES
+    if(RED_VALUE(0)==0)
   setfillstyle(SOLID_FILL, COLOR(87,87,87));
+  else
+  setfillstyle(SOLID_FILL,COLOR(233,233,80));
   hollowBox(2, 38 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth -2, 36 + menu.elementHeigth * (i + 1) - 2);
   hollowBox(2 + menu.width/2 - menu.buttonWidth, 38 + menu.elementHeigth * i, menu.width - menu.buttonWidth - 2, 36 + menu.elementHeigth * (i + 1) - 2);
   // bar(2, 26 + menu.elementHeigth * i, menu.width/2 - menu.buttonWidth -2, 36 + menu.elementHeigth * (i + 1) - 2);

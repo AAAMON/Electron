@@ -126,10 +126,16 @@ void drawMenuBarOptions(MenuBarElement menuBarElement)
 {
   for (int i = 0; i < menuBarElement.nrOfOptions; i++)
   {
-    setcolor(COLOR(255,255,255));
+        if(RED_VALUE(0)==0)
+  setcolor(COLOR(255, 255, 255));
+  else
+  setcolor(BLACK);
     setfillstyle(SOLID_FILL, getcolor());
     bar(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
-    setcolor(COLOR(0,0,0));
+       if(RED_VALUE(0)!=0)
+  setcolor(COLOR(255, 255, 255));
+  else
+  setcolor(BLACK);
     rectangle(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
     settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
     settextjustify (LEFT_TEXT, CENTER_TEXT);
@@ -247,10 +253,6 @@ void activateMenuBarOption(Electron& workspace, int i)
         case 7:
           std::cout << "changing theme...\n";
           loadTheme(7);
-          break;
-        case 8:
-          std::cout << "changing theme...\n";
-          loadTheme(8);
           break;
         default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
