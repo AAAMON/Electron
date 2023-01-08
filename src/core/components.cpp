@@ -44,8 +44,10 @@ void initComponent(Component &component, const char* type)
 void drawComponent(Component component)
 {
     // TODO use color from theme,,,
+    if(RED_VALUE(0)==0)
     setcolor(COLOR(153,200,153));
-
+    else
+    setcolor(COLOR(0,0,152));
     // Coordonates are stored in an array, and we need a separate iterator
     // because different instructions use a different ammount of points
     int coord = { 0 };

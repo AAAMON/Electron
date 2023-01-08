@@ -1,4 +1,4 @@
-10
+13
 CATEGORY Essentials
 cell battery
 resistor
@@ -9,3 +9,6 @@ lamp servomotor
 CATEGORY  Active Components
 diode zenner
 transistorN transistorP
+CATEGORY Building Blocks
+op_amp analog_switch
+schmitt_trigger

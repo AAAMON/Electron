@@ -1,6 +1,7 @@
 #include "wiring.h"
 #include "../core/workspace.h"
 
+
 void wireComponents(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
@@ -34,7 +35,7 @@ void wireComponents(Electron& workspace)
             int x1 = workspace.panningX + workspace.components[i].x * workspace.zoom + workspace.components[i].bonds[0][j] * 15*workspace.zoom;
             int y1 = workspace.panningY + workspace.components[i].y * workspace.zoom + workspace.components[i].bonds[1][j] * 15*workspace.zoom;
             //   component.x = workspace.panningX + component.x * workspace.zoom;
-            drawWire(workspace, x1, y1, mousex(), mousey(), j, 0);
+            drawCustomWire(workspace, x1, y1, mousex(), mousey(), j, 0);
             rectangle(
             workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningX, 
             workspace.components[i].y*workspace.zoom + workspace.components[i].bonds[1][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningY, 
@@ -66,36 +67,11 @@ void wireComponents(Electron& workspace)
             workspace.wires[workspace.nrOfWires].points[1].type = 'c';
 
             workspace.wires[workspace.nrOfWires].nrOfPoints = 2;
-            setUpWirePoints(workspace, workspace.nrOfWires);
             workspace.nrOfWires++;
           }
         }
       }
     }
-  }
-}
-
-void setUpWirePoints(Electron& workspace, int id)
-{
-  // the number of points is dictated by the length of the wire
-  int length = { 0 };
-  length += abs(workspace.components[workspace.wires[id].points[0].id].x - workspace.components[workspace.wires[id].points[1].id].x);
-  length += abs(workspace.components[workspace.wires[id].points[0].id].y - workspace.components[workspace.wires[id].points[1].id].y);
-
-  // how many 20px segments we have
-  length /= 20;
-  // the first and last one
-  length -= 6;
-  int full = length / 3;
-  int rest = length % 3;
-  workspace.wires[id].nrOfPoints = 2 + full;
-  for (int i = 2; i < workspace.wires[id].nrOfPoints; i++)
-  {
-    // move the last point
-    workspace.wires[id].points[i] = workspace.wires[id].points[i-1];
-
-    workspace.wires[id].points[i-1].type = 'n';
-    workspace.wires[id].points[i-1].x = 60 * (i - 1);
   }
 }
 
@@ -119,31 +95,134 @@ void drawWirePoints(Electron workspace, Wire wire)
   }
 }
 
-void drawWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction1, bool direction2)
+void drawWire(Electron& workspace, int i)
 {
-  // int direction1 = workspace.wires[i].points[0].direction;
-  // int direction2 = workspace.wires[i].points[1].direction;
-  // int x1;
-  // int y1;
-  // int x2;
-  // int y2;
+  setcolor(COLOR(0,0,255));
+  int direction1 = workspace.wires[i].points[0].direction;
+  int direction2 = workspace.wires[i].points[1].direction;
+  int x1 = workspace.components[workspace.wires[i].points[0].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[0][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningX;
+  int y1 = workspace.components[workspace.wires[i].points[0].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[1][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningY;
+  int x2 = workspace.components[workspace.wires[i].points[1].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[0][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningX;
+  int y2 = workspace.components[workspace.wires[i].points[1].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[1][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningY;
 
+  workspace.wires[i].drawPoints[0].x = x1;
+  workspace.wires[i].drawPoints[0].y = y1;
+  workspace.wires[i].drawPoints[1].x = x2;
+  workspace.wires[i].drawPoints[1].y = y2;
 
-  // if (mouse)
-  // {
-  //   x1 = i;
-  //   y1 = mouse;
-  //   x2 = mousex();
-  //   y2 = mousey();
-  // }
-  // else
-  // {
-  //   x1 = workspace.components[workspace.wires[i].points[0].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[0][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningX;
-  //   y1 = workspace.components[workspace.wires[i].points[0].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[1][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningY;
-  //   x2 = workspace.components[workspace.wires[i].points[1].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[0][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningX;
-  //   y2 = workspace.components[workspace.wires[i].points[1].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[1][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningY;
-  // }
+  if (!direction1 && !direction2){
+    if (x1 > x2)
+    {
+      workspace.wires[i].drawPoints[2] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y1;
+      line(x2, y2, x2, y1);
+      line(x2, y1, x1, y1);
+      workspace.wires[i].nrOfDrawPoints = 3;
+    }
+    else {
+      workspace.wires[i].drawPoints[2] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2;
+      workspace.wires[i].nrOfDrawPoints = 3;
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+  else if (direction1 && direction2)
+  {
+    if (x1 < x2)
+    {
+      workspace.wires[i].drawPoints[2] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x2;
+      workspace.wires[i].drawPoints[1].y = y1;
+      workspace.wires[i].nrOfDrawPoints = 3;
+      line(x2, y2, x2, y1);
+      line(x2, y1, x1, y1);
+    }
+    else {
+      workspace.wires[i].drawPoints[2] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2;
+      workspace.wires[i].nrOfDrawPoints = 3;
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+  else if (!direction1 && direction2)
+  {
+    if (x1 < x2 && y1 < y2)
+    {
+      workspace.wires[i].drawPoints[3] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2 - 50*workspace.zoom;
+      workspace.wires[i].drawPoints[2].x = x2;
+      workspace.wires[i].drawPoints[2].y = y2 - 50*workspace.zoom;
+      workspace.wires[i].nrOfDrawPoints = 4;
+      line(x1, y1, x1, y2 - 50*workspace.zoom);
+      line(x1, y2 - 50*workspace.zoom, x2, y2 - 50*workspace.zoom);
+      line(x2, y2-50*workspace.zoom, x2, y2);
+    }
+    else if (x1 < x2 && y1 > y2)
+    {
+      workspace.wires[i].drawPoints[3] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2 + 50*workspace.zoom;
+      workspace.wires[i].drawPoints[2].x = x2;
+      workspace.wires[i].drawPoints[2].y = y2 + 50*workspace.zoom;
+      workspace.wires[i].nrOfDrawPoints = 4;
+      line(x1, y1, x1, y2 + 50*workspace.zoom);
+      line(x1, y2 + 50*workspace.zoom, x2, y2 + 50*workspace.zoom);
+      line(x2, y2 + 50*workspace.zoom, x2, y2);
+    }
+    else {
+      workspace.wires[i].drawPoints[2] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2;
+      workspace.wires[i].nrOfDrawPoints = 3;
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+  else
+  {
+    if (x1 > x2 && y1 < y2)
+    {
+      workspace.wires[i].drawPoints[3] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2 - 50*workspace.zoom;
+      workspace.wires[i].drawPoints[2].x = x2;
+      workspace.wires[i].drawPoints[2].y = y2 - 50*workspace.zoom;
+      workspace.wires[i].nrOfDrawPoints = 4;
+      line(x1, y1, x1, y2 - 50*workspace.zoom);
+      line(x1, y2 - 50*workspace.zoom, x2, y2 - 50*workspace.zoom);
+      line(x2, y2-50*workspace.zoom, x2, y2);
+    }
+    else if (x1 > x2 && y1 > y2)
+    {
+      workspace.wires[i].drawPoints[3] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2 + 50*workspace.zoom;
+      workspace.wires[i].drawPoints[2].x = x2;
+      workspace.wires[i].drawPoints[2].y = y2 + 50*workspace.zoom;
+      workspace.wires[i].nrOfDrawPoints = 4;
+      line(x1, y1, x1, y2 + 50*workspace.zoom);
+      line(x1, y2 + 50*workspace.zoom, x2, y2 + 50*workspace.zoom);
+      line(x2, y2 + 50*workspace.zoom, x2, y2);
+    }
+    else{
+      workspace.wires[i].drawPoints[2] = workspace.wires[i].drawPoints[1];
+      workspace.wires[i].drawPoints[1].x = x1;
+      workspace.wires[i].drawPoints[1].y = y2;
+      workspace.wires[i].nrOfDrawPoints = 3;
+      line(x1, y1, x1, y2);
+      line(x1, y2, x2, y2);
+    }
+  }
+}
 
+void drawCustomWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction1, bool direction2)
+{
   setcolor(COLOR(0,0,255));
   if (!direction1 && !direction2){
     if (x1 > x2)
@@ -182,7 +261,7 @@ void drawWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction
       line(x1, y2 + 50*workspace.zoom, x2, y2 + 50*workspace.zoom);
       line(x2, y2 + 50*workspace.zoom, x2, y2);
     }
-        else {
+    else {
       line(x1, y1, x1, y2);
       line(x1, y2, x2, y2);
     }
@@ -208,14 +287,27 @@ void drawWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction
   }
 }
 
-void drawWires(Electron workspace)
+void drawWires(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfWires; i++)
   { 
-    int x1 = workspace.components[workspace.wires[i].points[0].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[0][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningX;
-    int y1 = workspace.components[workspace.wires[i].points[0].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[1][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningY;
-    int x2 = workspace.components[workspace.wires[i].points[1].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[0][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningX;
-    int y2 = workspace.components[workspace.wires[i].points[1].id].y*workspace.zoom + workspace.components[workspace.wires[i].points[1].id].bonds[1][workspace.wires[i].points[1].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[1].id].size + workspace.panningY;
-    drawWire(workspace, x1, y1, x2, y2, workspace.wires[i].points[0].direction, workspace.wires[i].points[1].direction);
+    drawWire(workspace, i);
+  }
+}
+
+void activateWires(Electron& workspace)
+{
+  int w = activeWire(workspace);
+  if (w != -1 && ismouseclick(WM_LBUTTONDOWN))
+  {
+    WirePoint aux = workspace.wires[w].points[0];
+    workspace.wires[w].points[0] = workspace.wires[w].points[1];
+    workspace.wires[w].points[1] = aux;
+  }
+  if (w != -1 && ismouseclick(WM_RBUTTONDOWN))
+  {
+    for (int i = w; i < workspace.nrOfWires-1; i++)
+      workspace.wires[i] = workspace.wires[i+1];
+    workspace.nrOfWires--;
   }
 }

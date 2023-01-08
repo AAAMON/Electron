@@ -116,12 +116,61 @@ int activeBond(Electron workspace)
   return b;
 }
 
+int activeWire(Electron workspace)
+{
+  int w = -1;
+  for (int i = 0; i < workspace.nrOfWires; i++)
+  {
+    if (isMouseOnWire(workspace, i))
+    {
+      w = i;
+    }
+  }
+  return w;
+}
+
 void drawWorkspaceComponent(Electron workspace, Component component)
 {
   component.x = workspace.panningX + component.x * workspace.zoom;
   component.y = workspace.panningY + component.y * workspace.zoom;
   component.size = 15*workspace.zoom;
   drawComponent(component);
+}
+
+bool isMouseOnWire(Electron workspace, int i)
+{
+  bool ok = false;
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+  // checking each individual line
+  for (int j = 0; j < workspace.wires[i].nrOfDrawPoints - 1; j++)
+  {
+    if (workspace.wires[i].drawPoints[j].x < workspace.wires[i].drawPoints[j+1].x)
+    {
+      x1 = workspace.wires[i].drawPoints[j].x;
+      x2 = workspace.wires[i].drawPoints[j+1].x;
+    }
+    else
+    {
+      x1 = workspace.wires[i].drawPoints[j+1].x;
+      x2 = workspace.wires[i].drawPoints[j].x;
+    }
+    if (workspace.wires[i].drawPoints[j].y < workspace.wires[i].drawPoints[j+1].y)
+    {
+      y1 = workspace.wires[i].drawPoints[j].y;
+      y2 = workspace.wires[i].drawPoints[j+1].y;
+    }
+    else
+    {
+      y1 = workspace.wires[i].drawPoints[j+1].y;
+      y2 = workspace.wires[i].drawPoints[j].y;
+    }
+    if (mousex() > x1-10 && mousex() < x2+10 && mousey() > y1-10 && mousey() < y2+10)
+      ok = true;
+  }
+  return ok;
 }
 
 bool isMouseOnComponent(Electron workspace, int x1, int y1, int x2, int y2)

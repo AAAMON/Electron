@@ -12,7 +12,7 @@ void activateMenuComponents(Electron& workspace)
   for (int i = 0; i < 12; i++)
   {
     // if the column is a category name, skip it
-    if (workspace.menu.columns[i].content[0] == 'A')
+    if (workspace.menu.columns[c+i].content[0] == 'A')
       i++;
     
     // ONE COMPONENT

@@ -11,7 +11,7 @@ struct Component
 	// logic info
 	int nrOfBonds;
 	// 0 is x coordonate of bond point, 1 is y
-	int bonds[2][5];
+	float bonds[2][5];
 	bool isBondActive[5];
 	bool current;
 
@@ -34,8 +34,7 @@ struct WirePoint
 	char type;
 	int id;
 	int id2;
-	int x;
-	int y;
+	int length;
 	bool direction;
 };
 

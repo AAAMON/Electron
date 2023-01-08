@@ -1,9 +1,41 @@
-9
-diode 500 500
-lamp 976 566
-cell 100 400
-servomotor 1100 600
-capacitor 1700 200
-switch 100 100
+12
+diode 477 721
+lamp 656 415
+cell 1270 422
+servomotor 993 592
+capacitor 1322 649
+switch 1092 270
 transistorN 2000 100
-transistorP 1500 900
+transistorP 1529 537
+battery 620 272
+resistor 956 430
+diode 950 824
+transistorN 1526 426
+9
+2
+c 8 0
+c 0 0
+2
+c 8 1
+c 5 0
+2
+c 5 1
+c 3 1
+2
+c 0 1
+c 1 0
+2
+c 1 1
+c 3 0
+2
+c 9 0
+c 5 0
+2
+c 9 1
+c 2 0
+2
+c 2 1
+c 4 1
+2
+c 4 0
+c 0 1

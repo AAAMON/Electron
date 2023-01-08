@@ -113,7 +113,7 @@ void titleScreen(bool& isRunning)
 
 
 // draws the current workspace
-void draw(Electron workspace)
+void draw(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
@@ -139,15 +139,17 @@ void logic(Electron& workspace, bool& isRunning)
   k_bhit();
   if (lastkey() == KEY_ESC)
     isRunning = NOPE;
-  activateComponents(workspace);
+  
   activateMenuBarElement(workspace, workspace.menuBar);
   activateMenuBar(workspace);
   activateScrollMenu(workspace);
   activateMenuComponents(workspace);
   activateZooming(workspace);
   activatePanning(workspace);
-  
-
+  activateWires(workspace);
+    if (activeWire(workspace) != -1)
+    strcpy(workspace.currentMessage, "wire");
+  activateComponents(workspace);
 
   // EASTER EGG
   // if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
@@ -364,6 +366,10 @@ void placePoint(int& px, int& py, int& dx, int& dy, float& diam, int scree[240][
 void drawStatusBar(Electron workspace)
 {
   char text[1000];
+  if(RED_VALUE(0)==0)
+  setfillstyle(SOLID_FILL, BLUE);
+  else
+  setfillstyle(SOLID_FILL,COLOR(255,0,0));
   setfillstyle(SOLID_FILL, BLUE);
   bar(0, HEIGHT-24, WIDTH, HEIGHT);
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
@@ -371,7 +377,10 @@ void drawStatusBar(Electron workspace)
   strcat(text, workspace.currentFile);
   strcat(text, " > ");
   strcat(text, workspace.currentMessage);
+  if(RED_VALUE(0)==0)
   setcolor(WHITE);
+  else
+  setcolor(BLACK);
   outtextxy(5, HEIGHT-15, text);
 }
 

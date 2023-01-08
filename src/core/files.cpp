@@ -54,6 +54,18 @@ void saveFile(Electron& workspace, char* fileName)
     f << workspace.components[i].x    << ' ';
     f << workspace.components[i].y    << '\n';
   }
+
+  // WIRES
+  f << workspace.nrOfWires << '\n';
+  for (int i = 0; i < workspace.nrOfWires; i++)
+  {
+    f << workspace.wires[i].nrOfPoints << '\n';
+    for (int j = 0; j < workspace.wires[i].nrOfPoints; j++)
+    {
+      f << workspace.wires[i].points[j].type << ' ';
+      f << workspace.wires[i].points[j].id << ' ' << workspace.wires[i].points[j].id2 << '\n';
+    }
+  }
 }
 
 // Creates a new file with .file extension
@@ -250,6 +262,21 @@ void loadThisFile(Electron& workspace, std::ifstream& file)
     file >> text1;
     file >> text2;
     moveComponent(workspace.components[i], charToInt(text1), charToInt(text2));
+  }
+  
+  char c;
+  // WIRES
+  file >> workspace.nrOfWires;
+  for (int i = 0; i < workspace.nrOfWires; i++)
+  {
+    file >> workspace.wires[i].nrOfPoints;
+    for (int j = 0; j < workspace.wires[i].nrOfPoints; j++)
+    {
+      file >> c;
+      workspace.wires[i].points[j].type = c;
+      file >> workspace.wires[i].points[j].id >> workspace.wires[i].points[j].id2;
+      workspace.wires[i].points[j].direction = workspace.wires[i].points[j].id2;
+    }
   }
 }
 

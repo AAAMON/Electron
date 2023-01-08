@@ -48,7 +48,7 @@ void initSdlbgi();
 void titleScreen(bool& isRunning);
 void message(const char*);
 void initElectron(Electron& workspace);
-void draw(Electron workspace);
+void draw(Electron& workspace);
 void logic(Electron& workspace, bool& isRunning);
 void drawStatusBar(Electron workspace);
 
