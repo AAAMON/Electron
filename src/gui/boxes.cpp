@@ -2,6 +2,7 @@
 #include <cmath>
 #include <graphics.h>
 #include "boxes.h"
+#include "../core/project.h"
 
 
 
@@ -14,21 +15,23 @@ int distance(int x1, int y1, int x2, int y2)
   return dis;
 }
 
-void bigBox(int x, int y, int w, int h, int size)
+void bigBox(int x, int y, int w, int h, int size, bool differentColor)
 {
-  // SOLID FILL
-  setfillstyle(SOLID_FILL, COLOR(138,132,155));
-  bar(x, y, x + w, y + h);
+  int c;
+  if (differentColor)
+    c = MENU_BAR;
+  else
+    c = BIG_BOX;
   int i = 0;
   // LEFT & TOP
   // OUTLINE 1
-  setcolor(COLOR(86, 82, 98));
+  setrgbcolor(c);
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    //rectangle(x+i, y+i, x + w-i, y + h-i);
-    setcolor(COLOR(36, 35, 39));
+    setcolor(COLOR(RED_VALUE(c)-50, GREEN_VALUE(c)-50, BLUE_VALUE(c)-60));
+    //setcolor(COLOR(36, 35, 39));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
@@ -36,40 +39,47 @@ void bigBox(int x, int y, int w, int h, int size)
 
 
   // 2
-  setcolor(COLOR(143, 137, 163));
+  setcolor(COLOR(RED_VALUE(c)+60, GREEN_VALUE(c)+55, BLUE_VALUE(c)+65));
+  //setcolor(COLOR(143, 137, 163));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(69, 66, 77));
+    setcolor(COLOR(RED_VALUE(c)-17, GREEN_VALUE(c)-17, BLUE_VALUE(c)-21));
+    //setcolor(COLOR(69, 66, 77));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
   }
 
   // 3
-  setcolor(COLOR(60, 57, 66));
+  setcolor(COLOR(RED_VALUE(c)-27, GREEN_VALUE(c)-27, BLUE_VALUE(c)-31));
+  //setcolor(COLOR(60, 57, 66));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(92, 88, 103));
+    setcolor(COLOR(RED_VALUE(c)+10, GREEN_VALUE(c)+10, BLUE_VALUE(c)+10));
+    //setcolor(COLOR(92, 88, 103));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
   }
 
   // DARK LINE
-  setcolor(COLOR(37, 35, 41));
+  setcolor(COLOR(RED_VALUE(c)-50, GREEN_VALUE(c)-50, BLUE_VALUE(c)-60));
+  //setcolor(COLOR(37, 35, 41));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(149, 143, 169));
+    setcolor(COLOR(RED_VALUE(c)+60, GREEN_VALUE(c)+55, BLUE_VALUE(c)+65));
+    //setcolor(COLOR(149, 143, 169));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
-      setcolor(COLOR(37, 35, 41));
+    setcolor(COLOR(RED_VALUE(c)-50, GREEN_VALUE(c)-50, BLUE_VALUE(c)-60));
+    //setcolor(COLOR(37, 35, 41));
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);  
     line(x+w-i, y+h-i, x+w-i, y+i);
@@ -78,18 +88,21 @@ void bigBox(int x, int y, int w, int h, int size)
   }
 
   // 5
-  setcolor(COLOR(87, 83, 99));
+  setrgbcolor(c);
+  //setcolor(COLOR(87, 83, 99));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
     line(x+i, y+i, x+i, y+h-i);
-    setcolor(COLOR(37, 35, 41));
+    setcolor(COLOR(RED_VALUE(c)-50, GREEN_VALUE(c)-50, BLUE_VALUE(c)-60));
+    //setcolor(COLOR(37, 35, 41));
     line(x+w-i, y+h-i, x+w-i, y+i);
     line(x+w-i, y+h-i, x+i, y+h-i);
     i++;
   }
   // 6
-  setcolor(COLOR(145, 139, 164));
+  setcolor(COLOR(RED_VALUE(c)+60, GREEN_VALUE(c)+55, BLUE_VALUE(c)+65));
+  //setcolor(COLOR(145, 139, 164));
   for (int z = 0; z < size; z++)
   {
     line(x+i, y+i, x+w-i, y+i);
@@ -100,9 +113,9 @@ void bigBox(int x, int y, int w, int h, int size)
 
 
 
-  int r = 132;
-  int g = 126;
-  int b = 149;
+  int r = std::min(RED_VALUE(c)+50, 255);//RED_VALUE(c)132;
+  int g = std::min(GREEN_VALUE(c)+45, 255);//GREEN_VALUE(c)126;
+  int b =  std::min(BLUE_VALUE(c)+50, 255);//BLUE_VALUE(c)149;
   int nr;
   int ng;
   int nb;
@@ -118,7 +131,7 @@ void bigBox(int x, int y, int w, int h, int size)
         nr = r - 0.1*xy;
         ng = g - 0.1*xy;
         nb = b - 0.1*xy;
-        putpixel(x1, y1, COLOR(nr, ng, nb));
+        putpixel(x1, y1, COLOR(nr < 0? 0:nr, ng < 0? 0:ng, nb < 0? 0:nb));
       }
     }
   }
@@ -132,31 +145,29 @@ void bigBox(int x, int y, int w, int h, int size)
         nr = r - 0.2*xy;
         ng = g - 0.2*xy;
         nb = b - 0.2*xy;
-        putpixel(x1, y1, COLOR(nr, ng, nb));
+        putpixel(x1, y1, COLOR(nr < 0? 0:nr, ng < 0? 0:ng, nb < 0? 0:nb));
       }
     }
   }
 
 }
 
-void smallBox(int x, int y, int x2, int y2)
-{
-  // SOLID FILL
-  setfillstyle(SOLID_FILL, COLOR(138,132,155));
-  bar(x, y, x2, y2);
-
-  setcolor(COLOR(86, 82, 98));
-  rectangle(x, y, x2, y2);
-  
-  setcolor(COLOR(143, 137, 163));
-  rectangle(x, y, x2, y2);
-}
+// void smallBox(int x, int y, int x2, int y2)
+// {
+//   // SOLID FILL
+//   setfillstyle(SOLID_FILL, COLOR(138,132,155));
+//   bar(x, y, x2, y2);
+//   setcolor(COLOR(86, 82, 98));
+//   rectangle(x, y, x2, y2);
+//   setcolor(COLOR(143, 137, 163));
+//   rectangle(x, y, x2, y2);
+// }
 
 void hollowBox(int x, int y, int x2, int y2)
 {
-  int r = 87;
-  int g = 87;
-  int b = 87;
+  int r = RED_VALUE(HOLLOW_BOX);
+  int g = GREEN_VALUE(HOLLOW_BOX);
+  int b = BLUE_VALUE(HOLLOW_BOX);
   int nr;
   int ng;
   int nb;
@@ -170,7 +181,7 @@ void hollowBox(int x, int y, int x2, int y2)
       nr = r - 0.07*xy*log(xy);
       ng = g - 0.07*xy*log(xy);
       nb = b - 0.07*xy*log(xy);
-      putpixel(x1, y1, COLOR(nr, ng, nb));
+      putpixel(x1, y1, COLOR(nr < 0? 0:nr, ng < 0? 0:ng, nb < 0? 0:nb));
     }
   }
 }
@@ -180,9 +191,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
 
   setfillstyle(SOLID_FILL, RED);
   bar(x, y, x+w, y+h);
-  int r = 128;
-  int g = 123;
-  int b = 115;
+  int r = RED_VALUE(BUTTON_BOX);
+  int g = GREEN_VALUE(BUTTON_BOX);
+  int b = BLUE_VALUE(BUTTON_BOX);
   float nr = r;
   float ng = g;
   float nb = b;
@@ -193,9 +204,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   { 
   for (i = 0; i < 3; i++)
   {    
-    r = 128;
-    g = 123;
-    b = 115;
+    r = RED_VALUE(BUTTON_BOX);
+    g = GREEN_VALUE(BUTTON_BOX);
+    b = BLUE_VALUE(BUTTON_BOX);
     nr = r;
     ng = g;
     nb = b;
@@ -206,6 +217,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
     nr = r;
     ng = g;
@@ -217,10 +234,16 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
-   r = 128;
-   g = 123;
-   b = 115;
+    r = RED_VALUE(BUTTON_BOX);
+    g = GREEN_VALUE(BUTTON_BOX);
+    b = BLUE_VALUE(BUTTON_BOX);
 
     nr = r;
     ng = g;
@@ -232,6 +255,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
     nr = r;
     ng = g;
@@ -243,6 +272,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
   }
 
@@ -250,10 +285,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   {
   //    // OUTLINE 2
 
-    r = 182;
-    g = 175;
-    b = 166;
-
+    r = RED_VALUE(BUTTON_BOX)+55;
+    g = GREEN_VALUE(BUTTON_BOX)+55;
+    b = BLUE_VALUE(BUTTON_BOX)+55;
     nr = r;
     ng = g;
     nb = b;
@@ -264,6 +298,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
     nr = r;
     ng = g;
@@ -275,11 +315,17 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;      
     }
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = RED_VALUE(BUTTON_BOX)+55;
+    g = GREEN_VALUE(BUTTON_BOX)+55;
+    b = BLUE_VALUE(BUTTON_BOX)+55;
 
     nr = r;
     ng = g;
@@ -291,6 +337,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
     nr = r;
     ng = g;
@@ -302,13 +354,19 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
   }
 // GRADIENT
     int xy;
-    r = 106;
-    g = 101;
-    b = 96;
+    r = RED_VALUE(BUTTON_BOX)-20;
+    g = GREEN_VALUE(BUTTON_BOX)-20;
+    b = BLUE_VALUE(BUTTON_BOX)-20;
     for (int x1 = x+4; x1 < x+w-4; x1++)
     {
       for (int y1 = y+4; y1 < y+h-4; y1++)
@@ -327,9 +385,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   
   for (i = 0; i < 3; i++)
   {    
-    r = 128;
-    g = 123;
-    b = 115;
+    r = RED_VALUE(BUTTON_BOX);
+    g = GREEN_VALUE(BUTTON_BOX);
+    b = BLUE_VALUE(BUTTON_BOX);
     nr = r;
     ng = g;
     nb = b;
@@ -340,6 +398,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
     nr = r;
     ng = g;
@@ -351,10 +415,16 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;      
     }
-   r = 128;
-   g = 123;
-   b = 115;
+    r = RED_VALUE(BUTTON_BOX);
+    g = GREEN_VALUE(BUTTON_BOX);
+    b = BLUE_VALUE(BUTTON_BOX);
 
     nr = r;
     ng = g;
@@ -366,6 +436,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
     nr = r;
     ng = g;
@@ -377,6 +453,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
   }
 
@@ -384,9 +466,9 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
   {
   //    // OUTLINE 2
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = RED_VALUE(BUTTON_BOX)+55;
+    g = GREEN_VALUE(BUTTON_BOX)+55;
+    b = BLUE_VALUE(BUTTON_BOX)+55;
 
     nr = r;
     ng = g;
@@ -398,6 +480,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
     nr = r;
     ng = g;
@@ -409,11 +497,17 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr+=0.15;
       ng+=0.15;
       nb+=0.15;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = RED_VALUE(BUTTON_BOX)+55;
+    g = GREEN_VALUE(BUTTON_BOX)+55;
+    b = BLUE_VALUE(BUTTON_BOX)+55;
 
     nr = r;
     ng = g;
@@ -425,6 +519,12 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
     nr = r;
     ng = g;
@@ -436,13 +536,19 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr-=0.15;
       ng-=0.15;
       nb-=0.15;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
   }
   
   int xy;
-  r = 106;
-  g = 101;
-  b = 96;
+  r = RED_VALUE(BUTTON_BOX)-20;
+  g = GREEN_VALUE(BUTTON_BOX)-20;
+  b = BLUE_VALUE(BUTTON_BOX)-20;
   for (int x1 = x+4; x1 < x+w-4; x1++)
   {
     for (int y1 = y+4; y1 < y+h-4; y1++)
@@ -451,7 +557,7 @@ void longButtonBox(int x, int y, int w, int h, bool reverse)
       nr = r + 0.03*xy*log(xy);
       ng = g + 0.03*xy*log(xy);
       nb = b + 0.03*xy*log(xy);
-      putpixel(x1, y1, COLOR(nr, ng, nb));
+      putpixel(x1, y1, COLOR(nr > 255? 255:nr, ng > 255? 255:ng, nb > 255? 255:nb));
     }
   }
 }
@@ -460,9 +566,12 @@ void buttonBox(int x, int y, int w, int h)
 {
   setfillstyle(SOLID_FILL, RED);
   bar(x, y, x+w, y+h);
-  int r = 128;
-  int g = 123;
-  int b = 115;
+  int r = RED_VALUE(BUTTON_BOX);
+  int g = GREEN_VALUE(BUTTON_BOX);
+  int b = BLUE_VALUE(BUTTON_BOX);
+  // int r = 128;
+  // int g = 123;
+  // int b = 115;
   int nr = r;
   int ng = g;
   int nb = b;
@@ -471,9 +580,9 @@ void buttonBox(int x, int y, int w, int h)
   int i = 0;
   for (i = 0; i < 3; i++)
   {    
-    r = 128;
-    g = 123;
-    b = 115;
+    r = RED_VALUE(BUTTON_BOX);
+    g = GREEN_VALUE(BUTTON_BOX);
+    b = BLUE_VALUE(BUTTON_BOX);
     nr = r;
     ng = g;
     nb = b;
@@ -484,6 +593,12 @@ void buttonBox(int x, int y, int w, int h)
       nr+=2;
       ng+=2;
       nb+=2;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
     nr = r;
     ng = g;
@@ -495,10 +610,16 @@ void buttonBox(int x, int y, int w, int h)
       nr+=2;
       ng+=2;
       nb+=2;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
-   r = 128;
-   g = 123;
-   b = 115;
+    r = RED_VALUE(BUTTON_BOX);
+    g = GREEN_VALUE(BUTTON_BOX);
+    b = BLUE_VALUE(BUTTON_BOX);
 
     nr = r;
     ng = g;
@@ -510,6 +631,12 @@ void buttonBox(int x, int y, int w, int h)
       nr-=2;
       ng-=2;
       nb-=2;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
     nr = r;
     ng = g;
@@ -521,16 +648,21 @@ void buttonBox(int x, int y, int w, int h)
       nr-=2;
       ng-=2;
       nb-=2;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
   }
 
   for (;i < 5; i++)
   {
   //    // OUTLINE 2
-
-    r = 182;
-    g = 175;
-    b = 166;
+    r = RED_VALUE(BUTTON_BOX)+55;
+    g = GREEN_VALUE(BUTTON_BOX)+55;
+    b = BLUE_VALUE(BUTTON_BOX)+55;
 
     nr = r;
     ng = g;
@@ -542,6 +674,12 @@ void buttonBox(int x, int y, int w, int h)
       nr+=2;
       ng+=2;
       nb+=2;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
     nr = r;
     ng = g;
@@ -553,11 +691,17 @@ void buttonBox(int x, int y, int w, int h)
       nr+=2;
       ng+=2;
       nb+=2;
+      if (nr > 255)
+        nr = 255;
+      if (ng > 255)
+        ng = 255;
+      if (nb > 255)
+        nb = 255;
     }
 
-    r = 182;
-    g = 175;
-    b = 166;
+    r = RED_VALUE(BUTTON_BOX)+55;
+    g = GREEN_VALUE(BUTTON_BOX)+55;
+    b = BLUE_VALUE(BUTTON_BOX)+55;
 
     nr = r;
     ng = g;
@@ -569,6 +713,12 @@ void buttonBox(int x, int y, int w, int h)
       nr-=2;
       ng-=2;
       nb-=2;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
     nr = r;
     ng = g;
@@ -580,13 +730,19 @@ void buttonBox(int x, int y, int w, int h)
       nr-=2;
       ng-=2;
       nb-=2;
+      if (nr < 0)
+        nr = 0;
+      if (ng < 0)
+        ng = 0;
+      if (nb < 0)
+        nb = 0;
     }
   }
   // GRADIENT
   int xy;
-  r = 106;
-  g = 101;
-  b = 96;
+    r = RED_VALUE(BUTTON_BOX)-20;
+    g = GREEN_VALUE(BUTTON_BOX)-20;
+    b = BLUE_VALUE(BUTTON_BOX)-20;
   for (int x1 = x+4; x1 < x+w-4; x1++)
   {
     for (int y1 = y+4; y1 < y+h-4; y1++)
@@ -595,7 +751,7 @@ void buttonBox(int x, int y, int w, int h)
       nr = r + xy*log(xy);
       ng = g + xy*log(xy);
       nb = b + xy*log(xy);
-      putpixel(x1, y1, COLOR(nr, ng, nb));
+      putpixel(x1, y1, COLOR(nr > 255? 255:nr, ng > 255? 255:ng, nb > 255? 255:nb));
     }
   }
 }

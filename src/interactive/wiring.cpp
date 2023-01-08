@@ -15,7 +15,7 @@ void wireComponents(Electron& workspace)
         workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size + 10, 
         workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size + 10))
       {
-        setcolor(COLOR(0,255,0));
+        setrgbcolor(SELECTION_ACTIVE);
         rectangle(
           workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningX, 
           workspace.components[i].y*workspace.zoom + workspace.components[i].bonds[1][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningY, 
@@ -31,7 +31,7 @@ void wireComponents(Electron& workspace)
           {        
             cleardevice();
             draw(workspace);
-            setcolor(COLOR(0,255,0));
+            setrgbcolor(SELECTION_ACTIVE);
             int x1 = workspace.panningX + workspace.components[i].x * workspace.zoom + workspace.components[i].bonds[0][j] * 15*workspace.zoom;
             int y1 = workspace.panningY + workspace.components[i].y * workspace.zoom + workspace.components[i].bonds[1][j] * 15*workspace.zoom;
             //   component.x = workspace.panningX + component.x * workspace.zoom;
@@ -45,7 +45,7 @@ void wireComponents(Electron& workspace)
             b = activeBond(workspace);
             if (c != -1 && b != -1 && c != i)
             {
-              setcolor(COLOR(0,255,0));
+              setrgbcolor(SELECTION_ACTIVE);
               workspace.wires[workspace.nrOfWires].points[1].id = c;
               workspace.wires[workspace.nrOfWires].points[1].id2 = b;
               workspace.wires[workspace.nrOfWires].points[1].direction = b;
@@ -79,7 +79,7 @@ void drawWirePoints(Electron workspace, Wire wire)
 {
   for (int i = 0; i < wire.nrOfPoints; i++)
   {
-    setcolor(COLOR(0, 100, 100));
+    setrgbcolor(SELECTION_INACTIVE);
     if (wire.points[i].type == 'c')
     {
       rectangle(
@@ -97,7 +97,7 @@ void drawWirePoints(Electron workspace, Wire wire)
 
 void drawWire(Electron& workspace, int i)
 {
-  setcolor(COLOR(0,0,255));
+  setrgbcolor(WIRES);
   int direction1 = workspace.wires[i].points[0].direction;
   int direction2 = workspace.wires[i].points[1].direction;
   int x1 = workspace.components[workspace.wires[i].points[0].id].x*workspace.zoom + workspace.components[workspace.wires[i].points[0].id].bonds[0][workspace.wires[i].points[0].id2]*workspace.zoom * workspace.components[workspace.wires[i].points[0].id].size + workspace.panningX;
@@ -223,7 +223,7 @@ void drawWire(Electron& workspace, int i)
 
 void drawCustomWire(Electron workspace, int x1, int y1, int x2, int y2, bool direction1, bool direction2)
 {
-  setcolor(COLOR(0,0,255));
+  setrgbcolor(WIRES);
   if (!direction1 && !direction2){
     if (x1 > x2)
     {

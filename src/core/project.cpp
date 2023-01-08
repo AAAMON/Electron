@@ -29,7 +29,7 @@ void initSdlbgi()
   initwindow (WIDTH, HEIGHT); 
   // so it runs faster, but we need to put refresh() to draw graphics
   sdlbgifast();
-  setbkcolor (BLACK);
+  setbkrgbcolor (WORKSPACE);
 }
 
 // initialises the current workspace
@@ -366,21 +366,15 @@ void placePoint(int& px, int& py, int& dx, int& dy, float& diam, int scree[240][
 void drawStatusBar(Electron workspace)
 {
   char text[1000];
-  if(RED_VALUE(0)==0)
-  setfillstyle(SOLID_FILL, BLUE);
-  else
-  setfillstyle(SOLID_FILL,COLOR(255,0,0));
-  setfillstyle(SOLID_FILL, BLUE);
+  setrgbcolor(STATUS_BAR);
+  setfillstyle(SOLID_FILL, getcolor());
   bar(0, HEIGHT-24, WIDTH, HEIGHT);
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (LEFT_TEXT, TOP_TEXT);
   strcat(text, workspace.currentFile);
   strcat(text, " > ");
   strcat(text, workspace.currentMessage);
-  if(RED_VALUE(0)==0)
-  setcolor(WHITE);
-  else
-  setcolor(BLACK);
+  setrgbcolor(STATUS_BAR_TEXT);
   outtextxy(5, HEIGHT-15, text);
 }
 
@@ -396,7 +390,7 @@ void message(const char* text)
   // message text
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
-  setcolor (RED);
+  setrgbcolor(MESSAGE);
   outtextxy (WIDTH / 2, HEIGHT - 33,(char*)text);
 }
 

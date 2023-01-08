@@ -183,18 +183,18 @@ void loadTheme(int init)
 
   // on start-up we always load the same file
   if (init==1)
-    strcpy(fileName, "dark");
+    strcpy(fileName, "classic");
   else
     switch(init)
     {
     case 6:
-      strcpy(fileName, "dark");
+      strcpy(fileName, "classic");
       break;
     case 7: 
-      strcpy(fileName, "light");
+      strcpy(fileName, "cherry");
       break;
     case 8:
-     strcpy(fileName, "special");
+     strcpy(fileName, "carbon");
       break;
     default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
@@ -206,12 +206,13 @@ void loadTheme(int init)
   int r;
   int g;
   int b;
-  file >> r >> g >> b;
-  setrgbpalette (0, r, g, b); // workspace
-  file >> r >> g >> b;
-  setrgbpalette (1, r, g, b); // menuBar
-  file >> r >> g >> b;
-  setrgbpalette (2, r, g, b); // menu
+  int nrOfColors;
+  file >> nrOfColors;
+  for (int i = 0; i < nrOfColors; i++)
+  {
+    file >> r >> g >> b;
+    setrgbpalette (i, r, g, b);
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////

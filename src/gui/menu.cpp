@@ -106,7 +106,12 @@ void drawMenu(Menu menu)
 {
   if (menu.show) {
     // BACKGROUND
-    setfillstyle(SOLID_FILL, COLOR(138,132,155));
+    //86 82 98
+    setcolor(COLOR(
+      (RED_VALUE   (6) + 60 > 255? 255: RED_VALUE   (6) + 60), 
+      (GREEN_VALUE (6) + 55 > 255? 255: GREEN_VALUE (6) + 55),
+      (BLUE_VALUE  (6) + 55 > 255? 255: BLUE_VALUE  (6) + 55)));
+    setfillstyle(SOLID_FILL, getcolor());
     bar(0, 36, menu.width, 36 + menu.height);
 
     // SCROLL BAR
@@ -125,7 +130,7 @@ void drawMenu(Menu menu)
         bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1);
         settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
         settextjustify (CENTER_TEXT, CENTER_TEXT);
-        setcolor(WHITE);
+        setrgbcolor(MENU_TEXT);
         outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
       }
       // IF THE ELEMENT IS A C(O)MPONENT
@@ -149,14 +154,13 @@ void drawMenu(Menu menu)
 
 void drawMenuBar(MenuBar menuBar)
 {
-  bigBox(0, 0, WIDTH, 36, 1);
-  setcolor(COLOR(255, 255, 255));
+  bigBox(0, 0, WIDTH, 36, 1, 1);
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   
   for (int i = 0; i < menuBar.nrOfElements; i++)
   {
-    bigBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].w, 36, 1);
-    setcolor(COLOR(255, 255, 255));
+    bigBox(menuBar.menuBarElement[i].x, 0, menuBar.menuBarElement[i].w, 36, 1, 1);
+    setrgbcolor(MENU_BAR_TEXT);
     settextjustify (CENTER_TEXT, CENTER_TEXT);
     outtextxy(menuBar.menuBarElement[i].x + menuBar.menuBarElement[i].w/2, 18, menuBar.menuBarElement[i].name);
     
@@ -197,7 +201,7 @@ void drawMenuScroll(Menu menu)
 
   // DETAILS
   // plz replace this with some arrows...
-  setcolor(COLOR(36,35,39));
+  setrgbcolor(SCROLL_DETAIL);
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
   outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2,                 (char*)"n");
@@ -241,20 +245,18 @@ void drawMenuComponents(Menu menu, int c, int i, bool twoComponents)
   // COMPONENT - TEXT
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
-  setcolor(WHITE);
+  setrgbcolor(MENU_COMPONENT_TEXT);
   outtextxy(0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[1]-'0'].name);
   
   // COMPONENT - IMAGE
   moveComponent(menu.components[(int)menu.columns[c+i].content[1]-'0'], 0 + menu.width/4 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
-  setcolor(COLOR(153,200,153));
   drawComponent(menu.components[(int)menu.columns[c+i].content[1]-'0']);
 
   if (twoComponents)
   {
     moveComponent(menu.components[(int)menu.columns[c+i].content[2]-'0'], 0 + menu.width/4*3 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2 - 10);
-    setcolor(COLOR(153,200,153));
     drawComponent(menu.components[(int)menu.columns[c+i].content[2]-'0']);
-    setcolor(WHITE);
+    setrgbcolor(MENU_COMPONENT_TEXT);
     outtextxy(0 + menu.width/4*3 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth - 10, menu.components[(int)menu.columns[c+i].content[2]-'0'].name);
   }
 }

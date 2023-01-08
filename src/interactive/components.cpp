@@ -13,7 +13,7 @@ void moveComponents(Electron& workspace)
       workspace.components[i].y = (mousey() - workspace.panningY)/workspace.zoom;
       cleardevice();
       draw(workspace);
-      setcolor(GREEN);
+      setrgbcolor(SELECTION_ACTIVE);
       //workspace.panningX + component.x * workspace.zoom
       rectangle(          
         workspace.components[i].x*workspace.zoom-55*workspace.zoom + workspace.panningX, 
@@ -31,7 +31,7 @@ void activateComponents(Electron& workspace)
   {
     if (isMouseOnComponent(workspace, workspace.components[i].x-55, workspace.components[i].y-55, workspace.components[i].x+55, workspace.components[i].y+55))
     {
-      setcolor(COLOR(10, 100, 0));
+      setrgbcolor(SELECTION_INACTIVE);
       rectangle(          
         workspace.components[i].x*workspace.zoom-55*workspace.zoom + workspace.panningX, 
         workspace.components[i].y*workspace.zoom-55*workspace.zoom + workspace.panningY,

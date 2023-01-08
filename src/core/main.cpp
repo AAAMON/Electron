@@ -9,7 +9,7 @@
 bool isRunning = YEAH;
 
 // To compile (u need SDL_BGI):
-// g++ -o bin/electron src/core/*.cpp src/gui/*.cpp -std=c++20 -pedantic-errors -Wall -Weffc++ -Wextra -Wsign-conversion -lSDL_bgi -lSDL2 -lstdc++ -lm
+// g++ -o bin/electron src/core/*.cpp src/gui/*.cpp src/interactive/*.cpp -std=c++20 -pedantic-errors -Wall -Weffc++ -Wextra -Wsign-conversion -lSDL_bgi -lSDL2 -lstdc++ -lm
 
 int main()
 {
