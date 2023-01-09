@@ -46,6 +46,8 @@ struct Electron
 
   char currentFile[100];
   char currentMessage[100];
+
+  bool secrets;
 };
 
 //////////////////////////////////////////////////////////////////////////////

@@ -195,7 +195,10 @@ void loadTheme(int init)
       strcpy(fileName, "cherry");
       break;
     case 8:
-     strcpy(fileName, "carbon");
+      strcpy(fileName, "carbon");
+      break;
+    case 0:
+      strcpy(fileName, "secret");
       break;
     default:
           std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";

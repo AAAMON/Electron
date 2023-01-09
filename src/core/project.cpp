@@ -49,6 +49,7 @@ void initElectron(Electron& workspace)
   workspace.zoom = 1;
   
   loadTheme(1);
+  workspace.secrets = NOPE;
 }
 
 
@@ -147,18 +148,12 @@ void logic(Electron& workspace, bool& isRunning)
     strcpy(workspace.currentMessage, "wire");
   activateComponents(workspace);
 
-  // EASTER EGG
-  // if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
-  // {
-  //   system("supertuxkart");
-  //   //system("xdotool key alt+Tab");
-  // }
-  // if (SDL_GetWindowFlags(bgi_window) & SDL_WINDOW_HIDDEN)
-  // {
-  //   system("echo sdfsdf && xdotool keydown 0xffea + key 0xff09");
-  //   delay(2000);
-  //   system("xdotool keyup 0xffea");
-  // }
+  //EASTER EGG
+  if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
+  {
+    loadTheme(0);
+    workspace.secrets = YEAH;
+  }
 
 }
 

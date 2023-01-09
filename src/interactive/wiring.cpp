@@ -29,7 +29,6 @@ void wireComponents(Electron& workspace)
         {
           int c;
           int b;
-          workspace.wires[workspace.nrOfWires].points[0].id = -1;
           while (ismouseclick(WM_LBUTTONDOWN))
           {        
             cleardevice();
@@ -60,7 +59,7 @@ void wireComponents(Electron& workspace)
             }
             refresh();
           }
-          if (b != -1)
+          if (b != -1 && b != j)
           {
             workspace.wires[workspace.nrOfWires].points[0].id = i;
             workspace.wires[workspace.nrOfWires].points[0].type = 'c';
