@@ -21,13 +21,13 @@ void fileDoesNotExist(Electron& workspace, int operation);
 void loadFile(Electron& workspace, bool init)
 {
   char filePath[100] = { "files/" };
-  char fileName[100];
+  char fileName[100] = { "" };
 
   // on start-up we always load the same file
   if (init)
     strcpy(fileName, "test");
   else
-    getInput(fileName);
+    getInput(workspace, fileName);
 
   strcat(filePath, fileName);
   strcat(filePath,  ".file");
@@ -35,8 +35,11 @@ void loadFile(Electron& workspace, bool init)
 
   if (file)
     loadThisFile(workspace,  file);
+  else if (strlen(fileName) == 0)
+    return;
   else
     fileDoesNotExist(workspace, LOAD_FILE);
+  workspace.input = false;
 }
 
 // Saves specified file
@@ -73,7 +76,7 @@ void newFile(Electron& workspace)
 {
   char filePath[100] = { "files/" };
   char fileName[100];
-  getInput(fileName);
+  getInput(workspace, fileName);
   strcat(filePath, fileName);
   strcat(filePath,  ".file");
   std::ofstream f(filePath);
@@ -81,6 +84,7 @@ void newFile(Electron& workspace)
   strcpy(workspace.currentFile, fileName);
   workspace.nrOfComponents = 0;
   workspace.nrOfWires = 0;
+  workspace.input = false;
 }
 
 // Deletes specified file
@@ -88,7 +92,7 @@ void deleteFile(Electron& workspace)
 {
   char filePath[100] = { "files/" };
   char fileName[100];
-  getInput(fileName);
+  getInput(workspace, fileName);
   strcat(filePath, fileName);
   strcat(filePath,  ".file");
   std::ifstream file (filePath);
@@ -100,8 +104,11 @@ void deleteFile(Electron& workspace)
     file.close();
     remove(filePath);
   }
+  else if (strlen(fileName) == 0)
+    return;
   else
     fileDoesNotExist(workspace, DELETE_FILE);
+  workspace.input = false;
 }
 
 
@@ -110,11 +117,13 @@ void drawOuterBox();
 void drawInnerBox();
 void handleInput(char* text, char c, int& i);
 // Asks the user for some text input (only lowercase letters)
-void getInput(char* input)
+void getInput(Electron& workspace, char* input)
 {
+  workspace.input = true;
+  draw(workspace);
   drawOuterBox();
   drawInnerBox();
-
+  refresh();
   // iterator for text input cursor
   int i = { 0 };
   // the last key that was pressed
@@ -124,6 +133,7 @@ void getInput(char* input)
   while (c != KEY_RET)
   {
     // Got to draw it on every frame
+    draw(workspace);
     drawOuterBox();
     handleInput(text, c, i);
     drawInnerBox();

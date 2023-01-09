@@ -2,6 +2,9 @@
 #include <graphics.h>
 #include <cmath>
 #include "button.h"
+#include "boxes.h"
+#include "../core/project.h"
+#include "../core/files.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -86,13 +89,7 @@ void bVoid()
 // Button function for showing the credits
 void bCredits()
 {
-  showinfobox("== Electron ==                                      \n"
-              "Project realised by Ciobanu Andra and Petcu Andreea;\n"
-              "2022.11.22 -                                        \n" 
-              "UAIC Year 1 Semester 1;                             \n"
-              "Coordinating teacher: Bogdan Patrut."
-             );
-  refresh();
+  // abandoned, rest in peace
 }
 
 

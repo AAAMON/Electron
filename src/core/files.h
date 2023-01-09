@@ -12,7 +12,7 @@ void loadFile(Electron& workspace, bool init);
 void saveFile(Electron& workspace, char* fileName);
 void newFile(Electron& workspace);
 void deleteFile(Electron& workspace);
-void getInput(char* input);
+void getInput(Electron& workspace, char* input);
 int charToInt(char* cstring);
 
 #endif

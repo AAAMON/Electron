@@ -40,6 +40,25 @@ void activateComponents(Electron& workspace)
         workspace.components[i].x*workspace.zoom+55*workspace.zoom + workspace.panningX, 
         workspace.components[i].y*workspace.zoom+55*workspace.zoom + workspace.panningY);
       strcpy(workspace.currentMessage, workspace.components[i].name);
+            // remove
+      // if (ismouseclick(WM_RBUTTONDOWN))
+      // {
+      //   // removing connected wires
+      //   for (int w = 0; w < workspace.nrOfWires; w++)
+      //   {
+      //     if (workspace.wires[w].points[0].id == i || workspace.wires[w].points[1].id == i)
+      //       eradicateWire(workspace, w);
+      //     else if (workspace.wires[w].points[0].id > w)
+      //       workspace.wires[w].points[0].id--;
+      //     else if (workspace.wires[w].points[1].id > w)
+      //       workspace.wires[w].points[1].id--;
+      //   }
+      //   for (int c = i; c < workspace.nrOfComponents-1; c++)
+      //   {
+      //     workspace.components[c] = workspace.components[c+1];
+      //   }
+      //   workspace.nrOfComponents--;
+      // }
     }
   }
   wireComponents(workspace);

@@ -11,4 +11,5 @@ void drawCustomWire(Electron workspace, int x1, int y1, int x2, int y2, bool dir
 void drawWires(Electron& workspace);
 void drawWire(Electron& workspace, int i);
 void activateWires(Electron& workspace);
+void eradicateWire(Electron& workspace, int w);
 #endif

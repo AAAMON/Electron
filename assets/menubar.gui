@@ -7,12 +7,12 @@ File
 1Load file
 2Save file
 3Delete file
-Edit
+Tutor
 60
-270
+120
 2
-4Rotate canvas clockwise
-5Rotate canvas counter-clockwise
+4Turn on
+5Turn off
 Theme
 60
 130
@@ -22,7 +22,7 @@ Theme
 8Carbon
 Help
 60
-230
+200
 2
-9What is going on
-10Credits
+9What is going on?
+:Credits

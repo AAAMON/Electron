@@ -59,7 +59,7 @@ void wireComponents(Electron& workspace)
             }
             refresh();
           }
-          if (b != -1 && b != j)
+          if (b != -1 && c != i)
           {
             workspace.wires[workspace.nrOfWires].points[0].id = i;
             workspace.wires[workspace.nrOfWires].points[0].type = 'c';
@@ -310,8 +310,13 @@ void activateWires(Electron& workspace)
   }
   if (w != -1 && ismouseclick(WM_RBUTTONDOWN))
   {
-    for (int i = w; i < workspace.nrOfWires-1; i++)
-      workspace.wires[i] = workspace.wires[i+1];
-    workspace.nrOfWires--;
+    eradicateWire(workspace, w);
   }
+}
+
+void eradicateWire(Electron& workspace, int w)
+{
+  for (int i = w; i < workspace.nrOfWires-1; i++)
+    workspace.wires[i] = workspace.wires[i+1];
+  workspace.nrOfWires--;
 }

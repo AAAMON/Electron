@@ -50,6 +50,8 @@ void initElectron(Electron& workspace)
   
   loadTheme(1);
   workspace.secrets = NOPE;
+  workspace.input = NOPE;
+  workspace.tutor = YEAH;
 }
 
 
@@ -60,10 +62,10 @@ void initElectron(Electron& workspace)
 int scree[240][135];
 // aux
 void initAnimationPalette();
-void activateTitleScreen(Button buttonStart, Button buttonCredits, bool& isRunning);
+void activateTitleScreen(Button buttonStart, bool& isRunning);
 // TODO: make struct for animation, shit has too many variables,,,
 void continueAnimation(int& i, int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], 
-                       int& iterations, Button buttonStart, Button buttonCredits);
+                       int& iterations, Button buttonStart);
 // Starts title screen
 void titleScreen(bool& isRunning)
 {
@@ -103,9 +105,9 @@ void titleScreen(bool& isRunning)
     // continue the animation if it isn't finished
     if (i < nrOfParticles)
     {
-      continueAnimation(i, px, py, dx, dy, diam, scree, iterations, buttonStart, buttonCredits);
+      continueAnimation(i, px, py, dx, dy, diam, scree, iterations, buttonStart);
     }
-    activateTitleScreen(buttonStart, buttonCredits, isRunning);
+    activateTitleScreen(buttonStart, isRunning);
 
   }
   // type and pray strategy employed
@@ -128,7 +130,7 @@ void draw(Electron& workspace)
   drawMenu(workspace.menu);
   drawMenuBar(workspace.menuBar);
   drawStatusBar(workspace);
-
+  drawTutor(workspace);
   //
   message("=== Esc button to exit ===");
 }
@@ -177,9 +179,9 @@ void logic(Electron& workspace)
 // aux aux,,,
 void placePoint(int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], int& iterations);
 void drawAnimation(int px, int py, int dx, int dy, float& diam, int iterations);
-void drawTitleButtons(Button buttonStart, Button buttonCredits);
+void drawTitleButtons(Button buttonStart);
 // self explanatory
-void continueAnimation(int& i, int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], int& iterations, Button buttonStart, Button buttonCredits)
+void continueAnimation(int& i, int& px, int& py, int& dx, int& dy, float& diam, int scree[240][135], int& iterations, Button buttonStart)
 {
   placePoint(px, py, dx, dy, diam, scree, iterations);
   drawAnimation(px, py, dx, dy, diam, iterations);
@@ -187,14 +189,14 @@ void continueAnimation(int& i, int& px, int& py, int& dx, int& dy, float& diam, 
   // once every 8 drawings so the pc doesn't explode
   if (i%8 == 0)
   {
-    drawTitleButtons(buttonStart, buttonCredits);
+    drawTitleButtons(buttonStart);
     refresh();
   }
   i++;
 }
 
 // does what it says it does
-void activateTitleScreen(Button buttonStart, Button buttonCredits, bool& isRunning)
+void activateTitleScreen(Button buttonStart, bool& isRunning)
 {
   // so that lastkey() will work
   xkbhit ();
@@ -205,7 +207,7 @@ void activateTitleScreen(Button buttonStart, Button buttonCredits, bool& isRunni
     titleIsRunning = NOPE;
 
   // show credits
-  activateButton(buttonCredits);
+  //activateButton(buttonCredits);
   
   // exit the program
   if (lastkey() == KEY_ESC)
@@ -289,11 +291,11 @@ void drawAnimation(int px, int py, int dx, int dy, float& diam, int iterations)
 }
 
 // doesn't need a comment
-void drawTitleButtons(Button buttonStart, Button buttonCredits)
+void drawTitleButtons(Button buttonStart)
 {
   message("=== Esc button to exit ===");
   drawButton(buttonStart);
-  drawButton(buttonCredits);
+  //drawButton(buttonCredits);
 
 
   setcolor(BLACK);
@@ -381,6 +383,50 @@ void drawStatusBar(Electron workspace)
 }
 
 
+void drawTutor(Electron workspace)
+{
+  if (!workspace.tutor)
+  return;
+  int i;
+  bigBox(WIDTH-250, 36, 250, 150, 1);
+  setrgbcolor(MENU_TEXT);
+  settextstyle(DEFAULT_FONT, HORIZ_DIR, 2);
+  settextjustify(LEFT_TEXT, TOP_TEXT);
+  if (workspace.input)
+  {
+    outtextxy(WIDTH-230, 36 + 20, (char*)"INPUT");
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
+    outtextxy(WIDTH-230, 36 + 50, (char*)"Type and press ENTER.");
+    outtextxy(WIDTH-230, 36 + 70, (char*)"Or just ENTER to cancel.");
+  }
+  else if ( (i = activeComponent(workspace)) != -1)
+  {
+    outtextxy(WIDTH-230, 36 + 20, workspace.components[i].name);
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
+    outtextxy(WIDTH-230, 36 + 50, (char*)"Click and drag to move.");
+    outtextxy(WIDTH-230, 36 + 70, (char*)"Right click to remove.");
+    outtextxy(WIDTH-230, 36 + 90, (char*)"Click on bond point to-");
+    outtextxy(WIDTH-230, 36 + 100, (char*)"start creating a wire.");
+  }
+  else if ( (i = activeWire(workspace)) != -1)
+  {
+    outtextxy(WIDTH-230, 36 + 20, (char*)"WIRE");
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
+    outtextxy(WIDTH-230, 36 + 50, (char*)"Click to reverse.");
+    outtextxy(WIDTH-230, 36 + 70, (char*)"Right click to remove.");
+  }
+  else
+  {
+    outtextxy(WIDTH-230, 36 + 20, (char*)"WORKSPACE");
+    settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
+    outtextxy(WIDTH-230, 36 + 50, (char*)"Middle click to pan.");
+    outtextxy(WIDTH-230, 36 + 70, (char*)"Middle and Right click to-");
+    outtextxy(WIDTH-230, 36 + 80, (char*)"zoom by dragging mouse-");
+    outtextxy(WIDTH-230, 36 + 90, (char*)"along the X axis.");
+  }
+}
+
+
 // Immediately displays a red message on the bottom of the screen
 void message(const char* text)
 {
@@ -396,5 +442,49 @@ void message(const char* text)
   outtextxy (WIDTH / 2, HEIGHT - 33,(char*)text);
 }
 
+void showHelp()
+{
+  bigBox(WIDTH/2 - 200, HEIGHT/2 - 75, 400, 170, 1);
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+  settextjustify (CENTER_TEXT, TOP_TEXT);
+  setrgbcolor(MENU_TEXT);
+  outtextxy(WIDTH/2, HEIGHT/2 - 50, (char*)"HELP");
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+  settextjustify (LEFT_TEXT, TOP_TEXT);
+  outtextxy(WIDTH/2 - 170, HEIGHT/2 -20, (char*)"== Electron ==");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2,    (char*)"This program is an electronic circuit-");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+10, (char*)"viewer and editor.");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+20, (char*)"Drag and drop components from the menu.");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+30, (char*)"For more instructions, make sure Tutor-");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+40, (char*)"mode is on.");
+  settextjustify (CENTER_TEXT, TOP_TEXT);
+  outtextxy(WIDTH/2, HEIGHT/2+70, (char*)"PRESS ANY KEY TO CONTINUE");
+  refresh();
+  getch();
+}
 
+void showCredits()
+{
+  bigBox(WIDTH/2 - 200, HEIGHT/2 - 75, 400, 170, 1);
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+  settextjustify (CENTER_TEXT, TOP_TEXT);
+  setrgbcolor(MENU_TEXT);
+  outtextxy(WIDTH/2, HEIGHT/2 - 50, (char*)"CREDITS");
+  settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
+  settextjustify (LEFT_TEXT, TOP_TEXT);
+  outtextxy(WIDTH/2 - 170, HEIGHT/2 -20, (char*)"== Electron ==");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2, (char*)"Project realized by:");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+10, (char*)" Ciobanu Andra and Petcu Andreea;");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+20, (char*)"2022.11.22 - 2023.01.09;");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+30, (char*)"UAIC Year 1, Semester 1;");
+  outtextxy(WIDTH/2 - 170, HEIGHT/2+40, (char*)"Coordinating teacher: Bogdan Patrut;");
+  settextjustify (CENTER_TEXT, TOP_TEXT);
+  outtextxy(WIDTH/2, HEIGHT/2+70, (char*)"PRESS ANY KEY TO CONTINUE");
+  refresh();
+  getch();
+}
 
+  //             "Project realised by Ciobanu Andra and Petcu Andreea;\n"
+  //             "2022.11.22 -                                        \n" 
+  //             "UAIC Year 1 Semester 1;                             \n"
+  //             "Coordinating teacher: Bogdan Patrut."

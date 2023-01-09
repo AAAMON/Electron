@@ -278,6 +278,12 @@ void activateMenuBarOption(Electron& workspace, int i)
           std::cout << "deleting file...\n";
           deleteFile(workspace);
           break;
+        case 4: // TUTOR ON
+          workspace.tutor = YEAH;
+          break;
+        case 5: // TUTOR OFF
+          workspace.tutor = NOPE;
+          break;
         case 6:
           std::cout << "changing theme...\n";
           loadTheme(6);
@@ -290,8 +296,14 @@ void activateMenuBarOption(Electron& workspace, int i)
           std::cout << "changing theme...\n";
           loadTheme(8);
           break;
+        case 9: // help
+          showHelp();
+          break;
+        case 10:
+          showCredits();
+          break;
         default:
-          std::cerr << "ERROR: in function activateMenuBarOption: Invalid function id\n";
+          std::cerr << workspace.menuBar.menuBarElement[i].options[j].functionId << "ERROR: in function activateMenuBarOption: Invalid function id\n";
       }
 
     }

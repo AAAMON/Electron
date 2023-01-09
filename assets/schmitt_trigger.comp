@@ -1,4 +1,4 @@
-In electronics, a Schmitt trigger is a comparator circuit with hysteresis implemented by applying positive feedback to the noninverting input of a comparator or differential amplifier.
+Comparator circuit with hysteresis implemented.
 
 9
 L -4 0 -1 0

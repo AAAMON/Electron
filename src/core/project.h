@@ -48,6 +48,8 @@ struct Electron
   char currentMessage[100];
 
   bool secrets;
+  bool input;
+  bool tutor;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -60,5 +62,7 @@ void initElectron(Electron& workspace);
 void draw(Electron& workspace);
 void logic(Electron& workspace);
 void drawStatusBar(Electron workspace);
-
+void drawTutor(Electron workspace);
+void showCredits();
+void showHelp();
 #endif
