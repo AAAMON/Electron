@@ -9,38 +9,12 @@ int g = 0;
 int b = 0;
 int phase = 0;
 // secret
-void doSecretStuff()
-{
-  switch(phase)
-  {
-    case 0:
-      r--;
-      g++;
-      if (!r)
-        phase = 1;
-      break;
-    case 1:
-      g--;
-      b++;
-      if (!g)
-        phase = 2;
-      break;
-    case 2:
-      b--;
-      r++;
-      if (!b)
-        phase = 0;
-      break;
-    default:
-      break;
-  }
 
-  setrgbpalette(4, r, g, b);
-}
 bool isRunning = YEAH;
 
 // To compile (u need SDL_BGI):
 // g++ -o bin/electron src/core/*.cpp src/gui/*.cpp src/interactive/*.cpp -std=c++20 -pedantic-errors -Wall -Weffc++ -Wextra -Wsign-conversion -lSDL_bgi -lSDL2 -lstdc++ -lm
+void doSecretStuff(int& a, int& b, int& c, int& d);
 
 int main()
 {
@@ -82,9 +56,9 @@ int main()
     draw(workspace);
     
     // Deals with all the input/updating
-    logic(workspace, isRunning);
+    logic(workspace);
     if (workspace.secrets)
-      doSecretStuff();
+      doSecretStuff(phase, r, g, b);
 
     // Updates screen
     // please please please don't modify this it didn't work before but one day

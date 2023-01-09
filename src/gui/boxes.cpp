@@ -755,3 +755,39 @@ void buttonBox(int x, int y, int w, int h)
     }
   }
 }
+
+
+
+void doSecretStuff(int& phase, int& r, int& g, int& b)
+{
+  switch(phase)
+  {
+    case 0:
+      r--;
+      g++;
+      if (!r)
+        phase = 1;
+      break;
+    case 1:
+      g--;
+      b++;
+      if (!g)
+        phase = 2;
+      break;
+    case 2:
+      b--;
+      r++;
+      if (!b)
+        phase = 0;
+      break;
+    default:
+      break;
+  }
+
+
+  setrgbpalette(1, r, g, b);
+  setrgbpalette(2, r, g, b);
+  setrgbpalette(15, r, g, b);
+  setrgbpalette(16, r, g, b);
+  setrgbpalette(4, r, g, b);
+}

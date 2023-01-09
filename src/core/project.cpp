@@ -134,7 +134,7 @@ void draw(Electron& workspace)
 }
 
 // updates the current workspace
-void logic(Electron& workspace, bool& isRunning)
+void logic(Electron& workspace)
 {
   strcpy(workspace.currentMessage, "");
   activateMenuBarElement(workspace, workspace.menuBar);
@@ -151,8 +151,19 @@ void logic(Electron& workspace, bool& isRunning)
   //EASTER EGG
   if (isMouseOnBox(WIDTH-30, 0, WIDTH, 36) && ismouseclick(WM_LBUTTONDOWN))
   {
-    loadTheme(0);
-    workspace.secrets = YEAH;
+    
+    if (workspace.secrets == NOPE)
+    {      
+      loadTheme(0);
+      workspace.secrets = YEAH;
+      delay(100);
+    }
+    else
+    {
+      loadTheme(6);
+      workspace.secrets = NOPE;
+      delay(100);
+    }
   }
 
 }
