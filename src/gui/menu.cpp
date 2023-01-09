@@ -225,15 +225,30 @@ void drawMenuScroll(Menu menu)
     setcolor(COLOR(36, 35, 39));
     else
     setcolor(COLOR(198,198,48));
+
+for(int i=0;i<=1;i++)
+  {
+    //n
+    line(menu.width - menu.buttonWidth/2-i, 36 + menu.buttonWidth/2-3, menu.width - menu.buttonWidth/2-4-i, 36 + menu.buttonWidth/2+3);
+    line(menu.width - menu.buttonWidth/2+i, 36 + menu.buttonWidth/2-3, menu.width - menu.buttonWidth/2+4+i, 36 + menu.buttonWidth/2+3);
+    line(menu.width - menu.buttonWidth/2-i,36 + menu.buttonWidth/2*3-3,menu.width - menu.buttonWidth/2-4-i,36 + menu.buttonWidth/2*3+3);
+    line(menu.width - menu.buttonWidth/2-i,36 + menu.buttonWidth/2*3-3,menu.width - menu.buttonWidth/2+4-i,36 + menu.buttonWidth/2*3+3);
+    line(menu.width - menu.buttonWidth/2-i,36 + menu.buttonWidth/2*5-3,menu.width - menu.buttonWidth/2-4-i,36 + menu.buttonWidth/2*5+3);
+    line(menu.width - menu.buttonWidth/2-i,36 + menu.buttonWidth/2*5-3,menu.width - menu.buttonWidth/2+4-i,36 + menu.buttonWidth/2*5+3);
+  }
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2,                 (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2*3,               (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2*5,               (char*)"n");
   outtextxy(menu.width - menu.buttonWidth/2+2, 36 + menu.height/2,                      (char*)"<");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2*5, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2*3, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2,   (char*)"u");
+  for(int i=0;i<=1;i++)
+  {
+    //u
+  line(menu.width - menu.buttonWidth/2-i,36 + menu.height - menu.buttonWidth/2*5+3,menu.width - menu.buttonWidth/2-4-i,36 + menu.height - menu.buttonWidth/2*5-3);
+  line(menu.width - menu.buttonWidth/2+i,36 + menu.height - menu.buttonWidth/2*5+3,menu.width - menu.buttonWidth/2+4-i,36 + menu.height - menu.buttonWidth/2*5-3);
+  line(menu.width - menu.buttonWidth/2-i,36 + menu.height - menu.buttonWidth/2*3+3,menu.width - menu.buttonWidth/2-4-i,36 + menu.height - menu.buttonWidth/2*3-3);
+  line(menu.width - menu.buttonWidth/2+i,36 + menu.height - menu.buttonWidth/2*3+3,menu.width - menu.buttonWidth/2+4-i,36 + menu.height - menu.buttonWidth/2*3-3);
+  line(menu.width - menu.buttonWidth/2-i,36 + menu.height - menu.buttonWidth/2+3,menu.width - menu.buttonWidth/2-4-i,36 + menu.height - menu.buttonWidth/2-3);
+  line(menu.width - menu.buttonWidth/2+i,36 + menu.height - menu.buttonWidth/2+3,menu.width - menu.buttonWidth/2+4-i,36 + menu.height - menu.buttonWidth/2-3);
+  }
 }
 
 // Draws menu when it's closed
