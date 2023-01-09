@@ -55,7 +55,8 @@ void saveFile(Electron& workspace, char* fileName)
   {
     f << workspace.components[i].name << ' ';
     f << workspace.components[i].x    << ' ';
-    f << workspace.components[i].y    << '\n';
+    f << workspace.components[i].y    << ' ';
+    f << workspace.components[i].orientation << '\n';
   }
 
   // WIRES
@@ -277,11 +278,15 @@ void loadThisFile(Electron& workspace, std::ifstream& file)
     file >> text1;
     file >> text2;
     moveComponent(workspace.components[i], charToInt(text1), charToInt(text2));
+    file >> workspace.components[i].orientation;
+    for (int r = 0; r < workspace.components[i].orientation; r += 90)
+      rotateComponent(workspace.components[i], 1, 0);
   }
   
   char c;
   // WIRES
   file >> workspace.nrOfWires;
+  std::cout << workspace.nrOfWires << '\n';
   for (int i = 0; i < workspace.nrOfWires; i++)
   {
     file >> workspace.wires[i].nrOfPoints;

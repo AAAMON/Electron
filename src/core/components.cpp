@@ -5,7 +5,7 @@
 #include <cstring>
 #include <iostream>
 #include "project.h"
-
+#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 /// M A I N   F U N C T I O N S //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -35,6 +35,7 @@ void initComponent(Component &component, const char* type)
     compFile.getline(component.description, 1000);
 
     readDrawInstructions(component, compFile);
+    component.orientation = 0;
 
 }
 
@@ -110,6 +111,75 @@ void moveComponent(Component& component, int x, int y)
 {
     component.x = x;
     component.y = y;
+}
+
+void rotateComponent(Component& component, int s, int c)
+{
+    // Coordonates are stored in an array, and we need a separate iterator
+    // because different instructions use a different ammount of points
+    int coord = { 0 };
+    float newx;
+    float newy;
+    float aux;
+    for (int i = 0; i < component.nrOfInstructions; i++)
+    {
+
+        switch (component.drawInstrType[i])
+        {
+            case 'L': 
+                newx = component.drawCoordinates[coord]*c - component.drawCoordinates[coord+1]*s;
+                newy = component.drawCoordinates[coord]*s + component.drawCoordinates[coord+1]*c;
+                component.drawCoordinates[coord] = newx;
+                component.drawCoordinates[coord+1] = newy;
+                newx = component.drawCoordinates[coord+2]*c - component.drawCoordinates[coord+3]*s;
+                newy = component.drawCoordinates[coord+2]*s + component.drawCoordinates[coord+3]*c;
+                component.drawCoordinates[coord+2] = newx;
+                component.drawCoordinates[coord+3] = newy;
+                coord += 4; // we've used 4 coordinates
+                break;
+            case 'R': 
+                newx = component.drawCoordinates[coord]*c - component.drawCoordinates[coord+1]*s;
+                newy = component.drawCoordinates[coord]*s + component.drawCoordinates[coord+1]*c;
+                component.drawCoordinates[coord] = newx;
+                component.drawCoordinates[coord+1] = newy;
+                newx = component.drawCoordinates[coord+2]*c - component.drawCoordinates[coord+3]*s;
+                newy = component.drawCoordinates[coord+2]*s + component.drawCoordinates[coord+3]*c;
+                component.drawCoordinates[coord+2] = newx;
+                component.drawCoordinates[coord+3] = newy;
+                coord += 4;
+                break;
+            case 'C':
+                newx = component.drawCoordinates[coord]*c - component.drawCoordinates[coord+1]*s;
+                newy = component.drawCoordinates[coord]*s + component.drawCoordinates[coord+1]*c;
+                component.drawCoordinates[coord] = newx;
+                component.drawCoordinates[coord+1] = newy;
+                coord += 3;
+                break;
+            case 'E':
+                newx = component.drawCoordinates[coord]*c - component.drawCoordinates[coord+1]*s;
+                newy = component.drawCoordinates[coord]*s + component.drawCoordinates[coord+1]*c;
+                component.drawCoordinates[coord] = newx;
+                component.drawCoordinates[coord+1] = newy;
+                aux = component.drawCoordinates[coord+4];
+                component.drawCoordinates[coord+4] = component.drawCoordinates[coord+5];
+                component.drawCoordinates[coord+5] = aux;
+                    // component.drawCoordinates[coord+4] * component.size, 
+                    // component.drawCoordinates[coord+5] * component.size
+                coord += 6;
+                break;
+            default:
+                // Devious
+                std::cerr << component.name << " Eroare fa1\n";
+        }
+    }
+    
+    for (int i = 0; i < component.nrOfBonds; i++)
+    {
+        newx = component.bonds[0][i]*c - component.bonds[1][i]*s;
+        newy = component.bonds[0][i]*s + component.bonds[1][i]*c;
+        component.bonds[0][i] = newx;
+        component.bonds[1][i] = newy;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////

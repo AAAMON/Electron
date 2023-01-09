@@ -404,7 +404,7 @@ void drawTutor(Electron workspace)
     outtextxy(WIDTH-230, 36 + 20, workspace.components[i].name);
     settextstyle(DEFAULT_FONT, HORIZ_DIR, 1);
     outtextxy(WIDTH-230, 36 + 50, (char*)"Click and drag to move.");
-    outtextxy(WIDTH-230, 36 + 70, (char*)"Right click to remove.");
+    outtextxy(WIDTH-230, 36 + 70, (char*)"Right click to rotate.");
     outtextxy(WIDTH-230, 36 + 90, (char*)"Click on bond point to-");
     outtextxy(WIDTH-230, 36 + 100, (char*)"start creating a wire.");
   }
