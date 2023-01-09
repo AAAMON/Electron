@@ -128,7 +128,10 @@ void drawMenu(Menu menu)
       if (menu.columns[c+i].content[0] == 'A')
       {
         bigBox(0, 36 + menu.elementHeigth * i, menu.width - menu.buttonWidth, menu.elementHeigth, 1);
-        settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+        if (WIDTH == 1920)
+          settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
+        else
+          settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
         settextjustify (CENTER_TEXT, CENTER_TEXT);
         setrgbcolor(MENU_TEXT);
         outtextxy(0 + menu.width/2 - menu.buttonWidth/2, 36 + menu.elementHeigth * i + menu.elementHeigth/2, menu.categories[(int)menu.columns[c+i].content[1]-'0'].name);
