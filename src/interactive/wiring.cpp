@@ -9,12 +9,15 @@ void wireComponents(Electron& workspace)
     for (int j = 0; j <  workspace.components[i].nrOfBonds; j++)
     {
       
-      if (isMouseOnComponent(workspace, 
+      if (
+        isMouseOnWorkspace(workspace) && 
+        isMouseOnComponent(workspace, 
         workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size - 10, 
         workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size - 10, 
         workspace.components[i].x + workspace.components[i].bonds[0][j]*workspace.components[i].size + 10, 
         workspace.components[i].y + workspace.components[i].bonds[1][j]*workspace.components[i].size + 10))
       {
+        
         setrgbcolor(SELECTION_ACTIVE);
         rectangle(
           workspace.components[i].x*workspace.zoom + workspace.components[i].bonds[0][j]*workspace.components[i].size*workspace.zoom - 10*workspace.zoom + workspace.panningX, 
@@ -79,18 +82,20 @@ void drawWirePoints(Electron workspace, Wire wire)
 {
   for (int i = 0; i < wire.nrOfPoints; i++)
   {
+    int x = workspace.components[wire.points[i].id].x*workspace.zoom + workspace.components[wire.points[i].id].bonds[0][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size;
+    int y = workspace.components[wire.points[i].id].y*workspace.zoom + workspace.components[wire.points[i].id].bonds[1][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size;
     setrgbcolor(SELECTION_INACTIVE);
     if (wire.points[i].type == 'c')
     {
       rectangle(
-          workspace.components[wire.points[i].id].x*workspace.zoom + workspace.components[wire.points[i].id].bonds[0][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size - 10*workspace.zoom + workspace.panningX,
-          workspace.components[wire.points[i].id].y*workspace.zoom + workspace.components[wire.points[i].id].bonds[1][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size - 10*workspace.zoom + workspace.panningY, 
-          workspace.components[wire.points[i].id].x*workspace.zoom + workspace.components[wire.points[i].id].bonds[0][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size + 10*workspace.zoom + workspace.panningX, 
-          workspace.components[wire.points[i].id].y*workspace.zoom + workspace.components[wire.points[i].id].bonds[1][wire.points[i].id2]*workspace.zoom * workspace.components[wire.points[i].id].size + 10*workspace.zoom + workspace.panningY);
+          x - 10*workspace.zoom + workspace.panningX,
+          y - 10*workspace.zoom + workspace.panningY, 
+          x + 10*workspace.zoom + workspace.panningX, 
+          y + 10*workspace.zoom + workspace.panningY);
     }
     else
     {
-
+      // had no time to finish wiring,,,
     }
   }
 }

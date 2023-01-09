@@ -37,12 +37,20 @@ int main()
   // MAIN LOOP!
   while(isRunning == YEAH)
   {
-    // Deals with all the input/updating
+    // checking if esc was pressed
+    xkbhit();
+    if (lastkey() == KEY_ESC)
+      isRunning = NOPE;
     
+    // without this, checking if ESC was pressed won't work.
+    // Why? ,,,,I would like to know as well.
+    delay(1);
+
     cleardevice();
     // Draws everyting on SDL_Surface
     draw(workspace);
-    strcpy(workspace.currentMessage, "");
+    
+    // Deals with all the input/updating
     logic(workspace, isRunning);
     
 

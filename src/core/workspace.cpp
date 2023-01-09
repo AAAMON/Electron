@@ -121,7 +121,7 @@ int activeWire(Electron workspace)
   int w = -1;
   for (int i = 0; i < workspace.nrOfWires; i++)
   {
-    if (isMouseOnWire(workspace, i))
+    if (isMouseOnWire(workspace, i) && isMouseOnWorkspace(workspace))
     {
       w = i;
     }

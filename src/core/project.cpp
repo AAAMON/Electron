@@ -75,7 +75,7 @@ void titleScreen(bool& isRunning)
   // ANIMATION
   cleardevice();
   // number of particles
-  int nrOfParticles = 32000;
+  int nrOfParticles = 10000;
   // screen
 
   // particle values
@@ -119,14 +119,14 @@ void draw(Electron& workspace)
   {
     drawWorkspaceComponent(workspace, workspace.components[i]);
   }
- 
-  drawStatusBar(workspace);
+   for (int i = 0; i < workspace.nrOfWires; i++)
+    drawWirePoints(workspace, workspace.wires[i]);
+  
   
   drawWires(workspace);
   drawMenu(workspace.menu);
   drawMenuBar(workspace.menuBar);
-  for (int i = 0; i < workspace.nrOfWires; i++)
-    drawWirePoints(workspace, workspace.wires[i]);
+  drawStatusBar(workspace);
 
   //
   message("=== Esc button to exit ===");
@@ -135,11 +135,7 @@ void draw(Electron& workspace)
 // updates the current workspace
 void logic(Electron& workspace, bool& isRunning)
 {
-
-  k_bhit();
-  if (lastkey() == KEY_ESC)
-    isRunning = NOPE;
-  
+  strcpy(workspace.currentMessage, "");
   activateMenuBarElement(workspace, workspace.menuBar);
   activateMenuBar(workspace);
   activateScrollMenu(workspace);
@@ -147,7 +143,7 @@ void logic(Electron& workspace, bool& isRunning)
   activateZooming(workspace);
   activatePanning(workspace);
   activateWires(workspace);
-    if (activeWire(workspace) != -1)
+  if (activeWire(workspace) != -1)
     strcpy(workspace.currentMessage, "wire");
   activateComponents(workspace);
 

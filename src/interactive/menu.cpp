@@ -18,7 +18,12 @@ void activateMenuComponents(Electron& workspace)
     // ONE COMPONENT
     // menu.components[(int)menu.columns[c+i].content[1]-'0']
     if (isMouseOnBox(2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2))
+    {
       strcpy(workspace.currentMessage, workspace.menu.components[(int)workspace.menu.columns[c+i].content[1]-'0'].name);
+      setrgbcolor(SELECTION);
+      if (workspace.menuBar.open == -1)
+      rectangle (2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2);
+    }
     if (isMouseOnBox(2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2) && ismouseclick(WM_LBUTTONDOWN))
     {
       // daca nu e asta aici o sa dea eroare drawComponent
@@ -36,6 +41,7 @@ void activateMenuComponents(Electron& workspace)
         cleardevice();
         draw(workspace);
         drawWorkspaceComponent(workspace, workspace.components[workspace.nrOfComponents-1]);
+        setrgbcolor(SELECTION);
         rectangle (2, 38 + workspace.menu.elementHeigth * i, workspace.menu.width/2 - workspace.menu.buttonWidth -2, 36 + workspace.menu.elementHeigth * (i + 1) - 2);
         refresh();
       }
@@ -47,7 +53,12 @@ void activateMenuComponents(Electron& workspace)
     if (workspace.menu.columns[c+i].content[2])
     {
       if (isMouseOnBox(2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2))
+      {
         strcpy(workspace.currentMessage, workspace.menu.components[(int)workspace.menu.columns[c+i].content[2]-'0'].name);
+        setrgbcolor(SELECTION);
+        if (workspace.menuBar.open == -1)
+          rectangle (2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2);
+      }
       if (isMouseOnBox(2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2) && ismouseclick(WM_LBUTTONDOWN))
       {
         // daca nu e asta aici o sa dea eroare drawComponent
@@ -59,12 +70,11 @@ void activateMenuComponents(Electron& workspace)
         /// DRAG
         while (ismouseclick(WM_LBUTTONDOWN))
         {
-          setcolor(RED);
-          
           moveComponent(workspace.components[workspace.nrOfComponents-1], (mousex() - workspace.panningX)/workspace.zoom, (mousey() - workspace.panningY)/workspace.zoom);
           cleardevice();
           draw(workspace);
           drawWorkspaceComponent(workspace, workspace.components[workspace.nrOfComponents-1]);
+          setrgbcolor(SELECTION);
           rectangle (2 + workspace.menu.width/2 - workspace.menu.buttonWidth, 38 + workspace.menu.elementHeigth * i, workspace.menu.width - workspace.menu.buttonWidth - 2, 36 + workspace.menu.elementHeigth * (i + 1) - 2);
           refresh();
         }
@@ -127,12 +137,25 @@ void drawMenuBarOptions(MenuBarElement menuBarElement)
   for (int i = 0; i < menuBarElement.nrOfOptions; i++)
   {
     setcolor(COLOR(255,255,255));
+    
+    setrgbcolor(HOLLOW_BOX);
     setfillstyle(SOLID_FILL, getcolor());
-    bar(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
-    setcolor(COLOR(0,0,0));
-    rectangle(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
+    //bar(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
+    hollowBox(menuBarElement.x, 36 + 30*i, menuBarElement.x + menuBarElement.optionsWidth, 36 + 30*(i+1));
+
+    int j = 0;
+    setcolor(BLACK);
+    rectangle(menuBarElement.x + j, 36 + 30*i + j, menuBarElement.x + menuBarElement.optionsWidth-j, 36 + 30*(i+1)-j);
+    j++;
+    setrgbcolor(BIG_BOX);
+    //setrgbcolor(COLOR(RED_VALUE(BIG_BOX) + 70, GREEN_VALUE(BIG_BOX) + 70, BLUE_VALUE(BIG_BOX) + 70));
+    rectangle(menuBarElement.x + j, 36 + 30*i + j, menuBarElement.x + menuBarElement.optionsWidth-j, 36 + 30*(i+1)-j);
+    
+
+
     settextstyle (DEFAULT_FONT, HORIZ_DIR, 1);
     settextjustify (LEFT_TEXT, CENTER_TEXT);
+    setrgbcolor(MENU_COMPONENT_TEXT);
     outtextxy(menuBarElement.x + 10, 36+ 15 +30*i, menuBarElement.options[i].name);
   }
 }
@@ -141,6 +164,13 @@ void activateMenuBar(Electron& workspace)
 {
   for (int i = 0; i < workspace.menuBar.nrOfElements; i++)
   {  
+    if (isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 0, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w, 36))
+    {
+      setrgbcolor(SELECTION);
+      //setcolor(BLACK);
+      rectangle(workspace.menuBar.menuBarElement[i].x+1, 1, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w-1, 35);
+      refresh();
+    }
     while (workspace.menuBar.menuBarElement[i].open && ismouseclick(WM_LBUTTONDOWN)) // if we click somewhere else
     {
       while (ismouseclick(WM_LBUTTONDOWN));
@@ -150,6 +180,10 @@ void activateMenuBar(Electron& workspace)
     if (workspace.menuBar.open == -1 && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 0, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w, 36)
         && ismouseclick(WM_LBUTTONDOWN))
     {
+      setalpha(BLACK, 50);
+      setfillstyle(SOLID_FILL, BLACK);
+      bar(workspace.menuBar.menuBarElement[i].x+6, 6, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w-6, 30);
+      refresh();
       while (ismouseclick(WM_LBUTTONDOWN));
       workspace.menuBar.menuBarElement[i].open = YEAH;
       workspace.menuBar.open = i;
@@ -162,6 +196,10 @@ void activateMenuBar(Electron& workspace)
     }
     if (ismouseclick(WM_MBUTTONDOWN) && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 0, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w, 36)) //easter egg
     {
+      setalpha(BLACK, 50);
+      setfillstyle(SOLID_FILL, BLACK);
+      bar(workspace.menuBar.menuBarElement[i].x+6, 6, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].w-6, 30);
+      refresh();
       int maxx = WIDTH;
       int minx = 0;
       // calculate the max x position
@@ -211,7 +249,7 @@ void activateMenuBarOption(Electron& workspace, int i)
   {
     if (isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 36 + 30*j, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth, 36 + 30*(j+1)))
     {
-      setcolor(COLOR(0,0,255));
+      setrgbcolor(SELECTION);
       rectangle(workspace.menuBar.menuBarElement[i].x+1, 36 + 30*j+1, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth-1, 36 + 30*(j+1)-1);
     }
     if (ismouseclick(WM_LBUTTONDOWN) && isMouseOnBox(workspace.menuBar.menuBarElement[i].x, 36 + 30*j, workspace.menuBar.menuBarElement[i].x + workspace.menuBar.menuBarElement[i].optionsWidth, 36 + 30*(j+1)))

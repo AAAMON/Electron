@@ -80,6 +80,7 @@ void newFile(Electron& workspace)
 
   strcpy(workspace.currentFile, fileName);
   workspace.nrOfComponents = 0;
+  workspace.nrOfWires = 0;
 }
 
 // Deletes specified file

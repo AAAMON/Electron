@@ -29,7 +29,9 @@ void activateComponents(Electron& workspace)
 {
   for (int i = 0; i < workspace.nrOfComponents; i++)
   {
-    if (isMouseOnComponent(workspace, workspace.components[i].x-55, workspace.components[i].y-55, workspace.components[i].x+55, workspace.components[i].y+55))
+    if (
+      isMouseOnWorkspace(workspace) && 
+      isMouseOnComponent(workspace, workspace.components[i].x-55, workspace.components[i].y-55, workspace.components[i].x+55, workspace.components[i].y+55))
     {
       setrgbcolor(SELECTION_INACTIVE);
       rectangle(          

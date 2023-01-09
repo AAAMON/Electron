@@ -202,15 +202,29 @@ void drawMenuScroll(Menu menu)
   // DETAILS
   // plz replace this with some arrows...
   setrgbcolor(SCROLL_DETAIL);
+  for(int i=0;i<=1;i++)
+  {
+    //n
+    line(menu.width - menu.buttonWidth/2-i, 40 + menu.buttonWidth/2-3, menu.width - menu.buttonWidth/2-4-i, 40 + menu.buttonWidth/2+3);
+    line(menu.width - menu.buttonWidth/2+i, 40 + menu.buttonWidth/2-3, menu.width - menu.buttonWidth/2+4+i, 40 + menu.buttonWidth/2+3);
+    line(menu.width - menu.buttonWidth/2-i, 40 + menu.buttonWidth/2*3-3,menu.width - menu.buttonWidth/2-4-i,40 + menu.buttonWidth/2*3+3);
+    line(menu.width - menu.buttonWidth/2-i, 40 + menu.buttonWidth/2*3-3,menu.width - menu.buttonWidth/2+4-i,40 + menu.buttonWidth/2*3+3);
+    line(menu.width - menu.buttonWidth/2-i, 40 + menu.buttonWidth/2*5-3,menu.width - menu.buttonWidth/2-4-i,40 + menu.buttonWidth/2*5+3);
+    line(menu.width - menu.buttonWidth/2-i, 40 + menu.buttonWidth/2*5-3,menu.width - menu.buttonWidth/2+4-i,40 + menu.buttonWidth/2*5+3);
+  }
   settextstyle (DEFAULT_FONT, HORIZ_DIR, 2);
   settextjustify (CENTER_TEXT, CENTER_TEXT);
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2,                 (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2*3,               (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.buttonWidth/2*5,               (char*)"n");
-  outtextxy(menu.width - menu.buttonWidth/2+2, 36 + menu.height/2,                      (char*)"<");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2*5, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2*3, (char*)"u");
-  outtextxy(menu.width - menu.buttonWidth/2+1, 36 + menu.height - menu.buttonWidth/2,   (char*)"u");
+  outtextxy(menu.width - menu.buttonWidth/2+2, 36 + menu.height/2, (char*)"<");
+  for(int i=0;i<=1;i++)
+  {
+    //u
+  line(menu.width - menu.buttonWidth/2-i, 32 + menu.height - menu.buttonWidth/2*5+3,menu.width - menu.buttonWidth/2-4-i,32 + menu.height - menu.buttonWidth/2*5-3);
+  line(menu.width - menu.buttonWidth/2+i, 32 + menu.height - menu.buttonWidth/2*5+3,menu.width - menu.buttonWidth/2+4-i,32 + menu.height - menu.buttonWidth/2*5-3);
+  line(menu.width - menu.buttonWidth/2-i, 32 + menu.height - menu.buttonWidth/2*3+3,menu.width - menu.buttonWidth/2-4-i,32 + menu.height - menu.buttonWidth/2*3-3);
+  line(menu.width - menu.buttonWidth/2+i, 32 + menu.height - menu.buttonWidth/2*3+3,menu.width - menu.buttonWidth/2+4-i,32 + menu.height - menu.buttonWidth/2*3-3);
+  line(menu.width - menu.buttonWidth/2-i, 32 + menu.height - menu.buttonWidth/2+3,menu.width - menu.buttonWidth/2-4-i,32 + menu.height - menu.buttonWidth/2-3);
+  line(menu.width - menu.buttonWidth/2+i, 32 + menu.height - menu.buttonWidth/2+3,menu.width - menu.buttonWidth/2+4-i,32 + menu.height - menu.buttonWidth/2-3);
+  }
 }
 
 // Draws menu when it's closed

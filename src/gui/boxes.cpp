@@ -142,9 +142,9 @@ void bigBox(int x, int y, int w, int h, int size, bool differentColor)
       for (int y1 = y+i; y1 < y+h-i; y1++)
       {
         xy = abs(distance(x1, y1, x+w/2, y+h/2));
-        nr = r - 0.2*xy;
-        ng = g - 0.2*xy;
-        nb = b - 0.2*xy;
+        nr = r - 0.4*xy;
+        ng = g - 0.4*xy;
+        nb = b - 0.4*xy;
         putpixel(x1, y1, COLOR(nr < 0? 0:nr, ng < 0? 0:ng, nb < 0? 0:nb));
       }
     }
