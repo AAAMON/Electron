@@ -34,7 +34,10 @@ void loadFile(Electron& workspace, bool init)
   std::ifstream file (filePath);
 
   if (file)
-    loadThisFile(workspace,  file);
+    {
+      loadThisFile(workspace,  file);
+      strcpy(workspace.currentFile,fileName);
+    }
   else if (strlen(fileName) == 0)
     return;
   else

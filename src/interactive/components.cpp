@@ -15,11 +15,12 @@ void moveComponents(Electron& workspace)
       draw(workspace);
       setrgbcolor(SELECTION_ACTIVE);
       //workspace.panningX + component.x * workspace.zoom
-      rectangle(          
+      if(!workspace.tutor||workspace.components[i].x<WIDTH-250||workspace.components[i].y>150)
+      {rectangle(          
         workspace.components[i].x*workspace.zoom-55*workspace.zoom + workspace.panningX, 
         workspace.components[i].y*workspace.zoom-55*workspace.zoom + workspace.panningY,
         workspace.components[i].x*workspace.zoom+55*workspace.zoom + workspace.panningX, 
-        workspace.components[i].y*workspace.zoom+55*workspace.zoom + workspace.panningY);
+        workspace.components[i].y*workspace.zoom+55*workspace.zoom + workspace.panningY);}
       refresh();
     }
   }
@@ -34,11 +35,12 @@ void activateComponents(Electron& workspace)
       isMouseOnComponent(workspace, workspace.components[i].x-55, workspace.components[i].y-55, workspace.components[i].x+55, workspace.components[i].y+55))
     {
       setrgbcolor(SELECTION_INACTIVE);
-      rectangle(          
+      if(!workspace.tutor||workspace.components[i].x<WIDTH-250||workspace.components[i].y>150)
+      {rectangle(          
         workspace.components[i].x*workspace.zoom-55*workspace.zoom + workspace.panningX, 
         workspace.components[i].y*workspace.zoom-55*workspace.zoom + workspace.panningY,
         workspace.components[i].x*workspace.zoom+55*workspace.zoom + workspace.panningX, 
-        workspace.components[i].y*workspace.zoom+55*workspace.zoom + workspace.panningY);
+        workspace.components[i].y*workspace.zoom+55*workspace.zoom + workspace.panningY);}
       strcpy(workspace.currentMessage, workspace.components[i].name);
             // remove
       if (ismouseclick(WM_RBUTTONDOWN))

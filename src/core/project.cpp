@@ -369,7 +369,7 @@ void placePoint(int& px, int& py, int& dx, int& dy, float& diam, int scree[240][
 
 void drawStatusBar(Electron workspace)
 {
-  char text[1000];
+  char text[1000]={""};
   setrgbcolor(STATUS_BAR);
   setfillstyle(SOLID_FILL, getcolor());
   bar(0, HEIGHT-24, WIDTH, HEIGHT);
